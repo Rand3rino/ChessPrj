@@ -6,6 +6,7 @@
 
 package chess;
 
+//bishop class
 public class Bishop extends ChessPiece {
 
 	public boolean isValidMove() { 
