@@ -1,5 +1,5 @@
 /**********************************************************************
- * Project 3: Chess Game Piece
+ * Project 3: Chess Game Piece Class
  *********************************************************************/
 
 package chess;
@@ -8,6 +8,10 @@ public abstract class ChessPiece implements IChessPiece {
 	
 	private Player owner;
 	
+	/******************************************************************
+	 * Constructor for this piece's owner. 
+	 * @param this.owner The player that owns this piece.
+	 *****************************************************************/
 	protected ChessPiece(Player player) {
 		this.owner = player;
 	}
@@ -15,21 +19,32 @@ public abstract class ChessPiece implements IChessPiece {
 	
 	/******************************************************************
 	 * Return the player that owns this piece.
-	 * Comment comment
-	 * @return the player that owns this piece.
+	 * @return this.owner The player that owns this piece.
 	 *****************************************************************/
-//	Player player() {
-//		return Player;
-//	}
+	public Player player() {
+		return this.owner;
+	}
 
 	/******************************************************************
 	 * Return the type of this piece ("King", "Queen", "Rook", etc.). 
 	 * Note: In this case "type" refers to the game of chess, 
 	 * not the type of the Java class.
-	 *
 	 * @return the type of this piece
 	 *****************************************************************/
 	public abstract String type();
+	
+	/******************************************************************
+	 * This method determines if a movement is valid. This checks if 
+	 * the "from" square has a piece and the "to" square is empty or 
+	 * contains a piece of the opponent's color.
+	 * @return validMove Whether this move is valid.
+	 *****************************************************************/
+	public boolean isValidMove(Move move) { 
+		boolean validMove = false;
+
+		return validMove;
+		
+	}
 
 	/******************************************************************
 	 * Returns whether the piece at location {@code [move.fromRow, 
@@ -47,8 +62,7 @@ public abstract class ChessPiece implements IChessPiece {
 	 *  to be made.
 	 * @param board the {@link chess.IChessBoard} in which this 
 	 *  piece resides.
-	 * @return {@code true} if the proposed move is valid, 
-	 *  {@code false} otherwise.
+	 * @return validMove True if move is valid, false otherwise.
 	 * @throws IndexOutOfBoundsException If either {@code 
 	 *  [move.fromRow, move.fromColumn]} or {@code [move.toRow,
 	 *  move.toColumn]} don't represent valid locations on the board.
@@ -56,7 +70,7 @@ public abstract class ChessPiece implements IChessPiece {
 	 *  the piece at location {@code [move.fromRow, move.fromColumn]}.
 	 *****************************************************************/
 	public boolean isValidMove(Move move, IChessPiece[][] board) {
-		// Complete this.
-		return false;
+		boolean validMove = false;
+		return validMove;
 	}
 }
