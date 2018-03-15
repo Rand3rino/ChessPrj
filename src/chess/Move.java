@@ -20,8 +20,9 @@ public class Move {
 
 	@Override
 	public String toString() {
-		return "Move [fromRow=" + fromRow + ", fromColumn=" + fromColumn + ", toRow=" + toRow + ", toColumn=" + toColumn
-				+ "]";
+		return "Move [fromRow=" + fromRow + ", fromColumn=" 
+				+ fromColumn + ", toRow=" + toRow + ", "
+				+ "toColumn=" + toColumn + "]";
 	}
 	
 }
