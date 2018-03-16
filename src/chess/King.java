@@ -36,6 +36,26 @@ public class King extends ChessPiece{
 	@Override
 	public boolean isValidMove(Move move, IChessPiece[][] board) { 
 		
+		if(moveUpRow(move))
+			return true;
+		
+		if(moveSameRow(move))
+			return true;
+		
+		if(moveDownRow(move))
+			return true;
+		
+		return false;
+	}
+
+	/******************************************************************
+	 * This method helps the isValidMove method, checking movement
+	 * to a higher row.
+	 * @param move  The move's current and proposed coordinates.
+	 * @return true if this move is valid, false if not.
+	 *****************************************************************/
+	private boolean moveUpRow(Move move) {
+		
 		// Move row - 1, column - 1.
 		if (move.toRow    == move.fromRow - 1 &&
 			move.toColumn == move.fromColumn - 1)
@@ -51,6 +71,17 @@ public class King extends ChessPiece{
 			move.toColumn == move.fromColumn + 1)	
 			return true;
 		
+		return false;
+	}
+
+	/******************************************************************
+	 * This method helps the isValidMove method, checking movement
+	 * to the same row.
+	 * @param move  The move's current and proposed coordinates.
+	 * @return true if this move is valid, false if not.
+	 *****************************************************************/
+	private boolean moveSameRow(Move move) {
+		
 		// Move row + 0, column - 1.
 		if (move.toRow    == move.fromRow &&
 			move.toColumn == move.fromColumn - 1)
@@ -60,6 +91,17 @@ public class King extends ChessPiece{
 		if (move.toRow    == move.fromRow &&
 			move.toColumn == move.fromColumn + 1)
 			return true;
+		
+		return false;
+	}
+
+	/******************************************************************
+	 * This method helps the isValidMove method, checking movement
+	 * to a lower row.
+	 * @param move  The move's current and proposed coordinates.
+	 * @return true if this move is valid, false if not.
+	 *****************************************************************/
+	private boolean moveDownRow(Move move) {
 		
 		// Move row + 1, column - 1.
 		if (move.toRow    == move.fromRow &&
