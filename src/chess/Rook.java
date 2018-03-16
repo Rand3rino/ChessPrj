@@ -5,7 +5,7 @@
  *********************************************************************/
 
 package chess;
-
+//
 public class Rook extends ChessPiece {
 	
 	public boolean isValidMove() { 
