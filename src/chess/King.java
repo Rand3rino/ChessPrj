@@ -33,6 +33,7 @@ public class King extends ChessPiece{
 	 * @param board The chess board.
 	 * @return true if this move is valid, false if not.
 	 *****************************************************************/
+	@Override
 	public boolean isValidMove(Move move, IChessPiece[][] board) { 
 		
 		// Move row - 1, column - 1.
