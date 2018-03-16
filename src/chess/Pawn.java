@@ -34,6 +34,7 @@ public class Pawn extends ChessPiece {
 	 * 
 	 * @return true if this move is valid, false if not.
 	 *****************************************************************/
+	@Override
 	public boolean isValidMove(Move move, IChessPiece[][] board) {
 
 		// This is the black pawn, this piece never moves up.
