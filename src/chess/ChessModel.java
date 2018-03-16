@@ -21,6 +21,7 @@ public class ChessModel implements IChessModel{
 		}
 		
 		public boolean isValidMove(Move move) {
+			System.out.println("chessModel");
 			// Complete this.
 			return false;
 		}

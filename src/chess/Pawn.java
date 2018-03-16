@@ -32,6 +32,7 @@ public class Pawn extends ChessPiece {
 	 * @return validMove Whether this move is valid.
 	 *****************************************************************/
 	public boolean isValidMove() { 
+		System.out.println("Pawn");
 		boolean validMove = false;
 		
 		// ***THIS IS THE BLACK PAWN***
