@@ -70,7 +70,20 @@ public abstract class ChessPiece implements IChessPiece {
 	 *  the piece at location {@code [move.fromRow, move.fromColumn]}.
 	 *****************************************************************/
 	public boolean isValidMove(Move move, IChessPiece[][] board) {
-		boolean validMove = false;
-		return validMove;
+		
+		// Prevent a move where the player drops in the same square.
+		if(move.fromRow == move.toRow && 
+		   move.fromColumn == move.toColumn)
+			return false;
+		
+		// Prevent a move where the player clicks an empty square.
+		else if (board[move.fromRow][move.fromColumn] == null)
+			return false;
+		
+		// Prevent a move where the player moves onto their own piece.
+		else if (board[move.toRow][move.toColumn].player() == owner)
+			return false;
+		
+		return true;
 	}
 }
