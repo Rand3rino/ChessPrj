@@ -15,10 +15,20 @@ public class ChessModel implements IChessModel{
 		// Declare other instance variables as needed
 		
 		/**************************************************************
-		 * This method instantiates the arraylist of chess pieces.
+		 * Constructor of the chess model.
 		 *************************************************************/
 		public ChessModel() {
 			// FIXME: Complete this method, unsure what's left.
+			
+			assignBlackPieces();
+			assignWhitePieces();
+			
+		}
+
+		/**************************************************************
+		 * This method assigns the Black player's row.
+		 *************************************************************/
+		private void assignBlackPieces() {
 			
 			// Instantiate Black player's back row.
 			chessPieces[0]  = new Rook(Player.BLACK);
@@ -39,6 +49,12 @@ public class ChessModel implements IChessModel{
 			chessPieces[13] = new Pawn(Player.BLACK);
 			chessPieces[14] = new Pawn(Player.BLACK);
 			chessPieces[15] = new Pawn(Player.BLACK);
+		}
+		
+		/**************************************************************
+		 * This method assigns the White player's pieces.
+		 *************************************************************/
+		private void assignWhitePieces() {
 			
 			// Instantiate White player's front row.
 			chessPieces[16] = new Pawn(Player.WHITE);
@@ -59,7 +75,6 @@ public class ChessModel implements IChessModel{
 			chessPieces[29] = new Bishop(Player.WHITE);
 			chessPieces[30] = new Knight(Player.WHITE);
 			chessPieces[31] = new Rook(Player.WHITE);
-			
 		}
 		
 		public boolean gameOver() {
