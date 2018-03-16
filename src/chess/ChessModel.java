@@ -96,7 +96,7 @@ public class ChessModel implements IChessModel{
 		
 		public Player currentPlayer() {
 			// Complete this.
-			return Player;
+			return player;
 		}
 		
 		public int numRows() {
@@ -113,11 +113,11 @@ public class ChessModel implements IChessModel{
 //			// Complete this.
 //		}
 		
-		/******************************************************************
+		/**************************************************************
 		 * Returns whether the game is complete.
 		 *
 		 * @return {@code true} if complete, {@code false} otherwise.
-		 *****************************************************************/
+		 *************************************************************/
 		public boolean isComplete() {
 			return false;
 		}
