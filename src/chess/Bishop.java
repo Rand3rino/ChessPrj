@@ -22,6 +22,7 @@ public class Bishop extends ChessPiece {
 	/******************************************************************
 	 * Checks to see if the bishop is making a valid move
 	 * 
+	 * @Override
 	 * @param move an object describing the move 
 	 *  to be made.
 	 * @param board the board in which this 

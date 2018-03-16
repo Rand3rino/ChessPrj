@@ -21,6 +21,7 @@ public class Queen extends ChessPiece {
 	/******************************************************************
 	 * Checks to see if the queen is making a valid move
 	 * 
+	 * @Override
 	 * @param move an object describing the move 
 	 *  to be made.
 	 * @param board the board in which this 
