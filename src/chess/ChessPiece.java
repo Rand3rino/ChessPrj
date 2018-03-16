@@ -5,14 +5,14 @@
 package chess;
 
 public abstract class ChessPiece implements IChessPiece {
-	
+
 	private Player owner;
-	
+
 	protected ChessPiece(Player player) {
 		this.owner = player;
 	}
-	
-	
+
+
 	/******************************************************************
 	 * Return the player that owns this piece.
 	 * Comment comment
@@ -56,20 +56,268 @@ public abstract class ChessPiece implements IChessPiece {
 	 *  the piece at location {@code [move.fromRow, move.fromColumn]}.
 	 *****************************************************************/
 	public boolean isValidMove(Move move, IChessPiece[][] board) {
-		
+
 		// Prevents the piece being dropped on the same square.
 		if(move.fromRow == move.toRow && 
-		   move.fromColumn == move.toColumn)
+				move.fromColumn == move.toColumn)
 			return false;
-		
+
 		// Prevents the player to move from an empty square.
 		else if(board[move.fromRow][move.fromColumn] == null)
 			return false;
-		
+
 		// Prevents the player from taking their own piece.
 		else if(board[move.toRow][move.toColumn].player() == owner)
 			return false;
+
+		return true;
+	}
+	
+	/******************************************************************
+	 * Returns true if all of the pieces between the spot the piece
+	 * wants to move to & the spot it is at are empty of pieces. This
+	 * method is used if the move is diagonal.
+	 * 
+	 * @param move an object describing the move 
+	 *  to be made.
+	 * @param board the board in which this 
+	 *  piece resides.
+	 *****************************************************************/
+	private boolean isOpenDiag(Move move, IChessPiece[][] board) {
+		if(move.toRow > move.fromRow &&
+			move.toColumn > move.fromColumn)
+				return isOpenDiagLR(move, board);
+		
+		if(move.toRow < move.fromRow &&
+			move.toColumn > move.fromColumn)
+				return isOpenDiagUR(move, board);
+		
+		if(move.toRow < move.fromRow &&
+			move.toColumn < move.fromColumn)
+				return isOpenDiagUL(move, board);
+						
+		return isOpenDiagLL(move, board);
+	}
+
+	/******************************************************************
+	 * Test for any pieces between the piece's current position & the
+	 * position chosen for the move. This method is used if the move
+	 * is to the lower right of the piece diagonally
+	 * 
+	 * @param move an object describing the move 
+	 *  to be made.
+	 * @param board the board in which this 
+	 *  piece resides.
+	 * @return true if there are no pieces between it & its move
+	 *  false if there are pieces between it & its move 
+	 *****************************************************************/
+	private boolean isOpenDiagLR(Move move, IChessPiece[][] board) {
+		for(int r = move.fromRow; r <= move.toRow; r++) {
+			for(int c = move.fromColumn; c <= move.toColumn; c++) {
+				if(board[r][c] != null)
+					return false;
+			}
+		}
 		
 		return true;
 	}
+	
+	/******************************************************************
+	 * Test for any pieces between the piece's current position & the
+	 * position chosen for the move. This method is used if the move
+	 * is to the upper right of the piece diagonally
+	 * 
+	 * @param move an object describing the move 
+	 *  to be made.
+	 * @param board the board in which this 
+	 *  piece resides.
+	 * @return true if there are no pieces between it & its move
+	 *  false if there are pieces between it & its move 
+	 *****************************************************************/
+	private boolean isOpenDiagUR(Move move, IChessPiece[][] board) {
+		for(int r = move.fromRow; r >= move.toRow; r--) {
+			for(int c = move.fromColumn; c <= move.toColumn; c++) {
+				if(board[r][c] != null)
+					return false;
+			}
+		}
+		
+		return true;
+	}
+	
+	
+	/******************************************************************
+	 * Test for any pieces between the piece's current position & the
+	 * position chosen for the move. This method is used if the move
+	 * is to the upper left of the piece diagonally
+	 * 
+	 * @param move an object describing the move 
+	 *  to be made.
+	 * @param board the board in which this 
+	 *  piece resides.
+	 * @return true if there are no pieces between it & its move
+	 *  false if there are pieces between it & its move 
+	 *****************************************************************/
+	private boolean isOpenDiagUL(Move move, IChessPiece[][] board) {
+		for(int r = move.fromRow; r >= move.toRow; r--) {
+			for(int c = move.fromColumn; c >= move.toColumn; c--) {
+				if(board[r][c] != null)
+					return false;
+			}
+		}
+		
+		return true;
+	}
+	
+	
+	/******************************************************************
+	 * Test for any pieces between the piece's current position & the
+	 * position chosen for the move. This method is used if the move
+	 * is to the lower left of the piece diagonally
+	 * 
+	 * @param move an object describing the move 
+	 *  to be made.
+	 * @param board the board in which this 
+	 *  piece resides.
+	 * @return true if there are no pieces between it & its move
+	 *  false if there are pieces between it & its move 
+	 *****************************************************************/
+	private boolean isOpenDiagLL(Move move, IChessPiece[][] board) {
+		for(int r = move.fromRow; r <= move.toRow; r++) {
+			for(int c = move.fromColumn; c >= move.toColumn; c--) {
+				if(board[r][c] != null)
+					return false;
+			}
+		}
+		
+		return true;
+	}
+	
+	
+	/******************************************************************
+	 * Test for any pieces between the piece's current position & the
+	 * position chosen for a horizontal move
+	 * 
+	 * @param move an object describing the move 
+	 *  to be made.
+	 * @param board the board in which this 
+	 *  piece resides.
+	 * @return true if there are no pieces between it & its move
+	 *  false if there are pieces between it & its move 
+	 *****************************************************************/
+	public boolean isOpenHori(Move move, IChessPiece[][] board) {
+		if(move.toColumn > move.fromColumn)
+			return isOpenHoriRight(move, board);
+		
+		return isOpenHoriLeft(move, board);
+	}
+
+	
+	/******************************************************************
+	 * Test for any pieces between the piece's current position & the
+	 * position chosen for a horizontal & right move.
+	 * 
+	 * @param move an object describing the move 
+	 *  to be made.
+	 * @param board the board in which this 
+	 *  piece resides.
+	 * @return true if there are no pieces between it & its move
+	 *  false if there are pieces between it & its move 
+	 *****************************************************************/
+	public boolean isOpenHoriRight(Move move, IChessPiece[][] board){
+
+		//check for pieces inbetween
+		for(int c = move.fromColumn; c <= move.toColumn; c++) {
+			if(board[move.toRow][c] != null) 
+				return false;
+		}
+		return true;
+	}
+	
+	
+	/******************************************************************
+	 * Test for any pieces between the piece's current position & the
+	 * position chosen for a horizontal & left move.
+	 * 
+	 * @param move an object describing the move 
+	 *  to be made.
+	 * @param board the board in which this 
+	 *  piece resides.
+	 * @return true if there are no pieces between it & its move
+	 *  false if there are pieces between it & its move 
+	 *****************************************************************/
+	public boolean isOpenHoriLeft(Move move, IChessPiece[][] board){
+
+		//check for pieces inbetween
+		for(int c = move.fromColumn; c >= move.toColumn; c--) {
+			if(board[move.toRow][c] != null) 
+				return false;
+		}
+		return true;
+	}
+
+
+	/******************************************************************
+	 * Test for any pieces between the piece's current position & the
+	 * position chosen for a vertical move
+	 * 
+	 * @param move an object describing the move 
+	 *  to be made.
+	 * @param board the board in which this 
+	 *  piece resides.
+	 * @return true if there are no pieces between it & its move
+	 *  false if there are pieces between it & its move 
+	 *****************************************************************/
+	public boolean isOpenVert(Move move, IChessPiece[][] board) {
+		if(move.toRow > move.fromRow)
+			return isOpenVertUp(move, board);
+
+		return isOpenVertDown(move,board);
+	}
+	
+	
+	/******************************************************************
+	 * Test for any pieces between the piece's current position & the
+	 * position chosen for a vertically up move
+	 * 
+	 * @param move an object describing the move 
+	 *  to be made.
+	 * @param board the board in which this 
+	 *  piece resides.
+	 * @return true if there are no pieces between it & its move
+	 *  false if there are pieces between it & its move 
+	 *****************************************************************/
+	public boolean isOpenVertUp(Move move, IChessPiece[][] board){
+
+		//check for pieces inbetween
+		for(int r = move.fromRow; r <= move.toRow; r++) {
+			if(board[r][move.toColumn] != null)
+				return false;
+		}
+
+		return true;
+	}
+	
+	
+	/******************************************************************
+	 * Test for any pieces between the piece's current position & the
+	 * position chosen for a vertically down move
+	 * 
+	 * @param move an object describing the move 
+	 *  to be made.
+	 * @param board the board in which this 
+	 *  piece resides.
+	 * @return true if there are no pieces between it & its move
+	 *  false if there are pieces between it & its move 
+	 *****************************************************************/
+	public boolean isOpenVertDown(Move move, IChessPiece[][] board) {
+		//check for pieces inbetween
+		for(int r = move.fromRow; r >= move.toRow; r--) {
+			if(board[r][move.toColumn] != null)
+				return false;
+		}
+
+		return true;
+	}
+
 }
