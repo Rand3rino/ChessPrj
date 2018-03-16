@@ -4,6 +4,7 @@
  * This class controls the movement abilities for the King piece.
  * 
  * @Author: Randy Nguyen
+ * @version: March 15, 2018
  *********************************************************************/
 
 package chess;
@@ -28,30 +29,52 @@ public class King extends ChessPiece{
 	
 	/******************************************************************
 	 * This method determines the valid movement for this chess piece.
-	 * @return validMove Whether this move is valid.
+	 * @param move  The move's current and proposed coordinates.
+	 * @param board The chess board.
+	 * @return true if this move is valid, false if not.
 	 *****************************************************************/
-	public boolean isValidMove() { 
-		boolean validMove = false;
+	public boolean isValidMove(Move move, IChessPiece[][] board) { 
 		
-		// Move row - 1, col - 1
-			// validMove = True
-		// Move row - 1, col + 0
-			// validMove = True
-		// Move row - 1, col + 1
-			// validMove = True
+		// Move row - 1, column - 1.
+		if (move.toRow    == move.fromRow - 1 &&
+			move.toColumn == move.fromColumn - 1)
+			return true;
 		
-		// Move row + 0, col - 1
-			// validMove = True
-		// Move row + 0, col + 1
-			// validMove = True
+		// Move row - 1, column + 0.
+		if (move.toRow    == move.fromRow - 1 &&
+			move.toColumn == move.fromColumn)
+			return true;
 		
-		// Move row + 1, col - 1
-		    // TvalidMove = True
-		// Move row + 1, col + 0
-		    // validMove = True
-		// Move row + 1, col + 1
-			// validMove = True
+		// Move row - 1, column + 1.
+		if (move.toRow    == move.fromRow - 1 &&
+			move.toColumn == move.fromColumn + 1)	
+			return true;
 		
-		return validMove;
+		// Move row + 0, column - 1.
+		if (move.toRow    == move.fromRow &&
+			move.toColumn == move.fromColumn - 1)
+			return true;
+		
+		// Move row + 0, column + 1.
+		if (move.toRow    == move.fromRow &&
+			move.toColumn == move.fromColumn + 1)
+			return true;
+		
+		// Move row + 1, column - 1.
+		if (move.toRow    == move.fromRow &&
+			move.toColumn == move.fromColumn - 1)
+			return true;
+		
+		// Move row + 1, column + 0.
+		if (move.toRow    == move.fromRow &&
+			move.toColumn == move.fromColumn)
+			return true;
+		
+		// Move row + 1, column + 1.
+		if (move.toRow    == move.fromRow &&
+			move.toColumn == move.fromColumn + 1)
+			return true;
+		
+		return false;
 	}
 }
