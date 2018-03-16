@@ -8,78 +8,38 @@ package chess;
 
 public class Rook extends ChessPiece {
 	
-	public boolean isValidMove() { 
-		
-		
-		return false;
+	/******************************************************************
+	 * Constructor for the rook's owner
+	 * 
+	 * @param player Player's enumerated value
+	 *****************************************************************/
+	protected Rook(Player player) {
+		super(player);
 	}
+
 	
-	public boolean checkBetweenMove() {
+	/******************************************************************
+	 * Checks to see if the rook is making a valid move
+	 * 
+	 * @param move an object describing the move 
+	 *  to be made.
+	 * @param board the board in which this 
+	 *  piece resides.
+	 *****************************************************************/
+	public boolean isValidMove(Move move, IChessPiece[][] board) {
+		if(!(super.isHoriOrVert(move, board)))
+				return false;
 		
+		return super.isOpenHori(move, board);
 	}
-	
-	private boolean checkHorizontal(){
-		int column, column1;
-		
-		//check to see if the rows match up
-		if(column != column1) {
-			return false;
-		}
-		
-		return true;
-	}
-	
-	private boolean checkVertical() {
-		int column, column1;
-		
-		//check to see if columns match up
-		//FIXME column 
-		if(column != column1) {
-			return false;
-		}
-		
-		return true;
-	}
-	
-	//returns true if piece is between spaces
-	private boolean pieceInBetween() {
-		int toRow, toCol;
-		int fromRow, fromCol;
-		
-		//FIXME delete below
-		//Check for horizontal that goes down & right
-		if(toRow > fromRow && toCol > fromCol) {
-		
-			for(int r = fromRow; r <= toRow; r++) {
-				for(int c = fromCol; c <= toCol; c++) {
-					
-					//FIXME make method that checks if there is a piece in column & row
-					if(isPiece(row,col))
-						return true;
-				}
-			}
-		}
-		
-		//check for horizontal move
-		if(toRow == fromRow) {
-			
-			//check for pieces inbetween
-			for(int c = fromCol; c <= toCol; c++) {
-				if(isPiece(row,col)) 
-					return true;
-			}
-		}
-		
-		//check for vertical move
-		if(fromCol == toCol) {
-			
-			//check for pieces inbetween
-			for(int r = fromRow; r <= toRow; r++) {
-				if(isPiece(row, col))
-					return true;
-			}
-		}
-		
-		return false;
+
+	/******************************************************************
+	 * Checks to see if the rook is making a valid move
+	 * 
+	 * @Override
+	 * @return "Rook" the string that represents the piece's name
+	 *****************************************************************/
+	public String type() {
+		return "Rook";
 	}
 }
