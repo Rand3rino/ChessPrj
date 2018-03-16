@@ -83,7 +83,7 @@ public abstract class ChessPiece implements IChessPiece {
 	 * @param board the board in which this 
 	 *  piece resides.
 	 *****************************************************************/
-	private boolean isOpenDiag(Move move, IChessPiece[][] board) {
+	public boolean isOpenDiag(Move move, IChessPiece[][] board) {
 		if(move.toRow > move.fromRow &&
 			move.toColumn > move.fromColumn)
 				return isOpenDiagLR(move, board);
@@ -318,6 +318,44 @@ public abstract class ChessPiece implements IChessPiece {
 		}
 
 		return true;
+	}
+	
+	
+	/******************************************************************
+	 * Check to make usre that the move is perfectly horizontal or 
+	 * vertical from the current piece position
+	 * 
+	 * @param move an object describing the move 
+	 *  to be made.
+	 * @param board the board in which this 
+	 *  piece resides.
+	 * @return false if the move isn't perfectly horizontal or vertical or
+	 * else returns true
+	 *****************************************************************/
+	public boolean isHoriOrVert(Move move, IChessPiece[][] board) {
+		if(move.toRow != move.fromRow &&
+				move.toColumn != move.fromColumn)
+					return false;
+		
+		return true;
+	}
+	
+	/******************************************************************
+	 * Check to make usre that the move is perfectly diagonal
+	 * 
+	 * @param move an object describing the move 
+	 *  to be made.
+	 * @param board the board in which this 
+	 *  piece resides.
+	 * @return true if the move is perfectly diagonal or
+	 * else returns false
+	 *****************************************************************/
+	public boolean isPerfDiag(Move move, IChessPiece[][] board) {
+		if(Math.abs(move.toRow - move.fromRow) ==
+			Math.abs(move.toColumn-move.fromColumn))
+				return true;
+		
+		return false;
 	}
 
 }
