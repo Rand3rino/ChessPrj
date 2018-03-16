@@ -56,12 +56,20 @@ public abstract class ChessPiece implements IChessPiece {
 	 *  the piece at location {@code [move.fromRow, move.fromColumn]}.
 	 *****************************************************************/
 	public boolean isValidMove(Move move, IChessPiece[][] board) {
-		if(move.fromRow == move.toRow && move.fromColumn == move.toColumn)
+		
+		// Prevents the piece being dropped on the same square.
+		if(move.fromRow == move.toRow && 
+		   move.fromColumn == move.toColumn)
 			return false;
+		
+		// Prevents the player to move from an empty square.
 		else if(board[move.fromRow][move.fromColumn] == null)
 			return false;
+		
+		// Prevents the player from taking their own piece.
 		else if(board[move.toRow][move.toColumn].player() == owner)
 			return false;
+		
 		return true;
 	}
 }
