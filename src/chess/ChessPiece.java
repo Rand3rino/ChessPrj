@@ -18,9 +18,9 @@ public abstract class ChessPiece implements IChessPiece {
 	 * Comment comment
 	 * @return the player that owns this piece.
 	 *****************************************************************/
-//	Player player() {
-//		return Player;
-//	}
+	public Player player() {
+		return owner;
+	}
 
 	/******************************************************************
 	 * Return the type of this piece ("King", "Queen", "Rook", etc.). 
@@ -56,7 +56,12 @@ public abstract class ChessPiece implements IChessPiece {
 	 *  the piece at location {@code [move.fromRow, move.fromColumn]}.
 	 *****************************************************************/
 	public boolean isValidMove(Move move, IChessPiece[][] board) {
-		// Complete this.
-		return false;
+		if(move.fromRow == move.toRow && move.fromColumn == move.toColumn)
+			return false;
+		else if(board[move.fromRow][move.fromColumn] == null)
+			return false;
+		else if(board[move.toRow][move.toColumn].player() == owner)
+			return false;
+		return true;
 	}
 }

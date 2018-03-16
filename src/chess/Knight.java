@@ -1,6 +1,6 @@
 
 /**********************************************************************
- * Project 3: Chess Game  ssss
+ * Project 3: Chess Game
  * 
  * Author: Randy Nguyen
  *********************************************************************/
@@ -13,17 +13,13 @@ public class Knight extends ChessPiece{
 		super(player);
 	}
 
-	public boolean isValidMove(Move move, IChessPiece[][] board) { 
-		return false;
-	}
-
-	@Override
-	public Player player() {
-		return null;
-	}
-
 	@Override
 	public String type() {
 		return "Knight";
+	}
+	
+	@Override
+	public boolean isValidMove(Move move, IChessPiece[][] board) {
+		return false;		
 	}
 }
