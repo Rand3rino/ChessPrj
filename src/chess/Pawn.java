@@ -25,6 +25,7 @@ public class Pawn extends ChessPiece {
 	 * 
 	 * @param string The title for the pawn piece.
 	 *****************************************************************/
+	@Override
 	public String type() {
 		return "Pawn";
 	}

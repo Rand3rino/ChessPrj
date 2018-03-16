@@ -23,6 +23,7 @@ public class King extends ChessPiece{
 	 * This method assigns the piece title to the chess piece.
 	 * @param string The title for the King piece.
 	 *****************************************************************/
+	@Override
 	public String type() {
 		return "King";
 	}
