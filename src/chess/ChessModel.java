@@ -4,6 +4,8 @@
 
 package chess;
 
+import javax.swing.JOptionPane;
+
 public class ChessModel implements IChessModel{
 
 		private IChessPiece[][] board;
@@ -78,6 +80,19 @@ public class ChessModel implements IChessModel{
 		}
 		
 		public boolean gameOver() {
+			
+			// If there is a check, move pieces to avoid check.
+			if (inCheck(currentPlayer() ) ) {
+				
+				// FIXME: MOVE PIECES TO AVOID CHECK
+			}
+			
+			// FIXME: If there is a checkmate. Display game over message.
+			if (true) {
+				JOptionPane.showMessageDialog(null,
+					"Checkmate. Game Over.");
+				return true;
+			}
 			return false;
 		}
 		
@@ -90,22 +105,47 @@ public class ChessModel implements IChessModel{
 			// Complete this.
 		}
 		
+		/**************************************************************
+		 * This method determines if a player's King is in check.
+		 * @param p The current player.
+		 * @return true of the player is in check, false if not.
+		 *************************************************************/
 		public boolean inCheck (Player p) {
+			
+			// Loop through all pieces of opponent's pieces for check.
+			// FIXME: Add a loop.
+			
+				// FIXME: If there is a check, display a notice.
+				if(true) {
+					JOptionPane.showMessageDialog(null, "Check");
+					return true;
+				}
+			
+			// Player is not in check
 			return false;
 		}
 		
+		/**************************************************************
+		 * Return the current player.
+		 * @return Player The current player.
+		 *************************************************************/
 		public Player currentPlayer() {
-			// Complete this.
-			return Player;
+			return player;
 		}
 		
+		/**************************************************************
+		 * Return the number of rows.
+		 * @return 8 There are 8 rows in a standard chess board.
+		 *************************************************************/
 		public int numRows() {
-			// Complete this.
 			return 8;
 		}
 		
+		/**************************************************************
+		 * Return the number of columns.
+		 * @return 8 There are 8 columns in a standard chess board.
+		 *************************************************************/
 		public int numColumns() {
-			// Complete this.
 			return 8;
 		}
 		
@@ -115,10 +155,17 @@ public class ChessModel implements IChessModel{
 		
 		/******************************************************************
 		 * Returns whether the game is complete.
-		 *
-		 * @return {@code true} if complete, {@code false} otherwise.
+		 * @return true if complete, false if not.
 		 *****************************************************************/
 		public boolean isComplete() {
+			
+			// If the game is over, game is complete.
+			if (gameOver())
+				return true;
+			
+			// FIXME: Stalemate
+			
+			// Game is not over.
 			return false;
 		}
 		
