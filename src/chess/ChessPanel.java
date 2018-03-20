@@ -23,6 +23,13 @@ public class ChessPanel extends JPanel {
 	private ChessModel model;
 	
 	private Move move;
+	
+	private int firstRow;
+	private int firstCol;
+	
+
+	//increment to allow player to select two buttons
+	private int count;
 
 	private ImageIcon bRookIcon;
 	private ImageIcon bKnightIcon;
@@ -46,8 +53,11 @@ public class ChessPanel extends JPanel {
 	public ChessPanel() {
 		// Complete this.
 		
-		//model = new ChessModel();
+		model = new ChessModel();
 		move = new Move();
+		firstRow = 0;
+		firstCol = 0;
+		count = 0;
 		
 		bRookIcon = new ImageIcon("bRook.png");
 		bKnightIcon = new ImageIcon("bKnight.png");
@@ -114,11 +124,17 @@ public class ChessPanel extends JPanel {
 	}
 	
 	private void displayChessPieces() {
+		
+		//call method to set up black chess pieces
 		setBlackIcons();
+		
+		//call method to set up white chess pieces
 		setWhiteIcons();
 	}
 
 	private void setWhiteIcons() {
+		
+		//place the back row of pieces
 		board[7][0].setIcon(wRookIcon);
 		board[7][1].setIcon(wKnightIcon);
 		board[7][2].setIcon(wBishopIcon);
@@ -128,6 +144,7 @@ public class ChessPanel extends JPanel {
 		board[7][6].setIcon(wKnightIcon);
 		board[7][7].setIcon(wRookIcon);
 		
+		//place the front row of pieces
 		board[6][0].setIcon(wPawnIcon);
 		board[6][1].setIcon(wPawnIcon);
 		board[6][2].setIcon(wPawnIcon);
@@ -139,6 +156,8 @@ public class ChessPanel extends JPanel {
 	}
 
 	private void setBlackIcons() {
+		
+		//place the back row of pieces
 		board[0][0].setIcon(bRookIcon);
 		board[0][1].setIcon(bKnightIcon);
 		board[0][2].setIcon(bBishopIcon);
@@ -148,6 +167,7 @@ public class ChessPanel extends JPanel {
 		board[0][6].setIcon(bKnightIcon);
 		board[0][7].setIcon(bRookIcon);
 		
+		//place the front row of pieces
 		board[1][0].setIcon(bPawnIcon);
 		board[1][1].setIcon(bPawnIcon);
 		board[1][2].setIcon(bPawnIcon);
@@ -160,14 +180,67 @@ public class ChessPanel extends JPanel {
 
 	// Add other helper methods as needed
 
+	private void disableOppBtn(Player player) {
+		
+		//call method to enable all buttons
+		enableBtn();
+		for(int row = 0; row < 8; row++) {
+			for(int col = 0; col < 8; col++) {
+				
+				//get the name of the icon on that button
+				String desc = ((ImageIcon)board[row][col].getIcon())
+						.getDescription();
+				
+				//if that icon starts with a b its a black piece and
+				//if the current player is white disable that button
+				if(desc.charAt(0) == 'b' && player == player.WHITE)
+					board[row][col].setEnabled(false);
+				
+				//else if the icon is white and its black turn
+				//disable the button
+				else if(desc.charAt(0) =='w' && player == player.BLACK)
+					board[row][col].setEnabled(false);
+			}
+		}
+	}
+	
+	private void enableBtn() {
+		for(int row = 0; row < 8; row++) {
+			for(int col = 0; col < 8; col++) 
+				board[row][col].setEnabled(true);
+		}
+	}
+	
 	// Inner class that represents action listener for buttons
 	private class ButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			JComponent comp = (JComponent) event.getSource();
+			
+			disableOppBtn(model.currentPlayer());
+			
 			// Complete this.
 			for(int row = 0; row < 8; row++) {
 				for (int col = 0; col < 8; col++) {
 					if (board[row][col] == comp) {
+						count++;
+						
+						//if the player has selected a piece to move
+						//and a location to move to
+						if(count % 2 == 0) {
+							move = new Move(row, col, row, col);
+							if(model.isValidMove(move)) {
+								model.move(move);
+							}
+							else
+								JOptionPane.showMessageDialog(null, 
+										"Invalid Move.");
+						}
+						
+						//store the players first move
+						else {
+							firstRow = row;
+							firstCol = col;
+						}
 					}
 					}
 				}
