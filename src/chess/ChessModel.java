@@ -201,22 +201,33 @@ public class ChessModel implements IChessModel {
 	 * represent valid locations on the board.
 	 *************************************************************/
 	public void move(Move move) {
+		
+		// FIXME: Necessary?
+//		// If move isn't within the board, throw error.
+//		if (move.toRow < 0 || move.toRow > 9 || 
+//			move.toColumn < 0 || move.toColumn > 9)
+//			throw new IndexOutOfBoundsException();
 
-		// If move isn't within the board, throw error.
-		if (move.toRow < 0 || move.toRow > 9 || 
-			move.toColumn < 0 || move.toColumn > 9)
-			throw new IndexOutOfBoundsException();
-
-		// Save the piece that is moving.
-		piece = pieceAt(move.fromRow, move.fromColumn);
-
-		// Empty the space that the piece is leaving.
-		board[move.fromRow][move.fromColumn] = null;
-
-		// FIXME: Do something if the piece is capturing another?
-
-		// Place the piece on the new square.
-		board[move.toRow][move.toColumn] = piece;
+		if (isValidMove(move)) {
+			
+			// Save the piece that is moving.
+			piece = pieceAt(move.fromRow, move.fromColumn);
+	
+			// Empty the space that the piece is leaving.
+			board[move.fromRow][move.fromColumn] = null;
+	
+			// FIXME: Do something if the piece is capturing another?
+			if (pieceAt(move.toRow, move.toColumn).player() 
+				!= currentPlayer()) {
+				
+				// pieceAt(move.toRow, move.toColumn) == really dead.
+				board[move.toRow][move.toColumn] = null;
+				board[move.toRow][move.toColumn] = piece;
+			}
+	
+			// Place the piece on the new square.
+			board[move.toRow][move.toColumn] = piece;
+		}
 	}
 
 	/******************************************************************
