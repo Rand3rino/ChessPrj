@@ -1,10 +1,10 @@
 /**********************************************************************
- * Project 3: Chess Game Pawn Class
+ * Project 3: Chess Game
  * 
- * This class controls the movement abilities for the pawn piece.
+ * This class handles movement for the Pawn piece.
  * 
- * @Author: Randy Nguyen
- * @version: March 15, 2018
+ * @author Randy Nguyen, Sam Ventocilla, Jay Brunsting
+ * @version March 19, 2018.
  *********************************************************************/
 
 package chess;
@@ -13,7 +13,6 @@ public class Pawn extends ChessPiece {
 
 	/******************************************************************
 	 * Constructor for the pawn's owner.
-	 * 
 	 * @param player This is the owner's enumerated value.
 	 *****************************************************************/
 	public Pawn(Player player) {
@@ -22,7 +21,6 @@ public class Pawn extends ChessPiece {
 
 	/******************************************************************
 	 * This method assigns the piece title to the chess piece.
-	 * 
 	 * @param string The title for the pawn piece.
 	 *****************************************************************/
 	@Override
@@ -40,16 +38,14 @@ public class Pawn extends ChessPiece {
 	public boolean isValidMove(Move move, IChessPiece[][] board) {
 
 		// This is the black pawn.
-		if (player() == Player.BLACK) {
-			if(moveBlackPawn(move, board))
+		if (player() == Player.BLACK)
+			if (moveBlackPawn(move, board))
 				return true;
-		}
 
 		// This is the white pawn.
-		if (player() == Player.WHITE) {
-			if(moveWhitePawn(move, board))
+		if (player() == Player.WHITE)
+			if (moveWhitePawn(move, board))
 				return true;
-		}
 
 		// There were no valid moves.
 		return false;

@@ -1,10 +1,10 @@
 /**********************************************************************
- * Project 3: Chess Game King Class
+ * Project 3: Chess Game
  * 
- * This class controls the movement abilities for the King piece.
+ * This class handles movement for the King piece.
  * 
- * @Author: Randy Nguyen
- * @version: March 15, 2018
+ * @author Randy Nguyen, Sam Ventocilla, Jay Brunsting
+ * @version March 19, 2018.
  *********************************************************************/
 
 package chess;
