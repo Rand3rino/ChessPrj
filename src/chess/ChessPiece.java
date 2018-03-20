@@ -1,21 +1,31 @@
 /**********************************************************************
- * Project 3: Chess Game Piece
+ * Project 3: Chess Game ChessPiece
+ * 
+ * This class is the base class for all chess pieces.
+ * 
+ * @author Randy Nguyen, Sam Ventocilla, Jay Brunsting
+ * @version March 19, 2018.
  *********************************************************************/
 
 package chess;
 
 public abstract class ChessPiece implements IChessPiece {
 
+	/** Player who owns this piece */
 	private Player owner;
 
+	/******************************************************************
+	 * Assign the player to this piece.
+	 *
+	 * @param the player that owns this piece.
+	 *****************************************************************/
 	protected ChessPiece(Player player) {
 		this.owner = player;
 	}
 
-
 	/******************************************************************
 	 * Return the player that owns this piece.
-	 * Comment comment
+	 *
 	 * @return the player that owns this piece.
 	 *****************************************************************/
 	public Player player() {
@@ -23,37 +33,29 @@ public abstract class ChessPiece implements IChessPiece {
 	}
 
 	/******************************************************************
-	 * Return the type of this piece ("King", "Queen", "Rook", etc.). 
-	 * Note: In this case "type" refers to the game of chess, 
-	 * not the type of the Java class.
-	 *
-	 * @return the type of this piece
+	 * Subclasses must return the type of this piece ("King", "Queen", 
+	 * "Rook", etc.).  Note: In this case "type" refers to the game 
+	 * of chess, not the type of the Java class.
 	 *****************************************************************/
 	public abstract String type();
 
 	/******************************************************************
-	 * Returns whether the piece at location {@code [move.fromRow, 
-	 * move.fromColumn]} is allowed to move to location 
-	 * {@code [move.fromRow, move.fromColumn]}.
+	 * Returns whether the piece at location [move.fromRow, 
+	 * move.fromColumn] is allowed to move to location 
+	 * [move.fromRow, move.fromColumn].
 	 *
 	 * Note: Pieces don't store their own location (because doing so
-	 * would be redundant). Therefore, the {@code [move.fromRow, move.
-	 * fromColumn]} component of {@code move} is necessary. 
-	 * {@code this} object must be the piece at location {@code 
-	 * [move.fromRow, move.fromColumn]}. (This method makes no sense
-	 * otherwise.)
+	 * would be redundant). Therefore, the [move.fromRow, move.
+	 * fromColumn] component of move is necessary. 
 	 *
-	 * @param move a {@link chess.Move} object describing the move 
-	 *  to be made.
-	 * @param board the {@link chess.IChessBoard} in which this 
-	 *  piece resides.
-	 * @return {@code true} if the proposed move is valid, 
-	 *  {@code false} otherwise.
-	 * @throws IndexOutOfBoundsException If either {@code 
-	 *  [move.fromRow, move.fromColumn]} or {@code [move.toRow,
-	 *  move.toColumn]} don't represent valid locations on the board.
-	 * @throws IllegalArgumentException if {@code this} object isn't 
-	 *  the piece at location {@code [move.fromRow, move.fromColumn]}.
+	 * @param move A chess.Move object describing the move to be made.
+	 * @param board the chess.IChessBoard in which this piece resides.
+	 * @return true if the proposed move is valid, false otherwise.
+	 * @throws IndexOutOfBoundsException If either 
+	 *  [move.fromRow, move.fromColumn] or [move.toRow,
+	 *  move.toColumn] don't represent valid locations on the board.
+	 * @throws IllegalArgumentException if this object isn't 
+	 *  the piece at location [move.fromRow, move.fromColumn].
 	 *****************************************************************/
 	public boolean isValidMove(Move move, IChessPiece[][] board) {
 
@@ -78,10 +80,8 @@ public abstract class ChessPiece implements IChessPiece {
 	 * wants to move to & the spot it is at are empty of pieces. This
 	 * method is used if the move is diagonal.
 	 * 
-	 * @param move an object describing the move 
-	 *  to be made.
-	 * @param board the board in which this 
-	 *  piece resides.
+	 * @param move an object describing the move to be made.
+	 * @param board the board in which this piece resides.
 	 *****************************************************************/
 	public boolean isOpenDiag(Move move, IChessPiece[][] board) {
 		if(move.toRow > move.fromRow &&
@@ -226,7 +226,7 @@ public abstract class ChessPiece implements IChessPiece {
 	 *****************************************************************/
 	public boolean isOpenHoriRight(Move move, IChessPiece[][] board){
 
-		//check for pieces inbetween
+		// check for pieces in between
 		for(int c = move.fromColumn; c <= move.toColumn; c++) {
 			if(board[move.toRow][c] != null) 
 				return false;
@@ -248,7 +248,7 @@ public abstract class ChessPiece implements IChessPiece {
 	 *****************************************************************/
 	public boolean isOpenHoriLeft(Move move, IChessPiece[][] board){
 
-		//check for pieces inbetween
+		// check for pieces in between
 		for(int c = move.fromColumn; c >= move.toColumn; c--) {
 			if(board[move.toRow][c] != null) 
 				return false;
@@ -289,7 +289,7 @@ public abstract class ChessPiece implements IChessPiece {
 	 *****************************************************************/
 	public boolean isOpenVertUp(Move move, IChessPiece[][] board){
 
-		//check for pieces inbetween
+		// check for pieces in between
 		for(int r = move.fromRow; r <= move.toRow; r++) {
 			if(board[r][move.toColumn] != null)
 				return false;
@@ -311,7 +311,7 @@ public abstract class ChessPiece implements IChessPiece {
 	 *  false if there are pieces between it & its move 
 	 *****************************************************************/
 	public boolean isOpenVertDown(Move move, IChessPiece[][] board) {
-		//check for pieces inbetween
+		// check for pieces in between
 		for(int r = move.fromRow; r >= move.toRow; r--) {
 			if(board[r][move.toColumn] != null)
 				return false;
@@ -322,15 +322,15 @@ public abstract class ChessPiece implements IChessPiece {
 	
 	
 	/******************************************************************
-	 * Check to make usre that the move is perfectly horizontal or 
+	 * Check to make sure that the move is perfectly horizontal or 
 	 * vertical from the current piece position
 	 * 
 	 * @param move an object describing the move 
 	 *  to be made.
 	 * @param board the board in which this 
 	 *  piece resides.
-	 * @return false if the move isn't perfectly horizontal or vertical or
-	 * else returns true
+	 * @return false if the move isn't perfectly horizontal or vertical 
+	 *  or else returns true
 	 *****************************************************************/
 	public boolean isHoriOrVert(Move move, IChessPiece[][] board) {
 		if(move.toRow != move.fromRow &&
@@ -341,7 +341,7 @@ public abstract class ChessPiece implements IChessPiece {
 	}
 	
 	/******************************************************************
-	 * Check to make usre that the move is perfectly diagonal
+	 * Check to make sure that the move is perfectly diagonal
 	 * 
 	 * @param move an object describing the move 
 	 *  to be made.
