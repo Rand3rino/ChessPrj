@@ -293,4 +293,116 @@ public class ChessModel implements IChessModel {
 	}
 
 	// Add other public or helper methods as needed.
+	
+	
+	/******************************************************************
+	 * This method is the AI feature. The AI will follow these 
+	 * priorities:
+	 * 		1. Check to see if it is in check. 
+	 * 		2. Attempt to put the opponent into check (or checkmate).
+	 * 		3. Determine if any of your pieces are in danger. 
+	 * 		4. Capture an opponent piece.
+	 * 		5. Move a piece (pawns first) forward towards the
+	 *  		   opponent's King.
+	 *****************************************************************/
+	public void turnComputer() {
+		
+		// AI will always be BLACK.
+		player = Player.BLACK;
+		
+		// Variable to skip processes if the turn is complete.
+		boolean turnComplete = false;
+		
+		// 1. Check if the AI is in check.
+		turnComplete = getOutOfCheck();
+		
+		// 2. Put the opponent is in check.
+		if (turnComplete) 
+			turnComplete = putInCheck();
+		
+		// 3. Move a piece if it is in danger.
+		if (turnComplete) 
+			turnComplete = avoidDanger();
+		
+		// 4. Capture and opponent piece.
+		if (turnComplete) 
+			turnComplete = capture();
+		
+		// 5. Move towards the opponent King.
+		if (turnComplete) 
+			turnComplete = moveForward();
+		
+	}
+
+	/******************************************************************
+	 * This method is part of the AI feature. Check to see if it is 
+	 * in check. If so, get out of check by moving the King or placing 
+	 * a piece to block the check.
+	 * @return true if the move is complete, false if not.
+	 *****************************************************************/
+	private boolean getOutOfCheck() {
+		if (inCheck(player)) {
+			// Attempt to get out of check.
+			// First try King, then other pieces to block the check.
+			return true;
+		}
+		return false;
+	}
+	
+	/******************************************************************
+	 * This method is part of the AI feature. Attempt to put the 
+	 * opponent into check (or checkmate) without losing its piece. 
+	 * @return true if the move is complete, false if not.
+	 *****************************************************************/
+	private boolean putInCheck() {
+		if (inCheck(player)) {
+			// Attempt to get out of check.
+			// First try King, then other pieces to block the check.
+			return true;
+		}
+		return false;
+	}
+	
+	/******************************************************************
+	 * This method is part of the AI feature. Determine if any of your 
+	 * pieces are in danger. If so, move it to safety.
+	 * @return true if the move is complete, false if not.
+	 *****************************************************************/
+	private boolean avoidDanger() {
+		if (inCheck(player)) {
+			// Attempt to get out of check.
+			// First try King, then other pieces to block the check.
+			return true;
+		}
+		return false;
+	}
+	
+	/******************************************************************
+	 * This method is part of the AI feature. Take an opponent piece.
+	 * @return true if the move is complete, false if not.
+	 *****************************************************************/
+	private boolean capture() {
+		if (inCheck(player)) {
+			// Attempt to get out of check.
+			// First try King, then other pieces to block the check.	
+			return true;
+		}
+		return false;
+	}
+	
+	/******************************************************************
+	 * This method is part of the AI feature. Move a piece (pawns 
+	 * first) forward towards the opponent's King. Check to see if 
+	 * that piece is in danger of being captured. If so, move a 
+	 * different piece.
+	 * @return true if the move is complete, false if not.
+	 *****************************************************************/
+	private boolean moveForward() {
+		if (inCheck(player)) {
+			// Attempt to get out of check.
+			// First try King, then other pieces to block the check.
+			return true;
+		}
+		return false;
+	}
 }
