@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
 public class ChessModel implements IChessModel {
 
 	/** The two dimensional board */
-	private IChessPiece[][] board;
+	private static IChessPiece[][] board = new IChessPiece[8][8];
 
 	/** Variable to hold a single piece */
 	private IChessPiece piece;
@@ -18,7 +18,7 @@ public class ChessModel implements IChessModel {
 	private Player player;
 
 	/** Array to hold all chessPieces */
-	private ChessPiece[] chessPieces;
+	private static IChessPiece[] chessPieces = new IChessPiece[32];
 
 	// Declare other instance variables as needed
 
