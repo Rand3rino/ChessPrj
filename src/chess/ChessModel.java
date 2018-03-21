@@ -5,6 +5,7 @@
 package chess;
 
 import javax.swing.JOptionPane;
+import java.util.ArrayList;
 
 public class ChessModel implements IChessModel {
 
@@ -19,6 +20,8 @@ public class ChessModel implements IChessModel {
 
 	/** Array to hold all chessPieces */
 	private ChessPiece[] chessPieces;
+	
+	private Player playerName;
 
 	// Declare other instance variables as needed
 
@@ -31,6 +34,7 @@ public class ChessModel implements IChessModel {
 		assignWhitePieces();
 		placeBlackPieces();
 		placeWhitePieces();
+		player = Player.WHITE;
 	}
 
 	/**************************************************************
@@ -219,6 +223,7 @@ public class ChessModel implements IChessModel {
 		board[move.toRow][move.toColumn] = piece;
 	}
 
+	
 	/******************************************************************
 	 * This method determines if a player's King is in check.
 	 * 
@@ -226,18 +231,72 @@ public class ChessModel implements IChessModel {
 	 * @return true of the player is in check, false if not.
 	 *****************************************************************/
 	public boolean inCheck(Player p) {
-
-		// FIXME: Uncomment at step 9.
-
-		// // Loop through all pieces of opponent's pieces for check.
-		// // FIXME: Add a loop.
-		//
-		// // FIXME: If there is a check, display a notice.
-		// if(true) {
-		// JOptionPane.showMessageDialog(null, "Check");
-		// return true;
-		// }
-		//
+		
+		boolean inCheck = false;
+		
+		int kingRow = -1;
+		int kingCol = -1;
+		
+		
+		if(this.currentPlayer() == Player.WHITE) {
+			//get White king position
+			kingRow = chessPieces[27].getRow(chessPieces[27], board);
+			kingCol = chessPieces[27].getCol(chessPieces[27], board);
+		}
+		
+		if(this.currentPlayer() == Player.BLACK) {
+			//get Black king position
+			kingRow = chessPieces[3].getRow(chessPieces[3], board);
+			kingCol = chessPieces[3].getCol(chessPieces[3], board); 
+		}
+		
+		
+		ArrayList <Move> moves = new ArrayList();
+		
+		//check other player's pieces to see if it can capture King
+		playerName.next();
+		
+		if(playerName == Player.BLACK) {
+			//add each player's move to the array list "moves"
+			for(int count = 0; count < 16; count++) {
+				int fromRow = chessPieces[count].
+						getRow(chessPieces[count], board);
+				int fromCol = chessPieces[count].
+						getCol(chessPieces[count], board);
+				moves.add(new Move(fromRow, fromCol, kingRow, kingCol));
+			}
+			
+			//iterated to check if any move is valid
+			for(int i = 0; i < 16; i++) {
+				if(chessPieces[i].isValidMove(moves.get(i), board))
+					inCheck = true;
+			}			
+		}
+		
+		else {
+			//add each player's move to the array list "moves"
+			for(int count = 16; count < 32; count++) {
+				int fromRow = chessPieces[count].
+						getRow(chessPieces[count], board);
+				int fromCol = chessPieces[count].
+						getCol(chessPieces[count], board);
+				moves.add(new Move(fromRow,fromCol,kingRow, kingCol));
+			}
+			
+			//iterated to check if any move is valid
+			for(int i = 0; i < 16; i++) {
+				if(chessPieces[i+16].isValidMove(moves.get(i), board))
+					inCheck = true;
+			}
+		}
+		
+		if(inCheck) {
+			 JOptionPane.showMessageDialog(null, "Check");
+			 return true;
+	}
+		
+		
+		playerName.next();
 		// Player is not in check
 		return false;
 	}
@@ -249,11 +308,12 @@ public class ChessModel implements IChessModel {
 	public Player currentPlayer() {
 		return player;
 	}
+	
 
 	/******************************************************************
 	 * Return the number of rows. 
 	 * @return 8 There are 8 rows in a standard chess board.
-	 *****************************************************************/
+	 *****************************************************************/	
 	public int numRows() {
 		return 8;
 	}

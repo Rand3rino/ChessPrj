@@ -38,6 +38,8 @@ public class ChessPanel extends JPanel {
 	private ImageIcon wKingIcon;
 	private ImageIcon wPawnIcon;
 	
+
+	
 	// Declare other instance variables as needed
 
 	/** ButtonListener for Chess game */
@@ -46,7 +48,7 @@ public class ChessPanel extends JPanel {
 	public ChessPanel() {
 		// Complete this.
 		
-		//model = new ChessModel();
+		model = new ChessModel();
 		move = new Move();
 		
 		bRookIcon = new ImageIcon("bRook.png");
