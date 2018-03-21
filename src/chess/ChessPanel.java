@@ -22,13 +22,13 @@ public class ChessPanel extends JPanel {
 
 	/** FIXME */
 	private ChessModel model;
-	
+
 	/** FIXME */
 	private Move move;
 
 	/** FIXME */
 	private int firstRow;
-	
+
 	/** FIXME */
 	private int firstCol;
 
@@ -77,22 +77,22 @@ public class ChessPanel extends JPanel {
 	 * ImageIcons of the chess pieces.
 	 *****************************************************************/
 	private void setImageIcons() {
-		
+
 		// Assign images to the black pieces.
-		bRookIcon = new ImageIcon("bRook.png");
-		bKnightIcon = new ImageIcon("bKnight.png");
-		bBishopIcon = new ImageIcon("bBishop.png");
-		bQueenIcon = new ImageIcon("bQueen.png");
-		bKingIcon = new ImageIcon("bKing.png");
-		bPawnIcon = new ImageIcon("bPawn.png");
+		bRookIcon = new ImageIcon("bRook.png", "b");
+		bKnightIcon = new ImageIcon("bKnight.png", "b");
+		bBishopIcon = new ImageIcon("bBishop.png", "b");
+		bQueenIcon = new ImageIcon("bQueen.png", "b");
+		bKingIcon = new ImageIcon("bKing.png", "b");
+		bPawnIcon = new ImageIcon("bPawn.png", "b");
 
 		// Assign images to the white pieces.
-		wRookIcon = new ImageIcon("wRook.png");
-		wKnightIcon = new ImageIcon("wKnight.png");
-		wBishopIcon = new ImageIcon("wBishop.png");
-		wQueenIcon = new ImageIcon("wQueen.png");
-		wKingIcon = new ImageIcon("wKing.png");
-		wPawnIcon = new ImageIcon("wPawn.png");
+		wRookIcon = new ImageIcon("wRook.png", "w");
+		wKnightIcon = new ImageIcon("wKnight.png", "w");
+		wBishopIcon = new ImageIcon("wBishop.png", "w");
+		wQueenIcon = new ImageIcon("wQueen.png", "w");
+		wKingIcon = new ImageIcon("wKing.png", "w");
+		wPawnIcon = new ImageIcon("wPawn.png", "w");
 	}
 
 	/******************************************************************
@@ -177,7 +177,7 @@ public class ChessPanel extends JPanel {
 		board[1][6].setIcon(bPawnIcon);
 		board[1][7].setIcon(bPawnIcon);
 	}
-	
+
 	/******************************************************************
 	 * This method puts the white pieces on their starting locations.
 	 *****************************************************************/
@@ -213,20 +213,23 @@ public class ChessPanel extends JPanel {
 		for (int row = 0; row < 8; row++) {
 			for (int col = 0; col < 8; col++) {
 
-				// get the name of the icon on that button
-				String desc = ((ImageIcon) board[row][col].getIcon()).
-						getDescription();
+				//check if button has a piece on it
+				if(board[row][col].getIcon() != null) {
+					
+					// get the name of the icon on that button
+					String desc = ((ImageIcon)board[row][col].getIcon()).getDescription();
 
-				// if that icon starts with a b its a black piece and
-				// if the current player is white disable that button
-				if (desc.charAt(0) == 'b' && player == player.WHITE)
-					board[row][col].setEnabled(false);
+					// if that icon starts with a b its a black piece and
+					// if the current player is white disable that button
+					if (desc.charAt(0) == 'b' && player == Player.WHITE)
+						board[row][col].setEnabled(false);
 
-				// else if the icon is white and its black turn
-				// disable the button
-				else if (desc.charAt(0) == 'w' && player == 
-						player.BLACK)
-					board[row][col].setEnabled(false);
+					// else if the icon is white and its black turn
+					// disable the button
+					else if (desc.charAt(0) == 'w' && player == 
+							Player.BLACK)
+						board[row][col].setEnabled(false);
+				}
 			}
 		}
 	}
@@ -254,12 +257,12 @@ public class ChessPanel extends JPanel {
 						// if the player has selected a piece to move
 						// and a location to move to
 						if (count % 2 == 0) {
-							move = new Move(row, col, row, col);
+							move = new Move(firstRow, firstCol, row, col);
 							if (model.isValidMove(move)) {
 								model.move(move);
 							} else
 								JOptionPane.showMessageDialog(null, 
-									"Invalid Move.");
+										"Invalid Move.");
 						}
 
 						// store the players first move
