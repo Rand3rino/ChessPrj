@@ -205,7 +205,7 @@ public class ChessPanel extends JPanel {
 
 	// Add other helper methods as needed
 
-	private void disableOppBtn(Player player) {
+	private void disableInvalidSquares(Player player) {
 
 		// call method to enable all buttons
 		enableBtn();
@@ -245,8 +245,8 @@ public class ChessPanel extends JPanel {
 		public void actionPerformed(ActionEvent event) {
 			JComponent comp = (JComponent) event.getSource();
 
-			disableOppBtn(model.currentPlayer());
-
+			disableInvalidSquares(model.currentPlayer());
+			
 			// Complete this.
 			for (int row = 0; row < 8; row++) {
 				for (int col = 0; col < 8; col++) {
@@ -256,6 +256,7 @@ public class ChessPanel extends JPanel {
 						// if the player has selected a piece to move
 						// and a location to move to
 						if (count % 2 == 0) {
+							enableBtn();
 							move = new Move(firstRow, firstCol, row, col);
 							if (model.isValidMove(move)) {
 								model.move(move);
