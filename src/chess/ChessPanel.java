@@ -51,21 +51,39 @@ public class ChessPanel extends JPanel {
 	private ImageIcon wKingIcon;
 	private ImageIcon wPawnIcon;
 
+	private JMenuItem gameItem;
+	private JMenuItem quitItem;
+	private JMenuItem restartItem;
+
 	// Declare other instance variables as needed
 
 	/** ButtonListener for Chess game */
 	private ButtonListener listener = new ButtonListener();
 
-	public ChessPanel() {
+	public ChessPanel(JMenuItem pquitItem, JMenuItem pgameItem,
+			JMenuItem prestartItem) {
+
+		quitItem = pquitItem;
+		gameItem = pgameItem;
+		restartItem = prestartItem;
 
 		model = new ChessModel();
 		move = new Move();
+		setUpBoard();
+
+		quitItem.addActionListener(listener);
+		gameItem.addActionListener(listener); 
+		restartItem.addActionListener(listener);
+	}
+
+	private void setUpBoard() {
 		firstRow = 0;
 		firstCol = 0;
 		count = 0;
 
 		// Assign .png files to pieces. 
 		setImageIcons();
+
 		// Call the display to set up the Chess board.
 		displayBoard();
 		displayChessPieces();
@@ -99,10 +117,12 @@ public class ChessPanel extends JPanel {
 	 *****************************************************************/
 	private void displayBoard() {
 
+		removeAll();
+		
 		// Create a (9 x 8) dimension grid.
-		// The bottom row will be used for control buttons.
+		// The bottom row will be used for control buttons.		
 		setLayout(new GridLayout(9, 8));
-
+		
 		// Loop for every square on a Chess board.
 		for (int row = 0; row < 8; row++) {
 
@@ -137,6 +157,9 @@ public class ChessPanel extends JPanel {
 				alternate++;
 			}
 		}
+		
+		repaint();
+		revalidate();
 	}
 
 	/******************************************************************
@@ -239,13 +262,24 @@ public class ChessPanel extends JPanel {
 				board[row][col].setEnabled(true);
 		}
 	}
+	
+	private void promotion() {
+		//String desc = ((ImageIcon)board[row][col].getIcon()).getDescription();
+	}
 
 	// Inner class that represents action listener for buttons
 	private class ButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			JComponent comp = (JComponent) event.getSource();
 
-			//disableInvalidSquares(model.currentPlayer());
+			if(comp == gameItem) {
+				//FIXME: choose btw 2v2 and ai
+			}
+			if(comp == restartItem){
+				setUpBoard();		
+			}
+			if(comp == quitItem)
+				System.exit(1);
 
 			// Complete this.
 			for (int row = 0; row < 8; row++) {
@@ -256,7 +290,6 @@ public class ChessPanel extends JPanel {
 						// if the player has selected a piece to move
 						// and a location to move to
 						if (count % 2 == 0) {
-							enableBtn();
 							move = new Move(firstRow, firstCol, row, col);
 							if (model.isValidMove(move)) {
 								model.move(move);
