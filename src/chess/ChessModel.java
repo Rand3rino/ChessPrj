@@ -28,11 +28,12 @@ public class ChessModel implements IChessModel {
 	 * chess pieces and then assign them to their start positions.
 	 *************************************************************/
 	public ChessModel() {
+		player = Player.WHITE;
 		assignBlackPieces();
 		assignWhitePieces();
 		placeBlackPieces();
 		placeWhitePieces();
-		player = Player.WHITE;
+		
 	}
 
 	/**************************************************************
@@ -171,7 +172,9 @@ public class ChessModel implements IChessModel {
 	 * represent valid locations on the board.
 	 *****************************************************************/
 	public boolean isValidMove(Move move) {
-		return piece.isValidMove(move, board);
+		if(pieceAt(move.fromRow, move.fromColumn) != null)
+			return pieceAt(move.fromRow, move.fromColumn).isValidMove(move, board);
+		return false;
 		
 //		// If move isn't within the board, throw error.
 //		if (move.toRow < 0 || move.toRow > 9 || 

@@ -40,16 +40,12 @@ public class Pawn extends ChessPiece {
 		// This is the black pawn.
 		if (player() == Player.BLACK)
 			if (moveBlackPawn(move, board)) {
-				if (move.toRow == 7)
-					// promote(move.toRow, move.toColumn);
 				return true;
 			}
 
 		// This is the white pawn.
 		if (player() == Player.WHITE)
 			if (moveWhitePawn(move, board)) {
-				if (move.toRow == 0)
-					// promote(move.toRow, move.toColumn);
 				return true;
 			}
 

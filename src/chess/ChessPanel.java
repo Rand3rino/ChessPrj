@@ -260,7 +260,7 @@ public class ChessPanel extends JPanel {
 							if (model.isValidMove(move)) {
 								model.move(move);
 								board[row][col].setIcon(board[firstRow][firstCol].getIcon());
-								//board[row][col].;
+								board[firstRow][firstCol].setIcon(null);
 							} else
 								JOptionPane.showMessageDialog(null, 
 										"Invalid Move.");
