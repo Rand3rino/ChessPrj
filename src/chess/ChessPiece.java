@@ -33,6 +33,38 @@ public abstract class ChessPiece implements IChessPiece {
 	}
 
 	/******************************************************************
+	 * Return the column the piece is in
+	 * 
+	 * @return c the column the piece is in, -1 if piece isn't found
+	 *****************************************************************/
+	public int getCol(ChessPiece piece, IChessPiece board[][]) {
+		for (int r = 0; r < 8; r++) {
+			for (int c = 0; c < 8; c++) {
+				if (board[r][c].getClass() == piece.getClass())
+					if (board[r][c].player() == piece.player())
+						return c;
+			}
+		}
+		return -1;
+	}
+
+	/******************************************************************
+	 * Return the row the piece is in
+	 * 
+	 * @return r the row the piece is in, -1 if piece isn't found
+	 *****************************************************************/
+	public int getRow(ChessPiece piece, IChessPiece board[][]) {
+		for (int r = 0; r < 8; r++) {
+			for (int c = 0; c < 8; c++) {
+				if (board[r][c].getClass() == piece.getClass())
+					if (board[r][c].player() == piece.player())
+						return r;
+			}
+		}
+		return -1;
+	}
+
+	/******************************************************************
 	 * Subclasses must return the type of this piece ("King", "Queen", 
 	 * "Rook", etc.).  Note: In this case "type" refers to the game 
 	 * of chess, not the type of the Java class.
