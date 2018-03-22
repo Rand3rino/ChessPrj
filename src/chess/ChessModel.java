@@ -230,6 +230,7 @@ public class ChessModel implements IChessModel {
 		
 		// Promote any pawns.
 		promotion();
+		player.next();
 	}
 
 	/******************************************************************
@@ -247,14 +248,14 @@ public class ChessModel implements IChessModel {
 
 		if (this.currentPlayer() == Player.WHITE) {
 			// get White king position
-			kingRow = chessPieces[27].getRow(chessPieces[27], board);
-			kingCol = chessPieces[27].getCol(chessPieces[27], board);
+			kingRow = chessPieces[28].getRow(chessPieces[27], board);
+			kingCol = chessPieces[28].getCol(chessPieces[27], board);
 		}
 
 		if (this.currentPlayer() == Player.BLACK) {
 			// get Black king position
-			kingRow = chessPieces[3].getRow(chessPieces[3], board);
-			kingCol = chessPieces[3].getCol(chessPieces[3], board);
+			kingRow = chessPieces[4].getRow(chessPieces[3], board);
+			kingCol = chessPieces[4].getCol(chessPieces[3], board);
 		}
 
 		ArrayList<Move> moves = new ArrayList();
