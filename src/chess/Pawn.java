@@ -36,6 +36,8 @@ public class Pawn extends ChessPiece {
 	 *****************************************************************/
 	@Override
 	public boolean isValidMove(Move move, IChessPiece[][] board) {
+		if(!(super.isValidMove(move, board)))
+			return false;
 
 		// This is the black pawn.
 		if (player() == Player.BLACK)

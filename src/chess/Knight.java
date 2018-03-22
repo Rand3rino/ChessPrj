@@ -30,6 +30,8 @@ public class Knight extends ChessPiece{
 	 *****************************************************************/
 	@Override
 	public boolean isValidMove(Move move, IChessPiece[][] board) {
+		if(!(super.isValidMove(move, board)))
+			return false;
 
 		// check if move is 2 spaces to the right or
 		// left and 1 up or down

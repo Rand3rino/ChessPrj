@@ -30,6 +30,9 @@ public class Bishop extends ChessPiece {
 	 *****************************************************************/
 	@Override
 	public boolean isValidMove(Move move, IChessPiece[][] board) {
+		if(!(super.isValidMove(move, board)))
+			return false;
+		
 		if (!(super.isPerfDiag(move, board)))
 			return false;
 
