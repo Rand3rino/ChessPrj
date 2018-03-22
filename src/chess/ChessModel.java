@@ -44,8 +44,8 @@ public class ChessModel implements IChessModel {
 		chessPieces[0] = new Rook(Player.BLACK);
 		chessPieces[1] = new Knight(Player.BLACK);
 		chessPieces[2] = new Bishop(Player.BLACK);
-		chessPieces[3] = new King(Player.BLACK);
-		chessPieces[4] = new Queen(Player.BLACK);
+		chessPieces[3] = new Queen(Player.BLACK);
+		chessPieces[4] = new King(Player.BLACK);
 		chessPieces[5] = new Bishop(Player.BLACK);
 		chessPieces[6] = new Knight(Player.BLACK);
 		chessPieces[7] = new Rook(Player.BLACK);
@@ -59,6 +59,32 @@ public class ChessModel implements IChessModel {
 		chessPieces[13] = new Pawn(Player.BLACK);
 		chessPieces[14] = new Pawn(Player.BLACK);
 		chessPieces[15] = new Pawn(Player.BLACK);
+	}
+	
+	/**************************************************************
+	 * This method assigns the White player's pieces.
+	 *************************************************************/
+	private void assignWhitePieces() {
+
+		// Instantiate White player's front row.
+		chessPieces[16] = new Pawn(Player.WHITE);
+		chessPieces[17] = new Pawn(Player.WHITE);
+		chessPieces[18] = new Pawn(Player.WHITE);
+		chessPieces[19] = new Pawn(Player.WHITE);
+		chessPieces[20] = new Pawn(Player.WHITE);
+		chessPieces[21] = new Pawn(Player.WHITE);
+		chessPieces[22] = new Pawn(Player.WHITE);
+		chessPieces[23] = new Pawn(Player.WHITE);
+
+		// Instantiate White player's back row.
+		chessPieces[24] = new Rook(Player.WHITE);
+		chessPieces[25] = new Knight(Player.WHITE);
+		chessPieces[26] = new Bishop(Player.WHITE);
+		chessPieces[27] = new Queen(Player.WHITE);
+		chessPieces[28] = new King(Player.WHITE);
+		chessPieces[29] = new Bishop(Player.WHITE);
+		chessPieces[30] = new Knight(Player.WHITE);
+		chessPieces[31] = new Rook(Player.WHITE);
 	}
 
 	/**************************************************************
@@ -84,32 +110,6 @@ public class ChessModel implements IChessModel {
 			// The Black player's pawns begin at chessPieces[8].
 			board[row][col] = chessPieces[col + 8];
 
-	}
-
-	/**************************************************************
-	 * This method assigns the White player's pieces.
-	 *************************************************************/
-	private void assignWhitePieces() {
-
-		// Instantiate White player's front row.
-		chessPieces[16] = new Pawn(Player.WHITE);
-		chessPieces[17] = new Pawn(Player.WHITE);
-		chessPieces[18] = new Pawn(Player.WHITE);
-		chessPieces[19] = new Pawn(Player.WHITE);
-		chessPieces[20] = new Pawn(Player.WHITE);
-		chessPieces[21] = new Pawn(Player.WHITE);
-		chessPieces[22] = new Pawn(Player.WHITE);
-		chessPieces[23] = new Pawn(Player.WHITE);
-
-		// Instantiate White player's back row.
-		chessPieces[24] = new Rook(Player.WHITE);
-		chessPieces[25] = new Knight(Player.WHITE);
-		chessPieces[26] = new Bishop(Player.WHITE);
-		chessPieces[27] = new King(Player.WHITE);
-		chessPieces[28] = new Queen(Player.WHITE);
-		chessPieces[29] = new Bishop(Player.WHITE);
-		chessPieces[30] = new Knight(Player.WHITE);
-		chessPieces[31] = new Rook(Player.WHITE);
 	}
 
 	/**************************************************************
@@ -171,7 +171,9 @@ public class ChessModel implements IChessModel {
 	 * represent valid locations on the board.
 	 *****************************************************************/
 	public boolean isValidMove(Move move) {
-		return piece.isValidMove(move, board);
+		if (pieceAt(move.fromRow, move.fromColumn) != null)
+			return pieceAt(move.fromRow, move.fromColumn).isValidMove(move, board);
+		return false;
 		
 //		// If move isn't within the board, throw error.
 //		if (move.toRow < 0 || move.toRow > 9 || 
