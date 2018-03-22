@@ -177,8 +177,10 @@ public class ChessModel implements IChessModel {
 	 * represent valid locations on the board.
 	 *****************************************************************/
 	public boolean isValidMove(Move move) {
+		
 		if (pieceAt(move.fromRow, move.fromColumn) != null)
-			return pieceAt(move.fromRow, move.fromColumn).isValidMove(move, board);
+			if (player != pieceAt(move.fromRow, move.fromColumn).player())
+				return pieceAt(move.fromRow, move.fromColumn).isValidMove(move, board);
 		return false;
 		
 //		// If move isn't within the board, throw error.
@@ -255,7 +257,7 @@ public class ChessModel implements IChessModel {
 		if (p == Player.WHITE) {
 			// get White king position
 			kingRow = chessPieces[28].getRow(chessPieces[28], board);
-			kingCol = chessPieces[28].getCol(chessPieces[27], board);
+			kingCol = chessPieces[28].getCol(chessPieces[28], board);
 		}
 
 		if (p == Player.BLACK) {
@@ -429,7 +431,13 @@ public class ChessModel implements IChessModel {
 	 * @return true if the move is complete, false if not.
 	 *****************************************************************/
 	private boolean getOutOfCheck() {
+		
+		int kingRow = chessPieces[4].getRow(chessPieces[4], board);
+		int kingCol = chessPieces[4].getCol(chessPieces[4], board);
+		
 		if (inCheck(AI)) {
+			for (int row = -1, col = -1; col < 2; col++)
+				
 			// Attempt to get out of check.
 			// if (!inCheck(AI))
 				// return true;
