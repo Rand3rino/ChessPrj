@@ -96,20 +96,20 @@ public class ChessPanel extends JPanel {
 	private void setImageIcons() {
 
 		// Assign images to the black pieces.
-		bRookIcon = new ImageIcon("bRook.png", "b");
-		bKnightIcon = new ImageIcon("bKnight.png", "b");
-		bBishopIcon = new ImageIcon("bBishop.png", "b");
-		bQueenIcon = new ImageIcon("bQueen.png", "b");
-		bKingIcon = new ImageIcon("bKing.png", "b");
-		bPawnIcon = new ImageIcon("bPawn.png", "b");
+		bRookIcon = new ImageIcon("bRook.png", "bRook");
+		bKnightIcon = new ImageIcon("bKnight.png", "bKnight");
+		bBishopIcon = new ImageIcon("bBishop.png", "bBishop");
+		bQueenIcon = new ImageIcon("bQueen.png", "bQueen");
+		bKingIcon = new ImageIcon("bKing.png", "bKing");
+		bPawnIcon = new ImageIcon("bPawn.png", "bPawn");
 
 		// Assign images to the white pieces.
-		wRookIcon = new ImageIcon("wRook.png", "w");
-		wKnightIcon = new ImageIcon("wKnight.png", "w");
-		wBishopIcon = new ImageIcon("wBishop.png", "w");
-		wQueenIcon = new ImageIcon("wQueen.png", "w");
-		wKingIcon = new ImageIcon("wKing.png", "w");
-		wPawnIcon = new ImageIcon("wPawn.png", "w");
+		wRookIcon = new ImageIcon("wRook.png", "wRook");
+		wKnightIcon = new ImageIcon("wKnight.png", "wKnight");
+		wBishopIcon = new ImageIcon("wBishop.png", "wBishop");
+		wQueenIcon = new ImageIcon("wQueen.png", "wQueen");
+		wKingIcon = new ImageIcon("wKing.png", "wKing");
+		wPawnIcon = new ImageIcon("wPawn.png", "wPawn");
 	}
 
 	/******************************************************************
@@ -228,48 +228,58 @@ public class ChessPanel extends JPanel {
 
 	// Add other helper methods as needed
 
-	private void disableInvalidSquares(Player player) {
-
-		// call method to enable all buttons
-		enableBtn();
-		for (int row = 0; row < 8; row++) {
-			for (int col = 0; col < 8; col++) {
-
-				//check if button has a piece on it
-				if(board[row][col].getIcon() != null) {
-
-					// get the name of the icon on that button
-					String desc = ((ImageIcon)board[row][col].getIcon()).getDescription();
-
-					// if that icon starts with a b its a black piece and
-					// if the current player is white disable that button
-					if (desc.charAt(0) == 'b' && player == Player.WHITE)
-						board[row][col].setEnabled(false);
-
-					// else if the icon is white and its black turn
-					// disable the button
-					else if (desc.charAt(0) == 'w' && player == 
-							Player.BLACK)
-						board[row][col].setEnabled(false);
-				}
-			}
-		}
-	}
-
-	private void enableBtn() {
-		for (int row = 0; row < 8; row++) {
-			for (int col = 0; col < 8; col++)
-				board[row][col].setEnabled(true);
-		}
-	}
+//	private void disableInvalidSquares(Player player) {
+//
+//		// call method to enable all buttons
+//		enableBtn();
+//		for (int row = 0; row < 8; row++) {
+//			for (int col = 0; col < 8; col++) {
+//
+//				//check if button has a piece on it
+//				if(board[row][col].getIcon() != null) {
+//
+//					// get the name of the icon on that button
+//					String desc = ((ImageIcon)board[row][col].getIcon()).getDescription();
+//
+//					// if that icon starts with a b its a black piece and
+//					// if the current player is white disable that button
+//					if (desc.charAt(0) == 'b' && player == Player.WHITE)
+//						board[row][col].setEnabled(false);
+//
+//					// else if the icon is white and its black turn
+//					// disable the button
+//					else if (desc.charAt(0) == 'w' && player == 
+//							Player.BLACK)
+//						board[row][col].setEnabled(false);
+//				}
+//			}
+//		}
+//	}
+//
+//	private void enableBtn() {
+//		for (int row = 0; row < 8; row++) {
+//			for (int col = 0; col < 8; col++)
+//				board[row][col].setEnabled(true);
+//		}
+//	}
 	
 	private void promotion(Move move) {
+		
+		//get the name of the icon
 		String desc = ((ImageIcon)board[move.fromRow][move.fromColumn].getIcon()).getDescription();
-		if (desc.charAt(0) == 'b') {
+		
+		//check if its a black pawn
+		if (desc.charAt(0) == 'b' && desc.charAt(1) == 'P') {
+			
+			//if its a black pawn at row 7 promote to queen
 			if(move.toRow == 7)
 				board[move.fromRow][move.fromColumn].setIcon(bQueenIcon);
 		}
-		else if (desc.charAt(0) == 'w') {
+		
+		//check if its a white pawn
+		else if (desc.charAt(0) == 'w' && desc.charAt(1) == 'P') {
+			
+			//if its a white pawn at row 7 promote to queen
 			if(move.toRow == 0)
 				board[move.fromRow][move.fromColumn].setIcon(wQueenIcon);
 		}
