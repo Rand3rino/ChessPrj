@@ -371,13 +371,13 @@ public class ChessModel implements IChessModel {
 		
 		// Check if a White Pawn will be promoted.
 		for (int col = 0; col < 8; col++) 
-			for (int pawnNumber = 8; pawnNumber < 16; pawnNumber++) 
+			for (int pawnNumber = 16; pawnNumber < 24; pawnNumber++) 
 				if (board[0][col] == chessPieces[pawnNumber]) 
 					chessPieces[pawnNumber] = new Queen(Player.WHITE);
 
 		// Check if a Black Pawn will be promoted.
 		for (int col = 0; col < 8; col++)
-			for (int pawnNumber = 16; pawnNumber < 24; pawnNumber++)
+			for (int pawnNumber = 8; pawnNumber < 16; pawnNumber++)
 				if (board[7][col] == chessPieces[pawnNumber])
 					chessPieces[pawnNumber] = new Queen(Player.BLACK);
 
@@ -438,6 +438,10 @@ public class ChessModel implements IChessModel {
 		if (inCheck(AI)) {
 			for (int row = -1, col = -1; col < 2; col++)
 				
+				chessPieces[4].isValidMove(move, board)
+				// if (!inCheck(AI))
+				// return true;
+			
 			// Attempt to get out of check.
 			// if (!inCheck(AI))
 				// return true;
