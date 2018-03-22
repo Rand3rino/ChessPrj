@@ -69,6 +69,7 @@ public class ChessPanel extends JPanel {
 		// Call the display to set up the Chess board.
 		displayBoard();
 		displayChessPieces();
+		//disableInvalidBtn();
 	}
 
 	/******************************************************************
@@ -205,7 +206,7 @@ public class ChessPanel extends JPanel {
 
 	// Add other helper methods as needed
 
-	private void disableOppBtn(Player player) {
+	private void disableInvalidBtn() {
 
 		// call method to enable all buttons
 		enableBtn();
@@ -214,20 +215,23 @@ public class ChessPanel extends JPanel {
 
 				//check if button has a piece on it
 				if(board[row][col].getIcon() != null) {
-					
+
 					// get the name of the icon on that button
 					String desc = ((ImageIcon)board[row][col].getIcon()).getDescription();
 
+					if(board[row][col] == null)
+						board[row][col].removeActionListener(listener);
+
 					// if that icon starts with a b its a black piece and
 					// if the current player is white disable that button
-					if (desc.charAt(0) == 'b' && player == Player.WHITE)
-						board[row][col].setEnabled(false);
+					if (desc.charAt(0) == 'b' && model.currentPlayer() == Player.WHITE)
+						board[row][col].removeActionListener(listener);
 
 					// else if the icon is white and its black turn
 					// disable the button
-					else if (desc.charAt(0) == 'w' && player == 
+					else if (desc.charAt(0) == 'w' && model.currentPlayer() == 
 							Player.BLACK)
-						board[row][col].setEnabled(false);
+						board[row][col].removeActionListener(listener);
 				}
 			}
 		}
@@ -236,7 +240,7 @@ public class ChessPanel extends JPanel {
 	private void enableBtn() {
 		for (int row = 0; row < 8; row++) {
 			for (int col = 0; col < 8; col++)
-				board[row][col].setEnabled(true);
+				board[row][col].addActionListener(listener);
 		}
 	}
 
@@ -245,7 +249,7 @@ public class ChessPanel extends JPanel {
 		public void actionPerformed(ActionEvent event) {
 			JComponent comp = (JComponent) event.getSource();
 
-			disableOppBtn(model.currentPlayer());
+			//disableInvalidBtn();
 
 			// Complete this.
 			for (int row = 0; row < 8; row++) {
@@ -266,10 +270,17 @@ public class ChessPanel extends JPanel {
 										"Invalid Move.");
 						}
 
-						// store the players first move
+						// store the players first move if not null
 						else {
-							firstRow = row;
-							firstCol = col;
+							if(board[row][col].getIcon() == null) {
+								JOptionPane.showMessageDialog(null, 
+										"Invalid Location.");
+								count--;
+							}
+							else {
+								firstRow = row;
+								firstCol = col;
+							}
 						}
 					}
 				}
