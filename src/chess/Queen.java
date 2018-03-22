@@ -42,7 +42,7 @@ public class Queen extends ChessPiece {
 		if (move.toColumn == move.fromColumn)
 			return super.isOpenVert(move, board);
 
-		return super.isOpenDiag(move, board);
+		return false;
 	}
 
 	
