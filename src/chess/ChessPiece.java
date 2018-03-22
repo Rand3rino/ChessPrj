@@ -105,8 +105,7 @@ public abstract class ChessPiece implements IChessPiece {
 			if(board[move.toRow][move.toColumn].player() == owner)
 				return false;
 
-		//Prevents the player from moving an opponent's piece
-		//else if(board[move.fromRow][move.fromColumn].player() != )
+		
 
 		return true;
 	}
