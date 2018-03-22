@@ -33,7 +33,7 @@ public class Queen extends ChessPiece {
 		if(!(super.isValidMove(move, board)))
 			return false;
 		
-		if (super.isHoriOrVert(move, board) || isPerfDiag(move, board))
+		if (isPerfDiag(move, board))
 			return super.isOpenDiag(move, board);
 
 		if (move.toRow == move.fromRow)
