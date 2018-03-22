@@ -180,8 +180,11 @@ public class ChessModel implements IChessModel {
 	 *****************************************************************/
 	public boolean isValidMove(Move move) {
 		
+		//make sure piece isn't null
 		if (pieceAt(move.fromRow, move.fromColumn) != null)
-			if (player != pieceAt(move.fromRow, move.fromColumn).player())
+			
+			//make sure they chose their own piece
+			if (player == pieceAt(move.fromRow, move.fromColumn).player())
 				return pieceAt(move.fromRow, move.fromColumn).isValidMove(move, board);
 		return false;
 		
