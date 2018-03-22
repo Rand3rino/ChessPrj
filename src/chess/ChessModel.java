@@ -181,7 +181,7 @@ public class ChessModel implements IChessModel {
 	public boolean isValidMove(Move move) {
 		
 		if (pieceAt(move.fromRow, move.fromColumn) != null)
-			if (player != pieceAt(move.fromRow, move.fromColumn).player())
+			if (player == pieceAt(move.fromRow, move.fromColumn).player())
 				return pieceAt(move.fromRow, move.fromColumn).isValidMove(move, board);
 		return false;
 		
@@ -372,16 +372,20 @@ public class ChessModel implements IChessModel {
 	private void promotion() {
 		
 		// Check if a White Pawn will be promoted.
-		for (int col = 0; col < 8; col++) 
-			for (int pawnNumber = 16; pawnNumber < 24; pawnNumber++) 
-				if (board[0][col] == chessPieces[pawnNumber]) 
-					chessPieces[pawnNumber] = chessPieces[27];
+		for (int col = 0; col < 8; col++)
+			for (int pawnNumber = 16; pawnNumber < 24; pawnNumber++)
+				if (board[0][col] == chessPieces[pawnNumber]) {
+					chessPieces[pawnNumber] = new Queen(Player.WHITE);
+					board[0][col] = chessPieces[pawnNumber];
+				}
 
 		// Check if a Black Pawn will be promoted.
 		for (int col = 0; col < 8; col++)
 			for (int pawnNumber = 8; pawnNumber < 16; pawnNumber++)
-				if (board[7][col] == chessPieces[pawnNumber])
-					chessPieces[pawnNumber] = chessPieces[3];
+				if (board[7][col] == chessPieces[pawnNumber]) {
+					chessPieces[pawnNumber] = new Queen(Player.BLACK);
+					board[0][col] = chessPieces[pawnNumber];
+				}
 
 	}
 	
