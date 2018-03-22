@@ -357,9 +357,19 @@ public class ChessModel implements IChessModel {
 	 * promote it to a Queen.
 	 *****************************************************************/
 	private void promotion() {
-		for (int row = 0, col = 0; col < 8; col++) {
-			if (board[0][col] == piece);
-		}
+		
+		// Check if a White Pawn will be promoted.
+		for (int col = 0; col < 8; col++) 
+			for (int pawnNumber = 8; pawnNumber < 16; pawnNumber++) 
+				if (board[0][col] == chessPieces[pawnNumber]) 
+					chessPieces[pawnNumber] = new Queen(Player.WHITE);
+
+		// Check if a Black Pawn will be promoted.
+		for (int col = 0; col < 8; col++)
+			for (int pawnNumber = 16; pawnNumber < 24; pawnNumber++)
+				if (board[7][col] == chessPieces[pawnNumber])
+					chessPieces[pawnNumber] = new Queen(Player.BLACK);
+
 	}
 	
 
