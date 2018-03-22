@@ -104,13 +104,12 @@ public abstract class ChessPiece implements IChessPiece {
 		if(board[move.toRow][move.toColumn] != null) 
 			if(board[move.toRow][move.toColumn].player() == owner)
 				return false;
+
 		
-		//Prevents the player from moving an opponent's piece
-		//else if(board[move.fromRow][move.fromColumn].player() != )
 
 		return true;
 	}
-	
+
 	/******************************************************************
 	 * Returns true if all of the pieces between the spot the piece
 	 * wants to move to & the spot it is at are empty of pieces. This
@@ -121,17 +120,17 @@ public abstract class ChessPiece implements IChessPiece {
 	 *****************************************************************/
 	public boolean isOpenDiag(Move move, IChessPiece[][] board) {
 		if(move.toRow > move.fromRow &&
-			move.toColumn > move.fromColumn)
-				return isOpenDiagLR(move, board);
-		
+				move.toColumn > move.fromColumn)
+			return isOpenDiagLR(move, board);
+
 		if(move.toRow < move.fromRow &&
-			move.toColumn > move.fromColumn)
-				return isOpenDiagUR(move, board);
-		
+				move.toColumn > move.fromColumn)
+			return isOpenDiagUR(move, board);
+
 		if(move.toRow < move.fromRow &&
-			move.toColumn < move.fromColumn)
-				return isOpenDiagUL(move, board);
-						
+				move.toColumn < move.fromColumn)
+			return isOpenDiagUL(move, board);
+
 		return isOpenDiagLL(move, board);
 	}
 
@@ -148,16 +147,16 @@ public abstract class ChessPiece implements IChessPiece {
 	 *  false if there are pieces between it & its move 
 	 *****************************************************************/
 	private boolean isOpenDiagLR(Move move, IChessPiece[][] board) {
-		for(int r = move.fromRow; r <= move.toRow; r++) {
-			for(int c = move.fromColumn; c <= move.toColumn; c++) {
-				if(board[r][c] != null)
-					return false;
-			}
+		for(int c = move.fromColumn + 1, r = move.fromRow + 1; 
+				c < move.toColumn; c++, r++) {
+			if(board[r][c] != null)
+				return false;
 		}
-		
+
+
 		return true;
 	}
-	
+
 	/******************************************************************
 	 * Test for any pieces between the piece's current position & the
 	 * position chosen for the move. This method is used if the move
@@ -171,17 +170,17 @@ public abstract class ChessPiece implements IChessPiece {
 	 *  false if there are pieces between it & its move 
 	 *****************************************************************/
 	private boolean isOpenDiagUR(Move move, IChessPiece[][] board) {
-		for(int r = move.fromRow; r >= move.toRow; r--) {
-			for(int c = move.fromColumn; c <= move.toColumn; c++) {
-				if(board[r][c] != null)
-					return false;
-			}
+		for(int c = move.fromColumn + 1, r = move.fromRow - 1;
+				c < move.toColumn; c++, r--) {
+			if(board[r][c] != null)
+				return false;
 		}
-		
+
+
 		return true;
 	}
-	
-	
+
+
 	/******************************************************************
 	 * Test for any pieces between the piece's current position & the
 	 * position chosen for the move. This method is used if the move
@@ -195,17 +194,17 @@ public abstract class ChessPiece implements IChessPiece {
 	 *  false if there are pieces between it & its move 
 	 *****************************************************************/
 	private boolean isOpenDiagUL(Move move, IChessPiece[][] board) {
-		for(int r = move.fromRow; r >= move.toRow; r--) {
-			for(int c = move.fromColumn; c >= move.toColumn; c--) {
-				if(board[r][c] != null)
-					return false;
-			}
+		for(int c = move.fromColumn - 1, r = move.fromRow - 1; 
+				c > move.toColumn; r--, c--) {
+			if(board[r][c] != null)
+				return false;
 		}
-		
+
+
 		return true;
 	}
-	
-	
+
+
 	/******************************************************************
 	 * Test for any pieces between the piece's current position & the
 	 * position chosen for the move. This method is used if the move
@@ -219,17 +218,17 @@ public abstract class ChessPiece implements IChessPiece {
 	 *  false if there are pieces between it & its move 
 	 *****************************************************************/
 	private boolean isOpenDiagLL(Move move, IChessPiece[][] board) {
-		for(int r = move.fromRow; r <= move.toRow; r++) {
-			for(int c = move.fromColumn; c >= move.toColumn; c--) {
-				if(board[r][c] != null)
-					return false;
-			}
+		for(int c = move.fromColumn - 1, r = move.fromRow + 1; 
+				c > move.toColumn; c--, r++) {
+			if(board[r][c] != null)
+				return false;
 		}
-		
+
+
 		return true;
 	}
-	
-	
+
+
 	/******************************************************************
 	 * Test for any pieces between the piece's current position & the
 	 * position chosen for a horizontal move
@@ -244,11 +243,11 @@ public abstract class ChessPiece implements IChessPiece {
 	public boolean isOpenHori(Move move, IChessPiece[][] board) {
 		if(move.toColumn > move.fromColumn)
 			return isOpenHoriRight(move, board);
-		
+
 		return isOpenHoriLeft(move, board);
 	}
 
-	
+
 	/******************************************************************
 	 * Test for any pieces between the piece's current position & the
 	 * position chosen for a horizontal & right move.
@@ -269,8 +268,8 @@ public abstract class ChessPiece implements IChessPiece {
 		}
 		return true;
 	}
-	
-	
+
+
 	/******************************************************************
 	 * Test for any pieces between the piece's current position & the
 	 * position chosen for a horizontal & left move.
@@ -285,7 +284,7 @@ public abstract class ChessPiece implements IChessPiece {
 	public boolean isOpenHoriLeft(Move move, IChessPiece[][] board){
 
 		// check for pieces in between
-		for(int c = move.fromColumn; c >= move.toColumn; c--) {
+		for(int c = move.fromColumn - 1; c > move.toColumn; c--) {
 			if(board[move.toRow][c] != null) 
 				return false;
 		}
@@ -310,8 +309,8 @@ public abstract class ChessPiece implements IChessPiece {
 
 		return isOpenVertDown(move,board);
 	}
-	
-	
+
+
 	/******************************************************************
 	 * Test for any pieces between the piece's current position & the
 	 * position chosen for a vertically up move
@@ -326,15 +325,17 @@ public abstract class ChessPiece implements IChessPiece {
 	public boolean isOpenVertUp(Move move, IChessPiece[][] board){
 
 		// check for pieces in between
-		for(int r = move.fromRow; r <= move.toRow; r++) {
+		for(int r = move.fromRow - 1; r > move.toRow; r--) {
 			if(board[r][move.toColumn] != null)
 				return false;
 		}
 
+
+
 		return true;
 	}
-	
-	
+
+
 	/******************************************************************
 	 * Test for any pieces between the piece's current position & the
 	 * position chosen for a vertically down move
@@ -348,15 +349,15 @@ public abstract class ChessPiece implements IChessPiece {
 	 *****************************************************************/
 	public boolean isOpenVertDown(Move move, IChessPiece[][] board) {
 		// check for pieces in between
-		for(int r = move.fromRow; r >= move.toRow; r--) {
+		for(int r = move.fromRow + 1; r < move.toRow; r++) {
 			if(board[r][move.toColumn] != null)
 				return false;
 		}
 
 		return true;
 	}
-	
-	
+
+
 	/******************************************************************
 	 * Check to make sure that the move is perfectly horizontal or 
 	 * vertical from the current piece position
@@ -371,11 +372,11 @@ public abstract class ChessPiece implements IChessPiece {
 	public boolean isHoriOrVert(Move move, IChessPiece[][] board) {
 		if(move.toRow != move.fromRow &&
 				move.toColumn != move.fromColumn)
-					return false;
-		
+			return false;
+
 		return true;
 	}
-	
+
 	/******************************************************************
 	 * Check to make sure that the move is perfectly diagonal
 	 * 
@@ -388,9 +389,9 @@ public abstract class ChessPiece implements IChessPiece {
 	 *****************************************************************/
 	public boolean isPerfDiag(Move move, IChessPiece[][] board) {
 		if(Math.abs(move.toRow - move.fromRow) ==
-			Math.abs(move.toColumn-move.fromColumn))
-				return true;
-		
+				Math.abs(move.toColumn-move.fromColumn))
+			return true;
+
 		return false;
 	}
 
