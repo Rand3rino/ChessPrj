@@ -18,6 +18,12 @@ public class ChessModel implements IChessModel {
 	/** The player variable */
 	private Player player;
 
+	/** Static Variable for AI Player */
+	private static Player HUMAN = Player.WHITE;
+	
+	/** Static Variable for AI Player */
+	private static Player AI = Player.BLACK;
+	
 	/** Array to hold all chessPieces */
 	private ChessPiece[] chessPieces = new ChessPiece[32];
 
@@ -246,16 +252,16 @@ public class ChessModel implements IChessModel {
 		int kingRow = -1;
 		int kingCol = -1;
 
-		if (this.currentPlayer() == Player.WHITE) {
+		if (p == Player.WHITE) {
 			// get White king position
-			kingRow = chessPieces[28].getRow(chessPieces[27], board);
+			kingRow = chessPieces[28].getRow(chessPieces[28], board);
 			kingCol = chessPieces[28].getCol(chessPieces[27], board);
 		}
 
-		if (this.currentPlayer() == Player.BLACK) {
+		if (p == Player.BLACK) {
 			// get Black king position
-			kingRow = chessPieces[4].getRow(chessPieces[3], board);
-			kingCol = chessPieces[4].getCol(chessPieces[3], board);
+			kingRow = chessPieces[4].getRow(chessPieces[4], board);
+			kingCol = chessPieces[4].getCol(chessPieces[4], board);
 		}
 
 		ArrayList<Move> moves = new ArrayList();
@@ -390,7 +396,7 @@ public class ChessModel implements IChessModel {
 	public void turnComputer() {
 
 		// AI will always be BLACK.
-		player = Player.BLACK;
+		player = AI;
 
 		// Variable to skip processes if the turn is complete.
 		boolean turnComplete = false;
@@ -423,8 +429,10 @@ public class ChessModel implements IChessModel {
 	 * @return true if the move is complete, false if not.
 	 *****************************************************************/
 	private boolean getOutOfCheck() {
-		if (inCheck(player)) {
+		if (inCheck(AI)) {
 			// Attempt to get out of check.
+			// if (!inCheck(AI))
+				// return true;
 			// First try King, then other pieces to block the check.
 			return true;
 		}
@@ -437,11 +445,9 @@ public class ChessModel implements IChessModel {
 	 * @return true if the move is complete, false if not.
 	 *****************************************************************/
 	private boolean putInCheck() {
-		if (inCheck(player)) {
-			// Attempt to get out of check.
-			// First try King, then other pieces to block the check.
+		// Move all.
+		if (inCheck(HUMAN)) 
 			return true;
-		}
 		return false;
 	}
 

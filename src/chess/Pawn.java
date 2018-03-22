@@ -71,14 +71,15 @@ public class Pawn extends ChessPiece {
 				move.toColumn == move.fromColumn)
 
 				// If the path is clear, this move is valid.
-				if (board[move.toRow - 1][move.toColumn] == null &&
+				if (board[move.fromRow + 1][move.fromColumn] == null &&
 					board[move.toRow][move.toColumn] == null)
 					return true;
 		}
 
 		// Move row + 1, column + 0.
 		if (move.toRow == move.fromRow + 1 && 
-			move.toColumn == move.fromColumn)
+			move.toColumn == move.fromColumn && 
+			board[move.toRow][move.toColumn] == null)
 			return true;
 
 		// Move row + 1, column - 1.
@@ -117,14 +118,15 @@ public class Pawn extends ChessPiece {
 				move.toColumn == move.fromColumn)
 
 				// If the path is clear, this move is valid.
-				if (board[move.toRow - 1][move.toColumn] == null &&
+				if (board[move.fromRow - 1][move.fromColumn] == null &&
 					board[move.toRow][move.toColumn] == null)
 					return true;
 		}
 
 		// Move row - 1, column + 0.
 		if (move.toRow == move.fromRow - 1 && 
-			move.toColumn == move.fromColumn)
+			move.toColumn == move.fromColumn && 
+			board[move.toRow][move.toColumn] == null)
 			return true;
 
 		// Move row - 1, column - 1.
