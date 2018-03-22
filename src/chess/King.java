@@ -36,6 +36,8 @@ public class King extends ChessPiece{
 	 *****************************************************************/
 	@Override
 	public boolean isValidMove(Move move, IChessPiece[][] board) { 
+		if(!(super.isValidMove(move, board)))
+			return false;
 		
 		if(moveUpRow(move))
 			return true;

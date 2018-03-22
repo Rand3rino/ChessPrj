@@ -101,8 +101,9 @@ public abstract class ChessPiece implements IChessPiece {
 			return false;
 
 		// Prevents the player from taking their own piece.
-		else if(board[move.toRow][move.toColumn].player() == owner)
-			return false;
+		if(board[move.toRow][move.toColumn] != null) 
+			if(board[move.toRow][move.toColumn].player() == owner)
+				return false;
 		
 		//Prevents the player from moving an opponent's piece
 		//else if(board[move.fromRow][move.fromColumn].player() != )
@@ -262,7 +263,7 @@ public abstract class ChessPiece implements IChessPiece {
 	public boolean isOpenHoriRight(Move move, IChessPiece[][] board){
 
 		// check for pieces in between
-		for(int c = move.fromColumn; c <= move.toColumn; c++) {
+		for(int c = move.fromColumn + 1; c < move.toColumn; c++) {
 			if(board[move.toRow][c] != null) 
 				return false;
 		}
@@ -304,7 +305,7 @@ public abstract class ChessPiece implements IChessPiece {
 	 *  false if there are pieces between it & its move 
 	 *****************************************************************/
 	public boolean isOpenVert(Move move, IChessPiece[][] board) {
-		if(move.toRow > move.fromRow)
+		if(move.toRow < move.fromRow)
 			return isOpenVertUp(move, board);
 
 		return isOpenVertDown(move,board);

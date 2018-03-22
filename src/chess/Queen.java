@@ -30,8 +30,11 @@ public class Queen extends ChessPiece {
 	 *****************************************************************/
 	@Override
 	public boolean isValidMove(Move move, IChessPiece[][] board) {
+		if(!(super.isValidMove(move, board)))
+			return false;
+		
 		if (super.isHoriOrVert(move, board) || isPerfDiag(move, board))
-			return true;
+			return super.isOpenDiag(move, board);
 
 		if (move.toRow == move.fromRow)
 			return super.isOpenHori(move, board);
