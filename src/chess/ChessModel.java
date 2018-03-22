@@ -19,8 +19,8 @@ public class ChessModel implements IChessModel {
 	private Player player;
 
 	/** Array to hold all chessPieces */
-	private IChessPiece[] chessPieces = new IChessPiece[32];
-	
+	private ChessPiece[] chessPieces = new ChessPiece[32];
+
 	private Player playerName;
 
 	// Declare other instance variables as needed
@@ -62,30 +62,30 @@ public class ChessModel implements IChessModel {
 		chessPieces[14] = new Pawn(Player.BLACK);
 		chessPieces[15] = new Pawn(Player.BLACK);
 	}
-	
+
 	/**************************************************************
 	 * This method places Black player's pieces on the chess board.
 	 *************************************************************/
 	private void placeBlackPieces() {
-		
+
 		// The Black player's back line is on row 0.
 		int row = 0;
-		
+
 		// Place the back line.
 		for (int col = 0; col < 8; col ++)
-			
+
 			// The White player's pieces begin at chessPieces[0].
 			board[row][col] = chessPieces[col];
-		
+
 		// The Black player's front line is on row 1.
 		row = 1;
-		
+
 		// Place the front line.
 		for (int col = 0; col < 8; col ++)
-			
+
 			// The Black player's pawns begin at chessPieces[8].
 			board[row][col] = chessPieces[col + 8];
-		
+
 	}
 
 	/**************************************************************
@@ -113,27 +113,27 @@ public class ChessModel implements IChessModel {
 		chessPieces[30] = new Knight(Player.WHITE);
 		chessPieces[31] = new Rook(Player.WHITE);
 	}
-	
+
 	/**************************************************************
 	 * This method places Black player's pieces on the chess board.
 	 *************************************************************/
 	private void placeWhitePieces() {
-		
+
 		// The White player's front line is on row 6.
 		int row = 6;
-		
+
 		// Place the front line.
 		for (int col = 0; col < 8; col ++)
-			
+
 			// The White player's pawns begin at chessPieces[16].
 			board[row][col] = chessPieces[col + 16];
-		
+
 		// The White Player's back line is on row 7.
 		row = 7;
-		
+
 		// Place the back line.
 		for (int col = 0; col < 8; col ++)
-			
+
 			// The White player's pieces begin at chessPieces[24].
 			board[row][col] = chessPieces[col + 24];
 	}
@@ -175,21 +175,21 @@ public class ChessModel implements IChessModel {
 	public boolean isValidMove(Move move) {
 		// If move isn't within the board, throw error.
 		if (move.toRow < 0 || move.toRow > 9 || 
-			move.toColumn < 0 || move.toColumn > 9)
+				move.toColumn < 0 || move.toColumn > 9)
 			throw new IndexOutOfBoundsException();
-		
+
 		// Prevents the piece being dropped on the same square.
 		if (move.fromRow == move.toRow && 
-		    move.fromColumn == move.toColumn)
+				move.fromColumn == move.toColumn)
 			return false;
-		
+
 		// Prevents the player to move from an empty square.
 		else if(board[move.fromRow][move.fromColumn] == null)
 			return false;
-		
+
 		// Prevents the player from taking their own piece.
 		else if(board[move.toRow][move.toColumn].
-				player() == currentPlayer())
+				player() == player)
 			return false;
 
 		return true;
@@ -205,33 +205,31 @@ public class ChessModel implements IChessModel {
 	 * represent valid locations on the board.
 	 *************************************************************/
 	public void move(Move move) {
-		
-		// FIXME: Necessary?
-//		// If move isn't within the board, throw error.
-//		if (move.toRow < 0 || move.toRow > 9 || 
-//			move.toColumn < 0 || move.toColumn > 9)
-//			throw new IndexOutOfBoundsException();
 
-		if (isValidMove(move)) {
-			
-			// Save the piece that is moving.
-			piece = pieceAt(move.fromRow, move.fromColumn);
-	
-			// Empty the space that the piece is leaving.
-			board[move.fromRow][move.fromColumn] = null;
-	
-			// FIXME: Do something if the piece is capturing another?
-			if (pieceAt(move.toRow, move.toColumn).player() 
+		// FIXME: Necessary?
+		//		// If move isn't within the board, throw error.
+		//		if (move.toRow < 0 || move.toRow > 9 || 
+		//			move.toColumn < 0 || move.toColumn > 9)
+		//			throw new IndexOutOfBoundsException();
+
+		// Save the piece that is moving.
+		piece = pieceAt(move.fromRow, move.fromColumn);
+
+		// Empty the space that the piece is leaving.
+		board[move.fromRow][move.fromColumn] = null;
+
+		// FIXME: Do something if the piece is capturing another?
+		if (pieceAt(move.toRow, move.toColumn).player() 
 				!= currentPlayer()) {
-				
-				// pieceAt(move.toRow, move.toColumn) == really dead.
-				board[move.toRow][move.toColumn] = null;
-				board[move.toRow][move.toColumn] = piece;
-			}
-	
-			// Place the piece on the new square.
+
+			// pieceAt(move.toRow, move.toColumn) == really dead.
+			board[move.toRow][move.toColumn] = null;
 			board[move.toRow][move.toColumn] = piece;
 		}
+
+		// Place the piece on the new square.
+		board[move.toRow][move.toColumn] = piece;
+
 	}
 
 	/******************************************************************
@@ -355,8 +353,8 @@ public class ChessModel implements IChessModel {
 	}
 
 	// Add other public or helper methods as needed.
-	
-	
+
+
 	/******************************************************************
 	 * This method is the AI feature. The AI will follow these 
 	 * priorities:
@@ -368,32 +366,32 @@ public class ChessModel implements IChessModel {
 	 *  		   opponent's King.
 	 *****************************************************************/
 	public void turnComputer() {
-		
+
 		// AI will always be BLACK.
 		player = Player.BLACK;
-		
+
 		// Variable to skip processes if the turn is complete.
 		boolean turnComplete = false;
-		
+
 		// 1. Check if the AI is in check.
 		turnComplete = getOutOfCheck();
-		
+
 		// 2. Put the opponent is in check.
 		if (turnComplete) 
 			turnComplete = putInCheck();
-		
+
 		// 3. Move a piece if it is in danger.
 		if (turnComplete) 
 			turnComplete = avoidDanger();
-		
+
 		// 4. Capture and opponent piece.
 		if (turnComplete) 
 			turnComplete = capture();
-		
+
 		// 5. Move towards the opponent King.
 		if (turnComplete) 
 			turnComplete = moveForward();
-		
+
 	}
 
 	/******************************************************************
@@ -410,7 +408,7 @@ public class ChessModel implements IChessModel {
 		}
 		return false;
 	}
-	
+
 	/******************************************************************
 	 * This method is part of the AI feature. Attempt to put the 
 	 * opponent into check (or checkmate) without losing its piece. 
@@ -424,7 +422,7 @@ public class ChessModel implements IChessModel {
 		}
 		return false;
 	}
-	
+
 	/******************************************************************
 	 * This method is part of the AI feature. Determine if any of your 
 	 * pieces are in danger. If so, move it to safety.
@@ -438,7 +436,7 @@ public class ChessModel implements IChessModel {
 		}
 		return false;
 	}
-	
+
 	/******************************************************************
 	 * This method is part of the AI feature. Take an opponent piece.
 	 * @return true if the move is complete, false if not.
@@ -451,7 +449,7 @@ public class ChessModel implements IChessModel {
 		}
 		return false;
 	}
-	
+
 	/******************************************************************
 	 * This method is part of the AI feature. Move a piece (pawns 
 	 * first) forward towards the opponent's King. Check to see if 
