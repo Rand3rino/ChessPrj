@@ -21,8 +21,6 @@ public class ChessModel implements IChessModel {
 	/** Array to hold all chessPieces */
 	private ChessPiece[] chessPieces = new ChessPiece[32];
 
-	private Player playerName;
-
 	// Declare other instance variables as needed
 
 	/**************************************************************
@@ -260,9 +258,9 @@ public class ChessModel implements IChessModel {
 		ArrayList<Move> moves = new ArrayList();
 
 		// check other player's pieces to see if it can capture King
-		playerName.next();
+		player.next();
 
-		if (playerName == Player.BLACK) {
+		if (player == Player.BLACK) {
 			// add each player's move to the array list "moves"
 			for (int count = 0; count < 16; count++) {
 				int fromRow = chessPieces[count].getRow(chessPieces[count], board);
@@ -297,7 +295,7 @@ public class ChessModel implements IChessModel {
 			return true;
 		}
 
-		playerName.next();
+		player.next();
 		// Player is not in check
 		return false;
 	}
