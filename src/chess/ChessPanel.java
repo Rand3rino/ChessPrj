@@ -263,8 +263,16 @@ public class ChessPanel extends JPanel {
 		}
 	}
 	
-	private void promotion() {
-		//String desc = ((ImageIcon)board[row][col].getIcon()).getDescription();
+	private void promotion(Move move) {
+		String desc = ((ImageIcon)board[move.fromRow][move.fromColumn].getIcon()).getDescription();
+		if (desc.charAt(0) == 'b') {
+			if(move.toRow == 7)
+				board[move.fromRow][move.fromColumn].setIcon(bQueenIcon);
+		}
+		else if (desc.charAt(0) == 'w') {
+			if(move.toRow == 0)
+				board[move.fromRow][move.fromColumn].setIcon(wQueenIcon);
+		}
 	}
 
 	// Inner class that represents action listener for buttons
@@ -293,6 +301,7 @@ public class ChessPanel extends JPanel {
 							move = new Move(firstRow, firstCol, row, col);
 							if (model.isValidMove(move)) {
 								model.move(move);
+								promotion(move);
 								board[row][col].setIcon(board[firstRow][firstCol].getIcon());
 								board[firstRow][firstCol].setIcon(null);
 							} else
