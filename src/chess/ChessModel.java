@@ -26,6 +26,8 @@ public class ChessModel implements IChessModel {
 	
 	/** Array to hold all chessPieces */
 	private ChessPiece[] chessPieces = new ChessPiece[32];
+	
+	private Move move;
 
 	// Declare other instance variables as needed
 
@@ -238,7 +240,7 @@ public class ChessModel implements IChessModel {
 		
 		// Promote any pawns.
 		promotion();
-		player.next();
+		player = player.next();
 	}
 
 	/******************************************************************
@@ -438,7 +440,7 @@ public class ChessModel implements IChessModel {
 		if (inCheck(AI)) {
 			for (int row = -1, col = -1; col < 2; col++)
 				
-				chessPieces[4].isValidMove(move, board)
+				chessPieces[4].isValidMove(move, board);
 				// if (!inCheck(AI))
 				// return true;
 			
