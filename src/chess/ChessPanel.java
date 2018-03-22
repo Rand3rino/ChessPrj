@@ -214,7 +214,7 @@ public class ChessPanel extends JPanel {
 
 				//check if button has a piece on it
 				if(board[row][col].getIcon() != null) {
-					
+
 					// get the name of the icon on that button
 					String desc = ((ImageIcon)board[row][col].getIcon()).getDescription();
 
@@ -245,8 +245,8 @@ public class ChessPanel extends JPanel {
 		public void actionPerformed(ActionEvent event) {
 			JComponent comp = (JComponent) event.getSource();
 
-			disableInvalidSquares(model.currentPlayer());
-			
+			//disableInvalidSquares(model.currentPlayer());
+
 			// Complete this.
 			for (int row = 0; row < 8; row++) {
 				for (int col = 0; col < 8; col++) {
@@ -269,8 +269,15 @@ public class ChessPanel extends JPanel {
 
 						// store the players first move
 						else {
-							firstRow = row;
-							firstCol = col;
+							if(board[row][col].getIcon() == null) {
+								JOptionPane.showMessageDialog(null, 
+										"Invalid Move.");
+								count--;
+							}
+							else {
+								firstRow = row;
+								firstCol = col;
+							}
 						}
 					}
 				}
