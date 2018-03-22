@@ -171,27 +171,29 @@ public class ChessModel implements IChessModel {
 	 * represent valid locations on the board.
 	 *****************************************************************/
 	public boolean isValidMove(Move move) {
-		// If move isn't within the board, throw error.
-		if (move.toRow < 0 || move.toRow > 9 || 
-				move.toColumn < 0 || move.toColumn > 9)
-			throw new IndexOutOfBoundsException();
-
-		// Prevents the piece being dropped on the same square.
-		if (move.fromRow == move.toRow && 
-				move.fromColumn == move.toColumn)
-			return false;
-
-		// Prevents the player to move from an empty square.
-		else if(board[move.fromRow][move.fromColumn] == null)
-			return false;
-
-		// Prevents the player from taking their own piece.
-		else if(board[move.toRow][move.toColumn] != null)
-			if(board[move.toRow][move.toColumn].
-					player() == currentPlayer())
-				return false;
-
-		return true;
+		return piece.isValidMove(move, board);
+		
+//		// If move isn't within the board, throw error.
+//		if (move.toRow < 0 || move.toRow > 9 || 
+//				move.toColumn < 0 || move.toColumn > 9)
+//			throw new IndexOutOfBoundsException();
+//
+//		// Prevents the piece being dropped on the same square.
+//		if (move.fromRow == move.toRow && 
+//				move.fromColumn == move.toColumn)
+//			return false;
+//
+//		// Prevents the player to move from an empty square.
+//		else if(board[move.fromRow][move.fromColumn] == null)
+//			return false;
+//
+//		// Prevents the player from taking their own piece.
+//		else if(board[move.toRow][move.toColumn] != null)
+//			if(board[move.toRow][move.toColumn].
+//					player() == currentPlayer())
+//				return false;
+//
+//		return true;
 	}
 
 	/******************************************************************
@@ -223,7 +225,9 @@ public class ChessModel implements IChessModel {
 
 		// Place the piece on the new square.
 		board[move.toRow][move.toColumn] = piece;
-
+		
+		// Promote any pawns.
+		promotion();
 	}
 
 	/******************************************************************
@@ -347,6 +351,17 @@ public class ChessModel implements IChessModel {
 	}
 
 	// Add other public or helper methods as needed.
+	
+	/******************************************************************
+	 * This method will check if a pawn is ready for promotion and 
+	 * promote it to a Queen.
+	 *****************************************************************/
+	private void promotion() {
+		for (int row = 0, col = 0; col < 8; col++) {
+			if (board[0][col] == piece);
+		}
+	}
+	
 
 
 	/******************************************************************
