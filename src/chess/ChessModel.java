@@ -186,9 +186,10 @@ public class ChessModel implements IChessModel {
 			return false;
 
 		// Prevents the player from taking their own piece.
-		else if(board[move.toRow][move.toColumn].
-				player() == player)
-			return false;
+		else if(board[move.toRow][move.toColumn] != null)
+			if(board[move.toRow][move.toColumn].
+					player() == currentPlayer())
+				return false;
 
 		return true;
 	}
@@ -216,14 +217,9 @@ public class ChessModel implements IChessModel {
 		// Empty the space that the piece is leaving.
 		board[move.fromRow][move.fromColumn] = null;
 
-		// FIXME: Do something if the piece is capturing another?
-		if (pieceAt(move.toRow, move.toColumn).player() 
-				!= currentPlayer()) {
-
-			// pieceAt(move.toRow, move.toColumn) == really dead.
-			board[move.toRow][move.toColumn] = null;
-			board[move.toRow][move.toColumn] = piece;
-		}
+		// pieceAt(move.toRow, move.toColumn) == really dead.
+		board[move.toRow][move.toColumn] = null;
+		board[move.toRow][move.toColumn] = piece;
 
 		// Place the piece on the new square.
 		board[move.toRow][move.toColumn] = piece;
