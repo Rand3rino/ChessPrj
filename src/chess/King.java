@@ -105,17 +105,17 @@ public class King extends ChessPiece{
 	private boolean moveDownRow(Move move) {
 		
 		// Move row + 1, column - 1.
-		if (move.toRow    == move.fromRow &&
+		if (move.toRow    == move.fromRow + 1 &&
 			move.toColumn == move.fromColumn - 1)
 			return true;
 		
 		// Move row + 1, column + 0.
-		if (move.toRow    == move.fromRow &&
+		if (move.toRow    == move.fromRow + 1 &&
 			move.toColumn == move.fromColumn)
 			return true;
 		
 		// Move row + 1, column + 1.
-		if (move.toRow    == move.fromRow &&
+		if (move.toRow    == move.fromRow + 1 &&
 			move.toColumn == move.fromColumn + 1)
 			return true;
 		
