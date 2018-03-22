@@ -57,7 +57,6 @@ public class ChessPanel extends JPanel {
 	private ButtonListener listener = new ButtonListener();
 
 	public ChessPanel() {
-		// Complete this.
 
 		model = new ChessModel();
 		move = new Move();
