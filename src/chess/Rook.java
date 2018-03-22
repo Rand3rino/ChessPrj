@@ -34,7 +34,11 @@ public class Rook extends ChessPiece {
 		if(!(super.isHoriOrVert(move, board)))
 				return false;
 		
-		return super.isOpenHori(move, board);
+		if(move.toColumn != move.fromColumn)
+			return super.isOpenHori(move, board);
+		
+		else
+			return super.isOpenVert(move, board);
 	}
 
 	/******************************************************************
