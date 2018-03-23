@@ -79,22 +79,85 @@ public class TurnComputer {
 	 * @return true if the move is complete, false if not.
 	 *****************************************************************/
 	private boolean getOutOfCheck() {
-		
-		int kingRow = chessPieces[4].getRow(chessPieces[4], board);
-		int kingCol = chessPieces[4].getCol(chessPieces[4], board);
-		
+
+		int piece = 16;
+
 		if (model.inCheck(AI)) {
-			for (int row = -1, col = -1; col < 2; col++)
-				
-				chessPieces[4].isValidMove(move, board);
-				// if (!inCheck(AI))
-				// return true;
-			
-			// Attempt to get out of check.
-			// if (!inCheck(AI))
-				// return true;
-			// First try King, then other pieces to block the check.
-			return true;
+
+			// Save the starting location of the Black King.
+			int kingRow = chessPieces[4].getRow(chessPieces[4], board);
+			int kingCol = chessPieces[4].getCol(chessPieces[4], board);
+
+			// Move the King first. Try each direction.
+			for (int row = -1; row < 2; row++)
+				for (int col = -1; col < 2; col++) {
+					move = new Move(kingRow, kingCol, kingRow + row,
+							kingCol + col);
+
+					// Continue if this is a valid move.
+					if (chessPieces[4].isValidMove(move, board)) {
+						model.move(move);
+
+						// No longer in check, the move is over.
+						if (!model.inCheck(AI))
+							return true;
+
+						// Still in check, cancel the last move.
+						else {
+							move = new Move(kingRow + row, 
+									kingCol + col, kingRow, kingCol);
+							model.move(move);
+						}
+					}
+				}
+
+			// Move all other pieces to get out of check.
+			while (piece > -1) {
+
+				if (chessPieces[piece] != null) {
+
+					// Save the starting location of the piece.
+					int pieceRow = chessPieces[piece].getRow
+							(chessPieces[piece], board);
+					int pieceCol = chessPieces[piece].getCol
+							(chessPieces[piece], board);
+
+					// Move every piece to every possible location.
+					for (int row = -8; row <= 8; row++)
+						for (int col = -8; col <= 8; col++) {
+							move = new Move(pieceRow, pieceCol,
+									pieceRow + row, pieceCol + col);
+
+							// Continue if this is a valid move.
+							if (chessPieces[piece].isValidMove
+									(move, board)) {
+
+								model.move(move);
+
+								// No longer checked, the move is over.
+								if (!model.inCheck(AI))
+									return true;
+
+								// Still checked, cancel the last move.
+								else {
+									move = new Move(pieceRow + row,
+										pieceCol + col, pieceRow,
+										pieceCol);
+									model.move(move);
+								}
+							}
+						}
+				}
+
+				// Skip the King piece.
+				if (piece == 5)
+					piece = 3;
+
+				// Decrement to move another piece.
+				else {
+					piece--;
+				}
+			}
 		}
 		return false;
 	}
