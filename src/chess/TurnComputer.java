@@ -168,9 +168,60 @@ public class TurnComputer {
 	 * @return true if the move is complete, false if not.
 	 *****************************************************************/
 	private boolean putInCheck() {
-		// Move all.
-		if (model.inCheck(HUMAN)) 
-			return true;
+		
+		//FIXME: Does not check that the piece can be lost.
+		
+		int piece = 16;
+
+		// Move all pieces to check the player.
+		while (piece > -1) {
+
+			// Make sure this is an active piece.
+			if (chessPieces[piece] != null) {
+
+				// Save the starting location of the piece.
+				int pieceRow = chessPieces[piece].getRow
+						(chessPieces[piece], board);
+				int pieceCol = chessPieces[piece].getCol
+						(chessPieces[piece], board);
+
+				// Move every piece to every possible location.
+				for (int row = -8; row <= 8; row++)
+					for (int col = -8; col <= 8; col++) {
+						move = new Move(pieceRow, pieceCol, 
+								pieceRow + row, pieceCol + col);
+
+						// Continue if this is a valid move.
+						if (chessPieces[piece].isValidMove
+								(move, board)) {
+
+							model.move(move);
+
+							// No longer checked, the move is over.
+							if (!model.inCheck(HUMAN))
+								return true;
+
+							// Still checked, cancel the last move.
+							else {
+								move = new Move(pieceRow + row, 
+									pieceCol + col, pieceRow,
+									pieceCol);
+								model.move(move);
+							}
+						}
+					}
+			}
+
+			// Skip the King piece.
+			if (piece == 5)
+				piece = 3;
+
+			// Decrement to move another piece.
+			else {
+				piece--;
+			}
+		}
+
 		return false;
 	}
 
@@ -209,11 +260,41 @@ public class TurnComputer {
 	 * @return true if the move is complete, false if not.
 	 *****************************************************************/
 	private boolean moveForward() {
-		if (model.inCheck(player)) {
-			// Attempt to get out of check.
-			// First try King, then other pieces to block the check.
-			return true;
+		
+		//FIXME Right now is moves all pawns beyond the first two rows.
+		
+		
+		// Move all pawns first.
+		for (int pawnNum = 15; pawnNum > 7; pawnNum--) {
+			
+			// Make sure this is an active piece.
+			if (chessPieces[pawnNum] != null) {
+
+				// Save the starting location of the piece.
+				int pawnRow = chessPieces[pawnNum].getRow
+						(chessPieces[pawnNum], board);
+				int pawnCol = chessPieces[pawnNum].getCol
+						(chessPieces[pawnNum], board);
+
+				// If the pawn is in the starting row, move two spaces.
+				if (pawnRow == 1)
+					move = new Move(pawnRow, pawnCol,
+							pawnRow + 2, pawnCol);
+				
+				// If the pawn is in the second row, advance one space.
+				else if (pawnRow == 2)
+					move = new Move(pawnRow, pawnCol,
+							pawnRow + 1, pawnCol);
+				
+				// Continue if this is a valid move.
+				if (chessPieces[pawnNum].isValidMove
+						(move, board)) {
+					model.move(move);
+					return true;
+				}
+			}
 		}
+		
 		return false;
 	}
 }
