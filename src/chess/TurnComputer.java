@@ -80,7 +80,7 @@ public class TurnComputer {
 	 *****************************************************************/
 	private boolean getOutOfCheck() {
 
-		int piece = 16;
+		int piece = 15;
 
 		if (model.inCheck(AI)) {
 
@@ -112,7 +112,7 @@ public class TurnComputer {
 				}
 
 			// Move all other pieces to get out of check.
-			while (piece > -1) {
+			while (piece > -1)
 
 				if (chessPieces[piece] != null) {
 
@@ -123,8 +123,8 @@ public class TurnComputer {
 							(chessPieces[piece], board);
 
 					// Move every piece to every possible location.
-					for (int row = -8; row <= 8; row++)
-						for (int col = -8; col <= 8; col++) {
+					for (int row = -7; row <= 7; row++)
+						for (int col = -7; col <= 7; col++) {
 							move = new Move(pieceRow, pieceCol,
 									pieceRow + row, pieceCol + col);
 
@@ -154,10 +154,8 @@ public class TurnComputer {
 					piece = 3;
 
 				// Decrement to move another piece.
-				else {
+				else
 					piece--;
-				}
-			}
 		}
 		return false;
 	}
@@ -171,10 +169,10 @@ public class TurnComputer {
 		
 		//FIXME: Does not check that the piece can be lost.
 		
-		int piece = 16;
+		int piece = 15;
 
 		// Move all pieces to check the player.
-		while (piece > -1) {
+		while (piece > -1)
 
 			// Make sure this is an active piece.
 			if (chessPieces[piece] != null) {
@@ -186,8 +184,8 @@ public class TurnComputer {
 						(chessPieces[piece], board);
 
 				// Move every piece to every possible location.
-				for (int row = -8; row <= 8; row++)
-					for (int col = -8; col <= 8; col++) {
+				for (int row = -7; row <= 7; row++)
+					for (int col = -7; col <= 7; col++) {
 						move = new Move(pieceRow, pieceCol, 
 								pieceRow + row, pieceCol + col);
 
@@ -217,10 +215,8 @@ public class TurnComputer {
 				piece = 3;
 
 			// Decrement to move another piece.
-			else {
+			else 
 				piece--;
-			}
-		}
 
 		return false;
 	}
@@ -231,11 +227,47 @@ public class TurnComputer {
 	 * @return true if the move is complete, false if not.
 	 *****************************************************************/
 	private boolean avoidDanger() {
-		if (model.inCheck(player)) {
-			// Attempt to get out of check.
-			// First try King, then other pieces to block the check.
-			return true;
-		}
+
+		int piece = 16;
+
+		// Move all pieces to check the player.
+		while (piece < 32)
+
+			// Make sure this is an active piece.
+			if (chessPieces[piece] != null) {
+
+				// Save the starting location of the piece.
+				int pieceRow = chessPieces[piece].getRow
+						(chessPieces[piece], board);
+				int pieceCol = chessPieces[piece].getCol
+						(chessPieces[piece], board);
+
+				// Scan the board for an AI Piece.
+				for (int row = 0; row < 8; row++)
+					for (int col = 0; col < 8; col++)
+						if (model.pieceAt(row, col).player() == AI)
+
+							// Move the AI piece out of danger.
+							for (row = -7; row <= 7; row++)
+								for (col = -7; col <= 7; col++) {
+									move = new Move(pieceRow, pieceCol,
+											pieceRow+row, pieceCol+col);
+
+									// Continue if move is valid.
+									if (chessPieces[piece].isValidMove
+											(move, board)) {
+										model.move(move);
+										return true;
+									}
+								}
+				// Skip the King piece.
+				if (piece == 5)
+					piece = 3;
+
+				// Decrement to move another piece.
+				else
+					piece--;
+			}
 		return false;
 	}
 
@@ -244,11 +276,46 @@ public class TurnComputer {
 	 * @return true if the move is complete, false if not.
 	 *****************************************************************/
 	private boolean capture() {
-		if (model.inCheck(player)) {
-			// Attempt to get out of check.
-			// First try King, then other pieces to block the check.	
-			return true;
-		}
+
+		int piece = 15;
+
+		// Move all pieces to check the player.
+		while (piece > -1)
+
+			// Make sure this is an active piece.
+			if (chessPieces[piece] != null) {
+
+				// Save the starting location of the piece.
+				int pieceRow = chessPieces[piece].getRow
+						(chessPieces[piece], board);
+				int pieceCol = chessPieces[piece].getCol
+						(chessPieces[piece], board);
+
+				// Scan the board for a Human piece.
+				for (int row = 0; row < 8; row++)
+					for (int col = 0; col < 8; col++)
+						if (model.pieceAt(row, col).player() == HUMAN) {
+							
+							// Construct a move to capture this piece.
+							move = new Move(pieceRow, pieceCol,
+									row, col);
+
+							// Continue if this is a valid move.
+							if (chessPieces[piece].isValidMove
+									(move, board)) {
+								model.move(move);
+								return true;
+							}
+						}
+			}
+			// Skip the King piece.
+			if (piece == 5)
+				piece = 3;
+
+			// Decrement to move another piece.
+			else
+				piece--;
+			
 		return false;
 	}
 
@@ -265,7 +332,7 @@ public class TurnComputer {
 		
 		
 		// Move all pawns first.
-		for (int pawnNum = 15; pawnNum > 7; pawnNum--) {
+		for (int pawnNum = 15; pawnNum > 7; pawnNum--)
 			
 			// Make sure this is an active piece.
 			if (chessPieces[pawnNum] != null) {
@@ -293,8 +360,6 @@ public class TurnComputer {
 					return true;
 				}
 			}
-		}
-		
 		return false;
 	}
 }
