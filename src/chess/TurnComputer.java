@@ -89,8 +89,8 @@ public class TurnComputer {
 			int kingCol = chessPieces[4].getCol(chessPieces[4], board);
 
 			// Move the King first. Try each direction.
-			for (int row = -1; row < 2; row++)
-				for (int col = -1; col < 2; col++) {
+			for (int row = -1; row <= 1; row++)
+				for (int col = -1; col <= 1; col++) {
 					move = new Move(kingRow, kingCol, kingRow + row,
 							kingCol + col);
 
@@ -112,8 +112,9 @@ public class TurnComputer {
 				}
 
 			// Move all other pieces to get out of check.
-			while (piece > -1)
+			while (piece >= 0)
 
+				// Continue if this piece is active.
 				if (chessPieces[piece] != null) {
 
 					// Save the starting location of the piece.
@@ -131,7 +132,6 @@ public class TurnComputer {
 							// Continue if this is a valid move.
 							if (chessPieces[piece].isValidMove
 									(move, board)) {
-
 								model.move(move);
 
 								// No longer checked, the move is over.
@@ -172,7 +172,7 @@ public class TurnComputer {
 		int piece = 15;
 
 		// Move all pieces to check the player.
-		while (piece > -1)
+		while (piece >= 0)
 
 			// Make sure this is an active piece.
 			if (chessPieces[piece] != null) {
@@ -261,12 +261,12 @@ public class TurnComputer {
 									}
 								}
 				// Skip the King piece.
-				if (piece == 5)
-					piece = 3;
+				if (piece == 27)
+					piece = 29;
 
-				// Decrement to move another piece.
+				// Increment to move another piece.
 				else
-					piece--;
+					piece++;
 			}
 		return false;
 	}
