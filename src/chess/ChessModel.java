@@ -415,11 +415,11 @@ public class ChessModel implements IChessModel {
 							// No longer checked, the move is over.
 							if (!inCheck(Player.BLACK))
 								return false;
+				//decrement the move to another piece
+				piece--;
 			}
 
-			// Decrement to move another piece.
-			else
-				piece--;
+				
 		}
 
 		return true;
@@ -455,11 +455,9 @@ public class ChessModel implements IChessModel {
 							// No longer checked, the move is over.
 							if (!inCheck(Player.WHITE))
 								return false;
-			}
-
-			// Decrement to move another piece.
-			else
 				piece++;
+			}
+				
 		}
 
 		return true;
