@@ -59,6 +59,13 @@ public abstract class ChessPiece implements IChessPiece {
 	public boolean hasMoved() {
 		return hasMoved;
 	}
+	
+	/******************************************************************
+	 * Set the status of this piece to has moved.
+	 *****************************************************************/
+	public void setHasMoved() {
+		this.hasMoved = true;
+	}
 
 	/******************************************************************
 	 * Return the column the piece is in

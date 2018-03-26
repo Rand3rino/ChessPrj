@@ -222,12 +222,6 @@ public class ChessModel implements IChessModel {
 	 *************************************************************/
 	public void move(Move move) {
 
-		// FIXME: Necessary?
-		//		// If move isn't within the board, throw error.
-		//		if (move.toRow < 0 || move.toRow > 9 || 
-		//			move.toColumn < 0 || move.toColumn > 9)
-		//			throw new IndexOutOfBoundsException();
-
 		// Save the piece that is moving.
 		piece = pieceAt(move.fromRow, move.fromColumn);
 
@@ -241,11 +235,137 @@ public class ChessModel implements IChessModel {
 		// Place the piece on the new square.
 		board[move.toRow][move.toColumn] = piece;
 		
+		// This piece has moved at least once.
+		for (int pieceNum = 0; pieceNum < 32; pieceNum++) {
+			if (chessPieces[pieceNum] == piece) {
+				chessPieces[pieceNum].setHasMoved();
+			}
+		}
+		
 		// Promote any pawns.
 		promotion();
 		player = player.next();
 	}
 
+	/******************************************************************
+	 * This method determines if a player can castle short-side.
+	 * 
+	 * @param p The Player attempting to castle.
+	 * @return true of the player can castle, false if not.
+	 *****************************************************************/
+	public boolean castleShortSide(Player p) {
+		
+		
+		if (p == Player.BLACK)
+			if (chessPieces[4].hasMoved() || chessPieces[7].hasMoved())
+				return false;
+			else if (board[0][5] != null || board[0][6] != null)
+				return false;
+		
+		if (p == Player.WHITE)
+			if (chessPieces[28].hasMoved() || chessPieces[31].hasMoved())
+				return false;
+			else if (board[7][5] != null || board[7][6] != null)
+				return false;
+		
+		return true;
+	}
+	
+	/******************************************************************
+	 * This method determines if a player can castle long-side.
+	 * 
+	 * @param p The Player attempting to castle.
+	 * @return true of the player can castle, false if not.
+	 *****************************************************************/
+	public boolean castleLongSide(Player p) {
+		
+		if (p == Player.BLACK)
+			if (chessPieces[4].hasMoved() || chessPieces[0].hasMoved())
+				return false;
+			else if (board[0][1] != null || board[0][2] != null
+					|| board[0][3] != null)
+				return false;
+		
+		if (p == Player.WHITE)
+			if (chessPieces[28].hasMoved() || chessPieces[24].hasMoved())
+				return false;
+			else if (board[7][2] != null || board[7][2] != null
+					|| board[7][3] != null)
+				return false;
+		
+		return true;
+	}
+	
+	/******************************************************************
+	 * This method performs a short-side castle.
+	 * 
+	 * @param p The Player castling.
+	 *****************************************************************/
+	public void moveCastleShortSide(Player p) {
+		
+		if (p == Player.BLACK) {
+			board[0][4] = null;
+			board[0][7] = null;
+			
+			chessPieces[4] = new King(Player.BLACK, 10);
+			chessPieces[4].setHasMoved();
+			board[0][6] = chessPieces[4];
+			
+			chessPieces[7] = new Rook(Player.BLACK, 5);
+			chessPieces[7].setHasMoved();
+			board[0][5] = chessPieces[7];
+			player = player.next();
+		}
+		if (p == Player.WHITE) {
+			board[7][4] = null;
+			board[7][7] = null;
+			
+			chessPieces[28] = new King(Player.WHITE, 10);
+			chessPieces[28].setHasMoved();
+			board[7][6] = chessPieces[28];
+			
+			chessPieces[31] = new Rook(Player.WHITE, 5);
+			chessPieces[31].setHasMoved();
+			board[7][5] = chessPieces[31];
+			player = player.next();
+		}
+	}
+	
+	/******************************************************************
+	 * This method performs a long-side castle.
+	 * 
+	 * @param p The Player castling.
+	 *****************************************************************/
+	public void moveCastleLongSide(Player p) {
+		
+		if (p == Player.BLACK) {
+			board[0][4] = null;
+			board[0][0] = null;
+			
+			chessPieces[4] = new King(Player.BLACK, 10);
+			chessPieces[4].setHasMoved();
+			board[0][2] = chessPieces[4];
+			
+			chessPieces[0] = new Rook(Player.BLACK, 5);
+			chessPieces[0].setHasMoved();
+			board[0][3] = chessPieces[0];
+			player = player.next();
+		}
+		if (p == Player.WHITE) {
+			board[7][4] = null;
+			board[7][0] = null;
+			
+			chessPieces[28] = new King(Player.WHITE, 10);
+			chessPieces[28].setHasMoved();
+			board[7][2] = chessPieces[28];
+			
+			chessPieces[24] = new Rook(Player.WHITE, 5);
+			chessPieces[24].setHasMoved();
+			board[7][3] = chessPieces[24];
+			player = player.next();
+		}
+	}
+	
 	/******************************************************************
 	 * This method determines if a player's King is in check.
 	 * 
@@ -285,14 +405,114 @@ public class ChessModel implements IChessModel {
 						if(isValidMove(new Move(r, c, kingRow,
 								kingCol)))
 							if(board[r][c].isValidMove(new Move(r, c,
-									kingRow, kingCol), board))
+									kingRow, kingCol), board)) {
+								player = player.next();
 								return true;
-		
+							}
 		// Player is not in check
 		player = player.next();
 		return false;
 	}
+	
+	/******************************************************************
+	 * This method determines if a player's King is in checkmate.
+	 * 
+	 * @param p The Player being checked.
+	 * @return true of the player is in check, false if not.
+	 *****************************************************************/
+	public boolean inCheckMate(Player p) {
 
+		if (p == Player.BLACK)
+			return blackCheckMate(15);
+		else 
+			return whiteCheckMate(16);
+
+	}
+
+	/******************************************************************
+	 * This method determines if the Black King is in checkmate.
+	 * 
+	 * @param piece Black has pieces in array location 15 to 0.
+	 * @return true of the player is in check, false if not.
+	 *****************************************************************/
+	private boolean blackCheckMate(int piece) {
+		
+		// Move all other pieces to get out of check.
+		while (piece >= 0) {
+
+			// Continue if this piece is active.
+			if (chessPieces[piece] != null) {
+
+				// Save the starting location of the piece.
+				int pieceRow = chessPieces[piece].getRow(chessPieces[piece], board);
+				int pieceCol = chessPieces[piece].getCol(chessPieces[piece], board);
+
+				// Move every piece to every possible location.
+				for (int row = -7; row <= 7; row++)
+					for (int col = -7; col <= 7; col++) 
+
+//						if ((pieceRow+row) >= 0 && (pieceRow+row) < 8
+//						&& (pieceCol+col) >=0 &&
+//						(pieceCol+col) < 8)
+					// FIXME HAS INDEX OUT OF BOUNDS
+
+
+						// Continue if this is a valid move.
+						if (chessPieces[piece].isValidMove(new Move
+								(pieceRow, pieceCol, pieceRow + row,
+									pieceCol + col), board))
+
+							// No longer checked, the move is over.
+							if (!inCheck(Player.BLACK))
+								return false;
+			}
+
+		// Decrement to move another piece.
+		else
+			piece--;
+		}
+
+		return true;
+	}
+
+	/******************************************************************
+	 * This method determines if the White King is in checkmate.
+	 * 
+	 * @param piece White has pieces in array location 16 to 32.
+	 * @return true of the player is in check, false if not.
+	 *****************************************************************/
+	private boolean whiteCheckMate(int piece) {
+		// Move all other pieces to get out of check.
+		while (piece < 32) {
+
+			// Continue if this piece is active.
+			if (chessPieces[piece] != null) {
+
+				// Save the starting location of the piece.
+				int pieceRow = chessPieces[piece].getRow(chessPieces[piece], board);
+				int pieceCol = chessPieces[piece].getCol(chessPieces[piece], board);
+
+				// Move every piece to every possible location.
+				for (int row = -7; row <= 7; row++)
+					for (int col = -7; col <= 7; col++)
+
+						// Continue if this is a valid move.
+						if (chessPieces[piece].isValidMove(new Move(pieceRow, pieceCol, pieceRow + row, pieceCol + col),
+								board))
+
+							// No longer checked, the move is over.
+							if (!inCheck(Player.WHITE))
+								return false;
+			}
+
+			// Decrement to move another piece.
+			else
+				piece++;
+		}
+
+		return true;
+	}
+	
 	/******************************************************************
 	 * Return the current player. 
 	 * @return Player The current player.
@@ -366,129 +586,5 @@ public class ChessModel implements IChessModel {
 					chessPieces[pawnNumber] = new Queen(Player.BLACK, 9);
 					board[0][col] = chessPieces[pawnNumber];
 				}
-
-	}
-	
-
-
-	/******************************************************************
-	 * This method is the AI feature. The AI will follow these 
-	 * priorities:
-	 * 		1. Check to see if it is in check. 
-	 * 		2. Attempt to put the opponent into check (or checkmate).
-	 * 		3. Determine if any of your pieces are in danger. 
-	 * 		4. Capture an opponent piece.
-	 * 		5. Move a piece (pawns first) forward towards the
-	 *  		   opponent's King.
-	 *****************************************************************/
-	public void turnComputer() {
-
-		// AI will always be BLACK.
-		player = AI;
-
-		// Variable to skip processes if the turn is complete.
-		boolean turnComplete = false;
-
-		// 1. Check if the AI is in check.
-		turnComplete = getOutOfCheck();
-
-		// 2. Put the opponent is in check.
-		if (turnComplete) 
-			turnComplete = putInCheck();
-
-		// 3. Move a piece if it is in danger.
-		if (turnComplete) 
-			turnComplete = avoidDanger();
-
-		// 4. Capture and opponent piece.
-		if (turnComplete) 
-			turnComplete = capture();
-
-		// 5. Move towards the opponent King.
-		if (turnComplete) 
-			turnComplete = moveForward();
-
-	}
-
-	/******************************************************************
-	 * This method is part of the AI feature. Check to see if it is 
-	 * in check. If so, get out of check by moving the King or placing 
-	 * a piece to block the check.
-	 * @return true if the move is complete, false if not.
-	 *****************************************************************/
-	private boolean getOutOfCheck() {
-		
-		int kingRow = chessPieces[4].getRow(chessPieces[4], board);
-		int kingCol = chessPieces[4].getCol(chessPieces[4], board);
-		
-		if (inCheck(AI)) {
-			for (int row = -1, col = -1; col < 2; col++)
-				
-				chessPieces[4].isValidMove(move, board);
-				// if (!inCheck(AI))
-				// return true;
-			
-			// Attempt to get out of check.
-			// if (!inCheck(AI))
-				// return true;
-			// First try King, then other pieces to block the check.
-			return true;
-		}
-		return false;
-	}
-
-	/******************************************************************
-	 * This method is part of the AI feature. Attempt to put the 
-	 * opponent into check (or checkmate) without losing its piece. 
-	 * @return true if the move is complete, false if not.
-	 *****************************************************************/
-	private boolean putInCheck() {
-		// Move all.
-		if (inCheck(HUMAN)) 
-			return true;
-		return false;
-	}
-
-	/******************************************************************
-	 * This method is part of the AI feature. Determine if any of your 
-	 * pieces are in danger. If so, move it to safety.
-	 * @return true if the move is complete, false if not.
-	 *****************************************************************/
-	private boolean avoidDanger() {
-		if (inCheck(player)) {
-			// Attempt to get out of check.
-			// First try King, then other pieces to block the check.
-			return true;
-		}
-		return false;
-	}
-
-	/******************************************************************
-	 * This method is part of the AI feature. Take an opponent piece.
-	 * @return true if the move is complete, false if not.
-	 *****************************************************************/
-	private boolean capture() {
-		if (inCheck(player)) {
-			// Attempt to get out of check.
-			// First try King, then other pieces to block the check.	
-			return true;
-		}
-		return false;
-	}
-
-	/******************************************************************
-	 * This method is part of the AI feature. Move a piece (pawns 
-	 * first) forward towards the opponent's King. Check to see if 
-	 * that piece is in danger of being captured. If so, move a 
-	 * different piece.
-	 * @return true if the move is complete, false if not.
-	 *****************************************************************/
-	private boolean moveForward() {
-		if (inCheck(player)) {
-			// Attempt to get out of check.
-			// First try King, then other pieces to block the check.
-			return true;
-		}
-		return false;
 	}
 }
