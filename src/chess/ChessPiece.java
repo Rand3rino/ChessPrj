@@ -76,7 +76,7 @@ public abstract class ChessPiece implements IChessPiece {
 		for (int r = 0; r < 8; r++) {
 			for (int c = 0; c < 8; c++) {
 				if(board[r][c] != null)
-					if (board[r][c].getClass() == piece.getClass())
+					if (board[r][c] == piece)
 						if (board[r][c].player() == piece.player())
 							return c;
 			}
@@ -93,7 +93,7 @@ public abstract class ChessPiece implements IChessPiece {
 		for (int r = 0; r < 8; r++) {
 			for (int c = 0; c < 8; c++) {
 				if(board[r][c] != null)
-					if (board[r][c].getClass() == piece.getClass())
+					if (board[r][c] == piece)
 						if (board[r][c].player() == piece.player())
 							return r;
 			}

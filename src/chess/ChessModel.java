@@ -380,7 +380,6 @@ public class ChessModel implements IChessModel {
 		if (p == Player.WHITE) {
 			
 			// get White king position
-			System.out.println("Got in");
 			kingRow = chessPieces[28].getRow(chessPieces[28], board);
 			kingCol = chessPieces[28].getCol(chessPieces[28], board);
 		}
@@ -394,9 +393,7 @@ public class ChessModel implements IChessModel {
 		
 		
 		player = player.next();
-		
-		if(kingCol == -1 || kingRow == -1)
-			System.out.println("error w/ king KingRow" + kingRow + "kingC: " + kingCol);
+
 		//go through entire board
 		for(int r = 0; r < 8; r++)
 			for(int c = 0; c < 8; c++)
