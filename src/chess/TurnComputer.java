@@ -124,10 +124,10 @@ public class TurnComputer {
 							(chessPieces[piece], board);
 
 					// Move every piece to every possible location.
-					for (int row = -7; row <= 7; row++)
-						for (int col = -7; col <= 7; col++) {
+					for (int row = 0; row <= 7; row++)
+						for (int col = 0; col <= 7; col++) {
 							move = new Move(pieceRow, pieceCol,
-									pieceRow + row, pieceCol + col);
+									row, col);
 
 							// Continue if this is a valid move.
 							if (chessPieces[piece].isValidMove
@@ -184,10 +184,10 @@ public class TurnComputer {
 						(chessPieces[piece], board);
 
 				// Move every piece to every possible location.
-				for (int row = -7; row <= 7; row++)
-					for (int col = -7; col <= 7; col++) {
+				for (int row = 0; row <= 7; row++)
+					for (int col = 0; col <= 7; col++) {
 						move = new Move(pieceRow, pieceCol, 
-								pieceRow + row, pieceCol + col);
+								row, col);
 
 						// Continue if this is a valid move.
 						if (chessPieces[piece].isValidMove
@@ -243,15 +243,15 @@ public class TurnComputer {
 						(chessPieces[piece], board);
 
 				// Scan the board for an AI Piece.
-				for (int row = 0; row < 8; row++)
-					for (int col = 0; col < 8; col++)
+				for (int row = 0; row <= 7; row++)
+					for (int col = 0; col <= 7; col++)
 						if (model.pieceAt(row, col).player() == AI)
 
 							// Move the AI piece out of danger.
-							for (row = -7; row <= 7; row++)
-								for (col = -7; col <= 7; col++) {
+							for (row = 0; row <= 7; row++)
+								for (col = 0; col <= 7; col++) {
 									move = new Move(pieceRow, pieceCol,
-											pieceRow+row, pieceCol+col);
+											row, col);
 
 									// Continue if move is valid.
 									if (chessPieces[piece].isValidMove
@@ -292,8 +292,8 @@ public class TurnComputer {
 						(chessPieces[piece], board);
 
 				// Scan the board for a Human piece.
-				for (int row = 0; row < 8; row++)
-					for (int col = 0; col < 8; col++)
+				for (int row = 0; row <= 7; row++)
+					for (int col = 0; col <= 7; col++)
 						if (model.pieceAt(row, col).player() == HUMAN) {
 							
 							// Construct a move to capture this piece.
