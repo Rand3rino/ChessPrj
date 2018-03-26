@@ -254,18 +254,18 @@ public class ChessModel implements IChessModel {
 	 *****************************************************************/
 	public boolean inCheck(Player p) {
 
-		boolean inCheck = false;
-
 		int kingRow = -1;
 		int kingCol = -1;
 
 		if (p == Player.WHITE) {
+			
 			// get White king position
 			kingRow = chessPieces[28].getRow(chessPieces[28], board);
 			kingCol = chessPieces[28].getCol(chessPieces[28], board);
 		}
 
 		if (p == Player.BLACK) {
+			
 			// get Black king position
 			kingRow = chessPieces[4].getRow(chessPieces[4], board);
 			kingCol = chessPieces[4].getCol(chessPieces[4], board);
@@ -274,68 +274,22 @@ public class ChessModel implements IChessModel {
 		player = player.next();
 		
 		//go through entire board
-		for(int r = 0; r < 8; r++) {
-			for(int c = 0; c < 8; c++) {
+		for(int r = 0; r < 8; r++)
+			for(int c = 0; c < 8; c++)
+				
 				//make sure that board space isn't null
-				if(board[r][c] != null) {
+				if(board[r][c] != null)
+					
 					//piece player = player
-					if(board[r][c].player() == player) {
-						System.out.println("1");
-						if(isValidMove(new Move(r, c, kingRow, kingCol))) {
-							System.out.println("2");
-							if(board[r][c].isValidMove(new Move(r, c, kingRow, kingCol), board)) {
+					if(board[r][c].player() == player)
+						if(isValidMove(new Move(r, c, kingRow,
+								kingCol)))
+							if(board[r][c].isValidMove(new Move(r, c,
+									kingRow, kingCol), board))
 								return true;
-							}
-						}
-					}
-				}
-			}
-		}
-
-//		ArrayList<Move> moves = new ArrayList();
-//
-//		// check other player's pieces to see if it can capture King
-//		player = player.next();
-//
-//		if (player == Player.BLACK) {
-//			// add each player's move to the array list "moves"
-//			for (int count = 0; count < 16; count++) {
-//				int fromRow = chessPieces[count].getRow(chessPieces[count], board);
-//				int fromCol = chessPieces[count].getCol(chessPieces[count], board);
-//				moves.add(new Move(fromRow, fromCol, kingRow, kingCol));
-//			}
-//
-//			// iterated to check if any move is valid
-//			for (int i = 0; i < 16; i++) {
-//				if (chessPieces[i].isValidMove(moves.get(i), board))
-//					if(isValidMove(moves.get(i)))
-//						inCheck = true;
-//			}
-//		}
-//
-//		else {
-//			// add each player's move to the array list "moves"
-//			for (int count = 16; count < 32; count++) {
-//				int fromRow = chessPieces[count].getRow(chessPieces[count], board);
-//				int fromCol = chessPieces[count].getCol(chessPieces[count], board);
-//				moves.add(new Move(fromRow, fromCol, kingRow, kingCol));
-//			}
-//
-//			// iterated to check if any move is valid
-//			for (int i = 0; i < 16; i++) {
-//				if (chessPieces[i + 16].isValidMove(moves.get(i), board))
-//					if(isValidMove(moves.get(i)))
-//						inCheck = true;
-//			}
-//		}
-
-		if (inCheck) {
-			JOptionPane.showMessageDialog(null, "Check");
-			return true;
-		}
-
-		player = player.next();
+		
 		// Player is not in check
+		player = player.next();
 		return false;
 	}
 
