@@ -314,6 +314,7 @@ public class ChessModel implements IChessModel {
 			chessPieces[7] = new Rook(Player.BLACK, 5);
 			chessPieces[7].setHasMoved();
 			board[0][5] = chessPieces[7];
+			player = player.next();
 		}
 		if (p == Player.WHITE) {
 			board[7][4] = null;
@@ -326,6 +327,7 @@ public class ChessModel implements IChessModel {
 			chessPieces[31] = new Rook(Player.WHITE, 5);
 			chessPieces[31].setHasMoved();
 			board[7][5] = chessPieces[31];
+			player = player.next();
 		}
 	}
 	
@@ -347,6 +349,7 @@ public class ChessModel implements IChessModel {
 			chessPieces[0] = new Rook(Player.BLACK, 5);
 			chessPieces[0].setHasMoved();
 			board[0][3] = chessPieces[0];
+			player = player.next();
 		}
 		if (p == Player.WHITE) {
 			board[7][4] = null;
@@ -359,6 +362,7 @@ public class ChessModel implements IChessModel {
 			chessPieces[24] = new Rook(Player.WHITE, 5);
 			chessPieces[24].setHasMoved();
 			board[7][3] = chessPieces[24];
+			player = player.next();
 		}
 	}
 	

@@ -314,14 +314,14 @@ public class ChessPanel extends JPanel {
 				System.exit(1);
 			
 			if(comp == longSide) {
-				model.moveCastleLongSide(model.currentPlayer());
 				iconCastleLong(model.currentPlayer());
+				model.moveCastleLongSide(model.currentPlayer());
 				longSide.setEnabled(false);
 			}
 			
 			if(comp == shortSide) {
-				model.moveCastleShortSide(model.currentPlayer());
 				iconCastleShort(model.currentPlayer());
+				model.moveCastleShortSide(model.currentPlayer());
 				shortSide.setEnabled(false);
 			}
 
