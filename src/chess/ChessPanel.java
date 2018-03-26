@@ -314,6 +314,10 @@ public class ChessPanel extends JPanel {
 								promotion(move);
 								board[row][col].setIcon(board[firstRow][firstCol].getIcon());
 								board[firstRow][firstCol].setIcon(null);
+								
+								//notify player if in check
+								if(model.inCheck(model.currentPlayer()))
+									JOptionPane.showMessageDialog(null,"Check");
 							} else
 								JOptionPane.showMessageDialog(null, 
 										"Invalid Move.");
