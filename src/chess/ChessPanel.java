@@ -19,6 +19,9 @@ public class ChessPanel extends JPanel {
 
 	/** An array of JButtons for the Chess board */
 	private JButton[][] board = new JButton[8][8];
+	
+	private JButton longSide  = new JButton("Long");
+	private JButton shortSide = new JButton("Short");
 
 	/** FIXME */
 	private ChessModel model;
@@ -159,8 +162,21 @@ public class ChessPanel extends JPanel {
 				alternate++;
 			}
 		}
+		
+		
+		
 		showPlayer = new JLabel("WHITE");
 		add(showPlayer);
+
+		// Add listeners to both castling buttons and start disabled.
+		longSide.addActionListener(listener);
+		longSide.setEnabled(false);
+		add(longSide);
+		
+		shortSide.addActionListener(listener);
+		shortSide.setEnabled(false);
+		add(shortSide);
+		
 		repaint();
 		revalidate();
 	}
@@ -230,41 +246,6 @@ public class ChessPanel extends JPanel {
 	}
 
 	// Add other helper methods as needed
-
-//	private void disableInvalidSquares(Player player) {
-//
-//		// call method to enable all buttons
-//		enableBtn();
-//		for (int row = 0; row < 8; row++) {
-//			for (int col = 0; col < 8; col++) {
-//
-//				//check if button has a piece on it
-//				if(board[row][col].getIcon() != null) {
-//
-//					// get the name of the icon on that button
-//					String desc = ((ImageIcon)board[row][col].getIcon()).getDescription();
-//
-//					// if that icon starts with a b its a black piece and
-//					// if the current player is white disable that button
-//					if (desc.charAt(0) == 'b' && player == Player.WHITE)
-//						board[row][col].setEnabled(false);
-//
-//					// else if the icon is white and its black turn
-//					// disable the button
-//					else if (desc.charAt(0) == 'w' && player == 
-//							Player.BLACK)
-//						board[row][col].setEnabled(false);
-//				}
-//			}
-//		}
-//	}
-//
-//	private void enableBtn() {
-//		for (int row = 0; row < 8; row++) {
-//			for (int col = 0; col < 8; col++)
-//				board[row][col].setEnabled(true);
-//		}
-//	}
 	
 	private void promotion(Move move) {
 		
@@ -287,6 +268,36 @@ public class ChessPanel extends JPanel {
 				board[move.fromRow][move.fromColumn].setIcon(wQueenIcon);
 		}
 	}
+	
+	private void iconCastleLong(Player p) {
+		if (p == Player.BLACK) {
+			board[0][0].setIcon(null);
+			board[0][4].setIcon(null);
+			board[0][2].setIcon(bKingIcon);
+			board[0][3].setIcon(bRookIcon);
+		}
+		if (p == Player.WHITE) {
+			board[7][0].setIcon(null);
+			board[7][4].setIcon(null);
+			board[7][2].setIcon(wKingIcon);
+			board[7][3].setIcon(wRookIcon);
+		}
+	}
+	
+	private void iconCastleShort(Player p) {
+		if (p == Player.BLACK) {
+			board[0][7].setIcon(null);
+			board[0][4].setIcon(null);
+			board[0][6].setIcon(bKingIcon);
+			board[0][5].setIcon(bRookIcon);
+		}
+		if (p == Player.WHITE) {
+			board[7][7].setIcon(null);
+			board[7][4].setIcon(null);
+			board[7][6].setIcon(wKingIcon);
+			board[7][5].setIcon(wRookIcon);
+		}
+	}
 
 	// Inner class that represents action listener for buttons
 	private class ButtonListener implements ActionListener {
@@ -301,6 +312,18 @@ public class ChessPanel extends JPanel {
 			}
 			if(comp == quitItem)
 				System.exit(1);
+			
+			if(comp == longSide) {
+				model.moveCastleLongSide(model.currentPlayer());
+				iconCastleLong(model.currentPlayer());
+				longSide.setEnabled(false);
+			}
+			
+			if(comp == shortSide) {
+				model.moveCastleShortSide(model.currentPlayer());
+				iconCastleShort(model.currentPlayer());
+				shortSide.setEnabled(false);
+			}
 
 			// Complete this.
 			for (int row = 0; row < 8; row++) {
@@ -311,6 +334,7 @@ public class ChessPanel extends JPanel {
 						// if the player has selected a piece to move
 						// and a location to move to
 						if (count % 2 == 0) {
+							
 							move = new Move(firstRow, firstCol, row, col);
 							if (model.isValidMove(move)) {
 								model.move(move);
@@ -318,9 +342,13 @@ public class ChessPanel extends JPanel {
 								board[row][col].setIcon(board[firstRow][firstCol].getIcon());
 								board[firstRow][firstCol].setIcon(null);
 								
-								//notify player if in check
+								//notify player if in check 
+								// FIXME: SOME SORT OF ERROR ON 315
 								if(model.inCheck(model.currentPlayer()))
-									JOptionPane.showMessageDialog(null,"Check");
+									if(model.inCheckMate(model.currentPlayer()))
+										JOptionPane.showMessageDialog(null,"Checkmate: ");// + model.currentPlayer().toString() + " Loses");
+									else
+										JOptionPane.showMessageDialog(null,"Check");
 							} else
 								JOptionPane.showMessageDialog(null, 
 										"Invalid Move.");
@@ -341,7 +369,20 @@ public class ChessPanel extends JPanel {
 					}
 				}
 			}
+
+			if (model.castleLongSide(model.currentPlayer()))
+				longSide.setEnabled(true);
+			else 
+				longSide.setEnabled(false);
+			
+			if (model.castleShortSide(model.currentPlayer()))
+				shortSide.setEnabled(true);
+			else 
+				shortSide.setEnabled(false);
+			
 			showPlayer.setText(model.currentPlayer().toString());
 		}
 	}
 }
+
+
