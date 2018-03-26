@@ -281,10 +281,10 @@ public class ChessModel implements IChessModel {
 					//piece player = player
 					if(board[r][c].player() == player) {
 						System.out.println("1");
-						if(isValidMove(new Move(kingRow, kingCol, r, c))) {
+						if(isValidMove(new Move(r, c, kingRow, kingCol))) {
 							System.out.println("2");
-							if(board[r][c].isValidMove(new Move(kingRow, kingCol, r, c), board)) {
-								System.out.println("check");
+							if(board[r][c].isValidMove(new Move(r, c, kingRow, kingCol), board)) {
+								return true;
 							}
 						}
 					}
