@@ -1,5 +1,5 @@
 /**********************************************************************
- * Project 3: Chess Game
+ * Project 3: Chess Game Pawn
  * 
  * This class handles movement for the Pawn piece.
  * 
@@ -37,16 +37,18 @@ public class Pawn extends ChessPiece {
 	 *****************************************************************/
 	@Override
 	public boolean isValidMove(Move move, IChessPiece[][] board) {
+		
+		// First call ChessPiece to see if this is a valid move.
 		if(!(super.isValidMove(move, board)))
 			return false;
 
-		// This is the black pawn.
+		// If this is a Black Pawn, check the Black Pawn valid moves.
 		if (player() == Player.BLACK)
 			if (moveBlackPawn(move, board)) {
 				return true;
 			}
 
-		// This is the white pawn.
+		// This is the White Pawn, check the White Pawn valid moves.
 		if (player() == Player.WHITE)
 			if (moveWhitePawn(move, board)) {
 				return true;
@@ -66,7 +68,7 @@ public class Pawn extends ChessPiece {
 	private boolean moveBlackPawn(Move move, IChessPiece[][] board) {
 		
 		// If this is the pawn's first turn allow a double move.
-		if (move.fromRow == 1) {
+		if (move.fromRow == 1)
 
 			if (move.toRow == move.fromRow + 2 && 
 				move.toColumn == move.fromColumn)
@@ -75,7 +77,6 @@ public class Pawn extends ChessPiece {
 				if (board[move.fromRow + 1][move.fromColumn] == null &&
 					board[move.toRow][move.toColumn] == null)
 					return true;
-		}
 
 		// Move row + 1, column + 0.
 		if (move.toRow == move.fromRow + 1 && 

@@ -1,5 +1,5 @@
 /**********************************************************************
- * Project 3: Chess Game
+ * Project 3: Chess Game Knight
  * 
  * This class handles movement for the Knight piece.
  * 
@@ -31,23 +31,24 @@ public class Knight extends ChessPiece{
 	 *****************************************************************/
 	@Override
 	public boolean isValidMove(Move move, IChessPiece[][] board) {
+		
+		// First call ChessPiece to see if this is a valid move.
 		if(!(super.isValidMove(move, board)))
 			return false;
 
 		// check if move is 2 spaces to the right or
 		// left and 1 up or down
-		if (Math.abs(move.fromRow - move.toRow) == 2) {
+		if (Math.abs(move.fromRow - move.toRow) == 2)
 			if (Math.abs(move.fromColumn - move.toColumn) == 1)
 				return true;
-		}
 
 		// check if move is 1 spaces to the right or
 		// left and 2 up or down
-		else if (Math.abs(move.fromRow - move.toRow) == 1) {
+		else if (Math.abs(move.fromRow - move.toRow) == 1)
 			if (Math.abs(move.fromColumn - move.toColumn) == 2)
 				return true;
-		}
 
+		// There were no valid moves.
 		return false;
 	}
 
