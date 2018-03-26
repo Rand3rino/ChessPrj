@@ -382,6 +382,7 @@ public class ChessModel implements IChessModel {
 			// get White king position
 			kingRow = chessPieces[28].getRow(chessPieces[28], board);
 			kingCol = chessPieces[28].getCol(chessPieces[28], board);
+			System.out.println("White" + kingRow + "" + kingCol + "End White");
 		}
 
 		if (p == Player.BLACK) {
@@ -389,17 +390,18 @@ public class ChessModel implements IChessModel {
 			// get Black king position
 			kingRow = chessPieces[4].getRow(chessPieces[4], board);
 			kingCol = chessPieces[4].getCol(chessPieces[4], board);
+			System.out.println("Black" + kingRow + "1" + kingCol + "End Black");
 		}
 		
 		player = player.next();
-		
+
 		//go through entire board
 		for(int r = 0; r < 8; r++)
 			for(int c = 0; c < 8; c++)
-				
+
 				//make sure that board space isn't null
 				if(board[r][c] != null)
-					
+
 					//piece player = player
 					if(board[r][c].player() == player)
 						if(isValidMove(new Move(r, c, kingRow,
