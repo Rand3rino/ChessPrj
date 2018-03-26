@@ -14,19 +14,18 @@ public class Bishop extends ChessPiece {
 	/******************************************************************
 	 * Constructor for the bishop's owner
 	 * @param player Player's enumerated value
+	 * @param value  How many points this piece is worth.
 	 *****************************************************************/
-	protected Bishop(Player player) {
-		super(player);
+	protected Bishop(Player player, int value) {
+		super(player, value);
 	}
 
 	
 	/******************************************************************
 	 * Checks to see if the bishop is making a valid move
 	 * 
-	 * @param move an object describing the move 
-	 *  to be made.
-	 * @param board the board in which this 
-	 *  piece resides.
+	 * @param move an object describing the move to be made.
+	 * @param board the board in which this piece resides.
 	 *****************************************************************/
 	@Override
 	public boolean isValidMove(Move move, IChessPiece[][] board) {

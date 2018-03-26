@@ -13,14 +13,24 @@ public abstract class ChessPiece implements IChessPiece {
 
 	/** Player who owns this piece */
 	private Player owner;
+	
+	/** Value of this piece */
+	private int points;
+	
+	/** Variable for if the piece has moved */
+	private boolean hasMoved;
 
 	/******************************************************************
-	 * Assign the player to this piece.
+	 * Constructor for a chess piece. Pieces always start with 
+	 * hasMoved as false.
 	 *
-	 * @param the player that owns this piece.
+	 * @param player The player that owns this piece.
+	 * @param value  How many points this piece is worth.
 	 *****************************************************************/
-	protected ChessPiece(Player player) {
+	protected ChessPiece(Player player, int value) {
 		this.owner = player;
+		this.points = value;
+		this.hasMoved = false;
 	}
 
 	/******************************************************************
@@ -30,6 +40,24 @@ public abstract class ChessPiece implements IChessPiece {
 	 *****************************************************************/
 	public Player player() {
 		return owner;
+	}
+	
+	/******************************************************************
+	 * Return the points this piece is worth.
+	 *
+	 * @return points How many points this piece is worth.
+	 *****************************************************************/
+	public int points() {
+		return points;
+	}
+	
+	/******************************************************************
+	 * Return if this piece has moved.
+	 *
+	 * @return hasMoved true if this piece has moved, false if not.
+	 *****************************************************************/
+	public boolean hasMoved() {
+		return hasMoved;
 	}
 
 	/******************************************************************

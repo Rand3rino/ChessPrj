@@ -15,19 +15,18 @@ public class Rook extends ChessPiece {
 	 * Constructor for the rook's owner
 	 * 
 	 * @param player Player's enumerated value
+	 * @param value  How many points this piece is worth.
 	 *****************************************************************/
-	protected Rook(Player player) {
-		super(player);
+	protected Rook(Player player, int value) {
+		super(player, value);
 	}
 
 	
 	/******************************************************************
 	 * Checks to see if the rook is making a valid move
 	 * 
-	 * @param move an object describing the move 
-	 *  to be made.
-	 * @param board the board in which this 
-	 *  piece resides.
+	 * @param move an object describing the move to be made.
+	 * @param board the board in which this piece resides.
 	 *****************************************************************/
 	@Override
 	public boolean isValidMove(Move move, IChessPiece[][] board) {

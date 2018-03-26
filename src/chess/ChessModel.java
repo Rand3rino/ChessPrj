@@ -49,24 +49,24 @@ public class ChessModel implements IChessModel {
 	private void assignBlackPieces() {
 
 		// Instantiate Black player's back row.
-		chessPieces[0] = new Rook(Player.BLACK);
-		chessPieces[1] = new Knight(Player.BLACK);
-		chessPieces[2] = new Bishop(Player.BLACK);
-		chessPieces[3] = new Queen(Player.BLACK);
-		chessPieces[4] = new King(Player.BLACK);
-		chessPieces[5] = new Bishop(Player.BLACK);
-		chessPieces[6] = new Knight(Player.BLACK);
-		chessPieces[7] = new Rook(Player.BLACK);
+		chessPieces[0] = new Rook(Player.BLACK, 5);
+		chessPieces[1] = new Knight(Player.BLACK, 3);
+		chessPieces[2] = new Bishop(Player.BLACK, 4);
+		chessPieces[3] = new Queen(Player.BLACK, 9);
+		chessPieces[4] = new King(Player.BLACK, 10);
+		chessPieces[5] = new Bishop(Player.BLACK, 4);
+		chessPieces[6] = new Knight(Player.BLACK, 3);
+		chessPieces[7] = new Rook(Player.BLACK, 5);
 
 		// Instantiate Black player's front row.
-		chessPieces[8] = new Pawn(Player.BLACK);
-		chessPieces[9] = new Pawn(Player.BLACK);
-		chessPieces[10] = new Pawn(Player.BLACK);
-		chessPieces[11] = new Pawn(Player.BLACK);
-		chessPieces[12] = new Pawn(Player.BLACK);
-		chessPieces[13] = new Pawn(Player.BLACK);
-		chessPieces[14] = new Pawn(Player.BLACK);
-		chessPieces[15] = new Pawn(Player.BLACK);
+		chessPieces[8]  = new Pawn(Player.BLACK, 1);
+		chessPieces[9]  = new Pawn(Player.BLACK, 1);
+		chessPieces[10] = new Pawn(Player.BLACK, 1);
+		chessPieces[11] = new Pawn(Player.BLACK, 1);
+		chessPieces[12] = new Pawn(Player.BLACK, 1);
+		chessPieces[13] = new Pawn(Player.BLACK, 1);
+		chessPieces[14] = new Pawn(Player.BLACK, 1);
+		chessPieces[15] = new Pawn(Player.BLACK, 1);
 	}
 	
 	/**************************************************************
@@ -75,24 +75,24 @@ public class ChessModel implements IChessModel {
 	private void assignWhitePieces() {
 
 		// Instantiate White player's front row.
-		chessPieces[16] = new Pawn(Player.WHITE);
-		chessPieces[17] = new Pawn(Player.WHITE);
-		chessPieces[18] = new Pawn(Player.WHITE);
-		chessPieces[19] = new Pawn(Player.WHITE);
-		chessPieces[20] = new Pawn(Player.WHITE);
-		chessPieces[21] = new Pawn(Player.WHITE);
-		chessPieces[22] = new Pawn(Player.WHITE);
-		chessPieces[23] = new Pawn(Player.WHITE);
+		chessPieces[16] = new Pawn(Player.WHITE, 1);
+		chessPieces[17] = new Pawn(Player.WHITE, 1);
+		chessPieces[18] = new Pawn(Player.WHITE, 1);
+		chessPieces[19] = new Pawn(Player.WHITE, 1);
+		chessPieces[20] = new Pawn(Player.WHITE, 1);
+		chessPieces[21] = new Pawn(Player.WHITE, 1);
+		chessPieces[22] = new Pawn(Player.WHITE, 1);
+		chessPieces[23] = new Pawn(Player.WHITE, 1);
 
 		// Instantiate White player's back row.
-		chessPieces[24] = new Rook(Player.WHITE);
-		chessPieces[25] = new Knight(Player.WHITE);
-		chessPieces[26] = new Bishop(Player.WHITE);
-		chessPieces[27] = new Queen(Player.WHITE);
-		chessPieces[28] = new King(Player.WHITE);
-		chessPieces[29] = new Bishop(Player.WHITE);
-		chessPieces[30] = new Knight(Player.WHITE);
-		chessPieces[31] = new Rook(Player.WHITE);
+		chessPieces[24] = new Rook(Player.WHITE, 5);
+		chessPieces[25] = new Knight(Player.WHITE, 3);
+		chessPieces[26] = new Bishop(Player.WHITE, 4);
+		chessPieces[27] = new Queen(Player.WHITE, 9);
+		chessPieces[28] = new King(Player.WHITE, 10);
+		chessPieces[29] = new Bishop(Player.WHITE, 4);
+		chessPieces[30] = new Knight(Player.WHITE, 3);
+		chessPieces[31] = new Rook(Player.WHITE, 5);
 	}
 
 	/**************************************************************
@@ -401,7 +401,7 @@ public class ChessModel implements IChessModel {
 		for (int col = 0; col < 8; col++)
 			for (int pawnNumber = 16; pawnNumber < 24; pawnNumber++)
 				if (board[0][col] == chessPieces[pawnNumber]) {
-					chessPieces[pawnNumber] = new Queen(Player.WHITE);
+					chessPieces[pawnNumber] = new Queen(Player.WHITE, 9);
 					board[0][col] = chessPieces[pawnNumber];
 				}
 
@@ -409,7 +409,7 @@ public class ChessModel implements IChessModel {
 		for (int col = 0; col < 8; col++)
 			for (int pawnNumber = 8; pawnNumber < 16; pawnNumber++)
 				if (board[7][col] == chessPieces[pawnNumber]) {
-					chessPieces[pawnNumber] = new Queen(Player.BLACK);
+					chessPieces[pawnNumber] = new Queen(Player.BLACK, 9);
 					board[0][col] = chessPieces[pawnNumber];
 				}
 

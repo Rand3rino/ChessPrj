@@ -14,9 +14,10 @@ public class Pawn extends ChessPiece {
 	/******************************************************************
 	 * Constructor for the pawn's owner.
 	 * @param player This is the owner's enumerated value.
+	 * @param value  How many points this piece is worth.
 	 *****************************************************************/
-	public Pawn(Player player) {
-		super(player);
+	public Pawn(Player player, int value) {
+		super(player, value);
 	}
 
 	/******************************************************************
