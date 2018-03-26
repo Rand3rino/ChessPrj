@@ -14,19 +14,18 @@ public class Queen extends ChessPiece {
 	/******************************************************************
 	 * Constructor for the queen's owner
 	 * @param player Player's enumerated value
+	 * @param value  How many points this piece is worth.
 	 *****************************************************************/
-	protected Queen(Player player) {
-		super(player);
+	protected Queen(Player player, int value) {
+		super(player, value);
 	}
 
 	
 	/******************************************************************
 	 * Checks to see if the queen is making a valid move
 	 * 
-	 * @param move an object describing the move 
-	 *  to be made.
-	 * @param board the board in which this 
-	 *  piece resides.
+	 * @param move an object describing the move to be made.
+	 * @param board the board in which this piece resides.
 	 *****************************************************************/
 	@Override
 	public boolean isValidMove(Move move, IChessPiece[][] board) {

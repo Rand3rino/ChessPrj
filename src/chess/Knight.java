@@ -15,16 +15,17 @@ public class Knight extends ChessPiece{
 	 * Constructor that calls the constructor for the parent class of
 	 * Knight and passes the player.
 	 * @param player the current player
+	 * @param value  How many points this piece is worth.
 	 *****************************************************************/
-	protected Knight(Player player) {
-		super(player);
+	protected Knight(Player player, int value) {
+		super(player, value);
 	}
 
 	/******************************************************************
 	 * Method to check if the move is valid for a knight.
 	 * 
 	 * @param move object containing the previous and proposed position
-	 * 			of the knight
+	 * 	of the knight
 	 * @param board array of chess board with all the pieces
 	 * @return true if the move is valid and false if it is not
 	 *****************************************************************/

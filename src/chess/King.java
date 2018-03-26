@@ -14,9 +14,10 @@ public class King extends ChessPiece{
 	/******************************************************************
 	 * Constructor for the pawn's owner.
 	 * @param player This is the owner's enumerated value.
+	 * @param value  How many points this piece is worth.
 	 *****************************************************************/
-	public King(Player player) {
-		super(player);
+	public King(Player player, int value) {
+		super(player, value);
 	}
 	
 	/******************************************************************
