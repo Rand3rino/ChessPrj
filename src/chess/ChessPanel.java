@@ -72,8 +72,8 @@ public class ChessPanel extends JPanel {
 		gameItem = pgameItem;
 		restartItem = prestartItem;
 
-		model = new ChessModel();
-		move = new Move();
+//		model = new ChessModel();
+//		move = new Move();
 		setUpBoard();
 
 		quitItem.addActionListener(listener);
@@ -82,6 +82,9 @@ public class ChessPanel extends JPanel {
 	}
 
 	private void setUpBoard() {
+		model = new ChessModel();
+		move = new Move();
+		
 		firstRow = 0;
 		firstCol = 0;
 		count = 0;

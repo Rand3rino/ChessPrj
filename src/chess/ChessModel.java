@@ -451,6 +451,12 @@ public class ChessModel implements IChessModel {
 				for (int row = -7; row <= 7; row++)
 					for (int col = -7; col <= 7; col++) 
 
+//						if ((pieceRow+row) >= 0 && (pieceRow+row) < 8
+//						&& (pieceCol+col) >=0 &&
+//						(pieceCol+col) < 8)
+					// FIXME HAS INDEX OUT OF BOUNDS
+
+
 						// Continue if this is a valid move.
 						if (chessPieces[piece].isValidMove(new Move
 								(pieceRow, pieceCol, pieceRow + row,
