@@ -44,15 +44,13 @@ public class Pawn extends ChessPiece {
 
 		// If this is a Black Pawn, check the Black Pawn valid moves.
 		if (player() == Player.BLACK)
-			if (moveBlackPawn(move, board)) {
+			if (moveBlackPawn(move, board))
 				return true;
-			}
 
 		// This is the White Pawn, check the White Pawn valid moves.
 		if (player() == Player.WHITE)
-			if (moveWhitePawn(move, board)) {
+			if (moveWhitePawn(move, board))
 				return true;
-			}
 
 		// There were no valid moves.
 		return false;
@@ -114,7 +112,7 @@ public class Pawn extends ChessPiece {
 	private boolean moveWhitePawn(Move move, IChessPiece[][] board) {
 		
 		// If this is the pawn's first turn allow a double move.
-		if (move.fromRow == 6) {
+		if (move.fromRow == 6)
 
 			if (move.toRow == move.fromRow - 2 && 
 				move.toColumn == move.fromColumn)
@@ -123,7 +121,6 @@ public class Pawn extends ChessPiece {
 				if (board[move.fromRow - 1][move.fromColumn] == null &&
 					board[move.toRow][move.toColumn] == null)
 					return true;
-		}
 
 		// Move row - 1, column + 0.
 		if (move.toRow == move.fromRow - 1 && 
