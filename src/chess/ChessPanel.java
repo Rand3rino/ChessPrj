@@ -54,6 +54,8 @@ public class ChessPanel extends JPanel {
 	private JMenuItem gameItem;
 	private JMenuItem quitItem;
 	private JMenuItem restartItem;
+	
+	private JLabel showPlayer;
 
 	// Declare other instance variables as needed
 
@@ -157,7 +159,8 @@ public class ChessPanel extends JPanel {
 				alternate++;
 			}
 		}
-		
+		showPlayer = new JLabel("WHITE");
+		add(showPlayer);
 		repaint();
 		revalidate();
 	}
@@ -338,6 +341,7 @@ public class ChessPanel extends JPanel {
 					}
 				}
 			}
+			showPlayer.setText(model.currentPlayer().toString());
 		}
 	}
 }

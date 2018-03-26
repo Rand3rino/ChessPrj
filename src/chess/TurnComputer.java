@@ -55,19 +55,19 @@ public class TurnComputer {
 		turnComplete = getOutOfCheck();
 
 		// 2. Put the opponent is in check.
-		if (turnComplete) 
+		if (!turnComplete) 
 			turnComplete = putInCheck();
 
 		// 3. Move a piece if it is in danger.
-		if (turnComplete) 
+		if (!turnComplete) 
 			turnComplete = avoidDanger();
 
 		// 4. Capture and opponent piece.
-		if (turnComplete) 
+		if (!turnComplete) 
 			turnComplete = capture();
 
 		// 5. Move towards the opponent King.
-		if (turnComplete) 
+		if (!turnComplete) 
 			turnComplete = moveForward();
 
 	}
