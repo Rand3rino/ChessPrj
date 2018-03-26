@@ -75,11 +75,10 @@ public abstract class ChessPiece implements IChessPiece {
 	public int getCol(ChessPiece piece, IChessPiece board[][]) {
 		for (int r = 0; r < 8; r++) {
 			for (int c = 0; c < 8; c++) {
-				if(board[r][c] == null)
-					break;
-				if (board[r][c].getClass() == piece.getClass())
-					if (board[r][c].player() == piece.player())
-						return c;
+				if(board[r][c] != null)
+					if (board[r][c].getClass() == piece.getClass())
+						if (board[r][c].player() == piece.player())
+							return c;
 			}
 		}
 		return -1;
@@ -93,11 +92,10 @@ public abstract class ChessPiece implements IChessPiece {
 	public int getRow(ChessPiece piece, IChessPiece board[][]) {
 		for (int r = 0; r < 8; r++) {
 			for (int c = 0; c < 8; c++) {
-				if(board[r][c] == null)
-					break;
-				if (board[r][c].getClass() == piece.getClass())
-					if (board[r][c].player() == piece.player())
-						return r;
+				if(board[r][c] != null)
+					if (board[r][c].getClass() == piece.getClass())
+						if (board[r][c].player() == piece.player())
+							return r;
 			}
 		}
 		return -1;
@@ -141,10 +139,10 @@ public abstract class ChessPiece implements IChessPiece {
 
 		// Prevents the player from taking their own piece.
 		if(board[move.toRow][move.toColumn] != null) 
-			if(board[move.toRow][move.toColumn].player() == owner)
-				return false;
-
-		
+			if(move.toRow < 8 && move.toRow > -1)
+				if(move.toColumn < 8 && move.toColumn > -1)
+					if(board[move.toRow][move.toColumn].player() == owner)
+						return false;
 
 		return true;
 	}

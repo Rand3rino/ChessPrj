@@ -380,19 +380,23 @@ public class ChessModel implements IChessModel {
 		if (p == Player.WHITE) {
 			
 			// get White king position
+			System.out.println("Got in");
 			kingRow = chessPieces[28].getRow(chessPieces[28], board);
 			kingCol = chessPieces[28].getCol(chessPieces[28], board);
 		}
 
-		if (p == Player.BLACK) {
+		else if (p == Player.BLACK) {
 			
 			// get Black king position
 			kingRow = chessPieces[4].getRow(chessPieces[4], board);
 			kingCol = chessPieces[4].getCol(chessPieces[4], board);
 		}
 		
+		
 		player = player.next();
 		
+		if(kingCol == -1 || kingRow == -1)
+			System.out.println("error w/ king KingRow" + kingRow + "kingC: " + kingCol);
 		//go through entire board
 		for(int r = 0; r < 8; r++)
 			for(int c = 0; c < 8; c++)
@@ -426,7 +430,6 @@ public class ChessModel implements IChessModel {
 			return blackCheckMate(15);
 		else 
 			return whiteCheckMate(16);
-
 	}
 
 	/******************************************************************
@@ -448,28 +451,28 @@ public class ChessModel implements IChessModel {
 				int pieceCol = chessPieces[piece].getCol(chessPieces[piece], board);
 
 				// Move every piece to every possible location.
-				for (int row = -7; row <= 7; row++)
-					for (int col = -7; col <= 7; col++) 
-
-//						if ((pieceRow+row) >= 0 && (pieceRow+row) < 8
-//						&& (pieceCol+col) >=0 &&
-//						(pieceCol+col) < 8)
-					// FIXME HAS INDEX OUT OF BOUNDS
-
-
+				for (int row = 0; row <= 7; row++)
+					for (int col = 0; col <= 7; col++) 
+						
 						// Continue if this is a valid move.
 						if (chessPieces[piece].isValidMove(new Move
-								(pieceRow, pieceCol, pieceRow + row,
-									pieceCol + col), board))
+								(pieceRow, pieceCol, row,
+									col), board)) {
+							
+							move(new Move(pieceRow, pieceCol, row, col));
 
 							// No longer checked, the move is over.
-							if (!inCheck(Player.BLACK))
+							if (!inCheck(Player.BLACK)) {
+								move(new Move(row, col, pieceRow, pieceCol));
 								return false;
+							}
+							
+							move(new Move(row, col, pieceRow, pieceCol));
+						}
 			}
 
-		// Decrement to move another piece.
-		else
-			piece--;
+			// Decrement to move another piece.
+				piece--;
 		}
 
 		return true;
