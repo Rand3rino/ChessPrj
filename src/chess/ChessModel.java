@@ -447,16 +447,25 @@ public class ChessModel implements IChessModel {
 				// Move every piece to every possible location.
 				for (int row = 0; row <= 7; row++)
 					for (int col = 0; col <= 7; col++)
+						
+						if(isValidMove(new Move(pieceRow, pieceCol, row, col)))
 
 						// Continue if this is a valid move.
 						if (chessPieces[piece].isValidMove(new Move
-								(pieceRow, pieceCol, row, col), board))
+								(pieceRow, pieceCol, row, col), board)) {
+							
+							move(new Move(pieceRow, pieceCol, row, col));
 
 							// No longer checked, the move is over.
-							if (!inCheck(Player.WHITE))
+							if (!inCheck(Player.WHITE)) {
+								move(new Move(row, col, pieceRow, pieceCol));
 								return false;
+							}
+						}
 				piece++;
 			}
+
+
 				
 		}
 

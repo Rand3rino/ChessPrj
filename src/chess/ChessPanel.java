@@ -349,7 +349,7 @@ public class ChessPanel extends JPanel {
 								// FIXME: SOME SORT OF ERROR ON 315
 								if(model.inCheck(model.currentPlayer()))
 									if(model.inCheckMate(model.currentPlayer()))
-										JOptionPane.showMessageDialog(null,"Checkmate: ");// + model.currentPlayer().toString() + " Loses");
+										JOptionPane.showMessageDialog(null,"Checkmate:" + model.currentPlayer().toString() + " Loses");
 									else
 										JOptionPane.showMessageDialog(null,"Check");
 							} else
