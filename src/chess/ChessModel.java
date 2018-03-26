@@ -106,7 +106,7 @@ public class ChessModel implements IChessModel {
 		// Place the back line.
 		for (int col = 0; col < 8; col ++)
 
-			// The White player's pieces begin at chessPieces[0].
+			// The Black player's pieces begin at chessPieces[0].
 			board[row][col] = chessPieces[col];
 
 		// The Black player's front line is on row 1.
@@ -145,29 +145,6 @@ public class ChessModel implements IChessModel {
 	}
 
 	/******************************************************************
-	 * This method determines if the game is over by seeing
-	 * if there is a checkmate.
-	 *****************************************************************/
-	public boolean gameOver() {
-
-		// FIXME: Uncomment at step 10
-
-		// // If there is a check, move pieces to avoid check.
-		// if (inCheck(currentPlayer() ) ) {
-		//
-		// // FIXME: MOVE PIECES TO AVOID CHECK
-		// }
-		//
-		// // Display message if Player cannot avoid check.
-		// if (inCheck(currentPlayer() ) ) {
-		// JOptionPane.showMessageDialog(null,
-		// "Checkmate. Game Over.");
-		// return true;
-		// }
-		return false;
-	}
-
-	/******************************************************************
 	 * Returns whether the piece at location [move.fromRow, 
 	 * move.fromColumn] is allowed to move to location 
 	 * [move.toRow, move.toColumn].
@@ -187,28 +164,6 @@ public class ChessModel implements IChessModel {
 				return pieceAt(move.fromRow, move.fromColumn).
 						isValidMove(move, board);
 		return false;
-		
-//		// If move isn't within the board, throw error.
-//		if (move.toRow < 0 || move.toRow > 9 || 
-//				move.toColumn < 0 || move.toColumn > 9)
-//			throw new IndexOutOfBoundsException();
-//
-//		// Prevents the piece being dropped on the same square.
-//		if (move.fromRow == move.toRow && 
-//				move.fromColumn == move.toColumn)
-//			return false;
-//
-//		// Prevents the player to move from an empty square.
-//		else if(board[move.fromRow][move.fromColumn] == null)
-//			return false;
-//
-//		// Prevents the player from taking their own piece.
-//		else if(board[move.toRow][move.toColumn] != null)
-//			if(board[move.toRow][move.toColumn].
-//					player() == currentPlayer())
-//				return false;
-//
-//		return true;
 	}
 
 	/******************************************************************
@@ -236,11 +191,9 @@ public class ChessModel implements IChessModel {
 		board[move.toRow][move.toColumn] = piece;
 		
 		// This piece has moved at least once.
-		for (int pieceNum = 0; pieceNum < 32; pieceNum++) {
-			if (chessPieces[pieceNum] == piece) {
+		for (int pieceNum = 0; pieceNum < 32; pieceNum++)
+			if (chessPieces[pieceNum] == piece)
 				chessPieces[pieceNum].setHasMoved();
-			}
-		}
 		
 		// Promote any pawns.
 		promotion();
@@ -289,7 +242,7 @@ public class ChessModel implements IChessModel {
 		if (p == Player.WHITE)
 			if (chessPieces[28].hasMoved() || chessPieces[24].hasMoved())
 				return false;
-			else if (board[7][2] != null || board[7][2] != null
+			else if (board[7][1] != null || board[7][2] != null
 					|| board[7][3] != null)
 				return false;
 		
@@ -446,32 +399,27 @@ public class ChessModel implements IChessModel {
 			if (chessPieces[piece] != null) {
 
 				// Save the starting location of the piece.
-				int pieceRow = chessPieces[piece].getRow(chessPieces[piece], board);
-				int pieceCol = chessPieces[piece].getCol(chessPieces[piece], board);
+				int pieceRow = chessPieces[piece].getRow
+						(chessPieces[piece], board);
+				int pieceCol = chessPieces[piece].getCol
+						(chessPieces[piece], board);
 
 				// Move every piece to every possible location.
-				for (int row = -7; row <= 7; row++)
-					for (int col = -7; col <= 7; col++) 
-
-//						if ((pieceRow+row) >= 0 && (pieceRow+row) < 8
-//						&& (pieceCol+col) >=0 &&
-//						(pieceCol+col) < 8)
-					// FIXME HAS INDEX OUT OF BOUNDS
-
+				for (int row = 0; row <= 7; row++)
+					for (int col = 0; col <= 7; col++)
 
 						// Continue if this is a valid move.
 						if (chessPieces[piece].isValidMove(new Move
-								(pieceRow, pieceCol, pieceRow + row,
-									pieceCol + col), board))
+								(pieceRow, pieceCol, row, col), board))
 
 							// No longer checked, the move is over.
 							if (!inCheck(Player.BLACK))
 								return false;
 			}
 
-		// Decrement to move another piece.
-		else
-			piece--;
+			// Decrement to move another piece.
+			else
+				piece--;
 		}
 
 		return true;
@@ -491,16 +439,18 @@ public class ChessModel implements IChessModel {
 			if (chessPieces[piece] != null) {
 
 				// Save the starting location of the piece.
-				int pieceRow = chessPieces[piece].getRow(chessPieces[piece], board);
-				int pieceCol = chessPieces[piece].getCol(chessPieces[piece], board);
+				int pieceRow = chessPieces[piece].getRow
+						(chessPieces[piece], board);
+				int pieceCol = chessPieces[piece].getCol
+						(chessPieces[piece], board);
 
 				// Move every piece to every possible location.
-				for (int row = -7; row <= 7; row++)
-					for (int col = -7; col <= 7; col++)
+				for (int row = 0; row <= 7; row++)
+					for (int col = 0; col <= 7; col++)
 
 						// Continue if this is a valid move.
-						if (chessPieces[piece].isValidMove(new Move(pieceRow, pieceCol, pieceRow + row, pieceCol + col),
-								board))
+						if (chessPieces[piece].isValidMove(new Move
+								(pieceRow, pieceCol, row, col), board))
 
 							// No longer checked, the move is over.
 							if (!inCheck(Player.WHITE))
@@ -588,5 +538,28 @@ public class ChessModel implements IChessModel {
 					chessPieces[pawnNumber] = new Queen(Player.BLACK, 9);
 					board[0][col] = chessPieces[pawnNumber];
 				}
+	}
+	
+	/******************************************************************
+	 * This method determines if the game is over by seeing
+	 * if there is a checkmate.
+	 *****************************************************************/
+	public boolean gameOver() {
+
+		// FIXME: Uncomment at step 10
+
+		// // If there is a check, move pieces to avoid check.
+		// if (inCheck(currentPlayer() ) ) {
+		//
+		// // FIXME: MOVE PIECES TO AVOID CHECK
+		// }
+		//
+		// // Display message if Player cannot avoid check.
+		// if (inCheck(currentPlayer() ) ) {
+		// JOptionPane.showMessageDialog(null,
+		// "Checkmate. Game Over.");
+		// return true;
+		// }
+		return false;
 	}
 }
