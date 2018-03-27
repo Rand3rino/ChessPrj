@@ -44,7 +44,7 @@ public class Knight extends ChessPiece{
 
 		// check if move is 1 spaces to the right or
 		// left and 2 up or down
-		else if (Math.abs(move.fromRow - move.toRow) == 1)
+		if (Math.abs(move.fromRow - move.toRow) == 1)
 			if (Math.abs(move.fromColumn - move.toColumn) == 2)
 				return true;
 
