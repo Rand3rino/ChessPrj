@@ -89,10 +89,9 @@ public class TurnComputer {
 			int kingCol = chessPieces[4].getCol(chessPieces[4], board);
 
 			// Move the King first. Try each direction.
-			for (int row = -1; row <= 1; row++)
-				for (int col = -1; col <= 1; col++) {
-					move = new Move(kingRow, kingCol, kingRow + row,
-							kingCol + col);
+			for (int row = 0; row <= 7; row++)
+				for (int col = 0; col <= 7; col++) {
+					move = new Move(kingRow, kingCol, row, col);
 
 					// Continue if this is a valid move.
 					if (chessPieces[4].isValidMove(move, board)) {
@@ -103,16 +102,15 @@ public class TurnComputer {
 							return true;
 
 						// Still in check, cancel the last move.
-						else {
-							move = new Move(kingRow + row, 
-									kingCol + col, kingRow, kingCol);
-							model.move(move);
-						}
+						else
+							model.move(new Move (row, col, 
+								kingRow, kingCol));
+						
 					}
 				}
 
 			// Move all other pieces to get out of check.
-			while (piece >= 0)
+			while (piece >= 0) {
 
 				// Continue if this piece is active.
 				if (chessPieces[piece] != null) {
@@ -139,12 +137,9 @@ public class TurnComputer {
 									return true;
 
 								// Still checked, cancel the last move.
-								else {
-									move = new Move(pieceRow + row,
-										pieceCol + col, pieceRow,
-										pieceCol);
-									model.move(move);
-								}
+								else
+									model.move(new Move(row, col, 
+											pieceRow, pieceCol));
 							}
 						}
 				}
@@ -156,6 +151,7 @@ public class TurnComputer {
 				// Decrement to move another piece.
 				else
 					piece--;
+			}
 		}
 		return false;
 	}
@@ -172,7 +168,7 @@ public class TurnComputer {
 		int piece = 15;
 
 		// Move all pieces to check the player.
-		while (piece >= 0)
+		while (piece >= 0) {
 
 			// Make sure this is an active piece.
 			if (chessPieces[piece] != null) {
@@ -200,12 +196,9 @@ public class TurnComputer {
 								return true;
 
 							// Still checked, cancel the last move.
-							else {
-								move = new Move(pieceRow + row, 
-									pieceCol + col, pieceRow,
-									pieceCol);
-								model.move(move);
-							}
+							else 
+								model.move(new Move(row, col,
+									pieceRow, pieceCol));
 						}
 					}
 			}
@@ -217,6 +210,7 @@ public class TurnComputer {
 			// Decrement to move another piece.
 			else 
 				piece--;
+		}
 
 		return false;
 	}
@@ -231,7 +225,7 @@ public class TurnComputer {
 		int piece = 16;
 
 		// Move all pieces to check the player.
-		while (piece < 32)
+		while (piece < 32) {
 
 			// Make sure this is an active piece.
 			if (chessPieces[piece] != null) {
@@ -268,6 +262,7 @@ public class TurnComputer {
 				else
 					piece++;
 			}
+		}
 		return false;
 	}
 
@@ -280,7 +275,7 @@ public class TurnComputer {
 		int piece = 15;
 
 		// Move all pieces to check the player.
-		while (piece > -1)
+		while (piece > -1) {
 
 			// Make sure this is an active piece.
 			if (chessPieces[piece] != null) {
@@ -315,7 +310,7 @@ public class TurnComputer {
 			// Decrement to move another piece.
 			else
 				piece--;
-			
+		}
 		return false;
 	}
 
@@ -329,7 +324,6 @@ public class TurnComputer {
 	private boolean moveForward() {
 		
 		//FIXME Right now is moves all pawns beyond the first two rows.
-		
 		
 		// Move all pawns first.
 		for (int pawnNum = 15; pawnNum > 7; pawnNum--)
