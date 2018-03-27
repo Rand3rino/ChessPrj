@@ -462,18 +462,18 @@ public class ChessPanel extends JPanel {
 											JOptionPane
 											.showMessageDialog
 											(null,"Check");
+									
+									move = model.turnComputer();
+									promotion(move);
+									model.changePlayer();
+									board[move.toRow][move.toColumn].
+										setIcon(board[move.fromRow]
+										[move.fromColumn].getIcon());
+									board[move.fromRow][move.fromColumn]
+											.setIcon(null);
 								} else
 									JOptionPane.showMessageDialog(null, 
 											"Invalid Move.");
-
-								move = model.turnComputer();
-								promotion(move);
-								model.changePlayer();
-								board[move.toRow][move.toColumn].
-									setIcon(board[move.fromRow]
-									[move.fromColumn].getIcon());
-								board[move.fromRow][move.fromColumn]
-										.setIcon(null);
 							}
 
 							// store the players first move
