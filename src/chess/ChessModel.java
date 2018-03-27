@@ -1,5 +1,11 @@
 /**********************************************************************
- * Project 3: Chess Game
+ * Project 3: Chess Game Model
+ * 
+ * This class is the game engine for the chess game. This also has a
+ * method that maintains the AI functionality. 
+ * 
+ * @author Randy Nguyen, Sam Ventocilla, Jay Brunsting
+ * @version March 27th, 2018.
  *********************************************************************/
 
 package chess;
@@ -21,18 +27,11 @@ public class ChessModel implements IChessModel {
 	/** The player variable */
 	private Player player;
 
-	//	/** Static Variable for AI Player */
-	//	private static Player HUMAN = Player.WHITE;
-	//
-	//	/** Static Variable for AI Player */
-	//	private static Player AI = Player.BLACK;
-
 	/** Array to hold all chessPieces */
 	private ChessPiece[] chessPieces = new ChessPiece[32];
 
+	/** Variable for the movement */
 	private Move move;
-
-	// Declare other instance variables as needed
 
 	/**************************************************************
 	 * Constructor of the chess model. First creating an array of
@@ -98,9 +97,9 @@ public class ChessModel implements IChessModel {
 		chessPieces[31] = new Rook(Player.WHITE, 5);
 	}
 
-	/**************************************************************
+	/******************************************************************
 	 * This method places Black player's pieces on the chess board.
-	 *************************************************************/
+	 *****************************************************************/
 	private void placeBlackPieces() {
 
 		// The Black player's back line is on row 0.
@@ -123,9 +122,9 @@ public class ChessModel implements IChessModel {
 
 	}
 
-	/**************************************************************
-	 * This method places Black player's pieces on the chess board.
-	 *************************************************************/
+	/******************************************************************
+	 * This method places White player's pieces on the chess board.
+	 *****************************************************************/
 	private void placeWhitePieces() {
 
 		// The White player's front line is on row 6.
@@ -160,11 +159,12 @@ public class ChessModel implements IChessModel {
 	 *****************************************************************/
 	public boolean isValidMove(Move move) {
 
+		// If the starting location is negative, move is not valid.
 		if (move.fromRow < 0 || move.fromColumn < 0) 
 			return false;
 		
 		if (pieceAt(move.fromRow, move.fromColumn) != null) {
-			//make sure the selected piece is the current player's piece
+			// Make sure selected piece is the current player's piece.
 			if (player == pieceAt(move.fromRow, move.fromColumn).
 					player()) {				
 				return (pieceAt(move.fromRow, move.fromColumn).
@@ -174,15 +174,30 @@ public class ChessModel implements IChessModel {
 		return false;
 	}
 
+	/******************************************************************
+	 * This method prevents a player from moving and putting themselves
+	 * in check.
+	 * @return true if the player is still in check, false if not.
+	 *****************************************************************/
 	public boolean stillInCheck(Move move) {
+		
+		// Save the value of the board in case there is a piece.
 		temp = board[move.toRow][move.toColumn];
+		
+		// Save the move into variables.
 		int row = move.toRow;
 		int col = move.toColumn;
 
+		// Move the piece and check if the player is still in check.
 		move(move);
 		boolean check = (inCheck(player));
-		move(new Move(move.toRow, move.toColumn, move.fromRow, move.fromColumn));
+		
+		// Undo the move and set the to square to the old value.
+		move(new Move(move.toRow, move.toColumn, move.fromRow,
+			move.fromColumn));
 		board[row][col] = temp;
+		
+		// If player was in check, then this move is not valid.
 		return !check;
 	}
 
@@ -194,13 +209,12 @@ public class ChessModel implements IChessModel {
 	 * @throws IndexOutOfBoundsException if either [move.fromRow, 
 	 * move.fromColumn] or [move.toRow, move.toColumn] don't 
 	 * represent valid locations on the board.
-	 *************************************************************/
+	 *****************************************************************/
 	public void move(Move move) {
 
 		// Save the piece that is moving.
 		piece = pieceAt(move.fromRow, move.fromColumn);
-
-
+		
 		// Empty the space that the piece is leaving.
 		board[move.fromRow][move.fromColumn] = null;
 
@@ -227,19 +241,26 @@ public class ChessModel implements IChessModel {
 	 *****************************************************************/
 	public boolean castleShortSide(Player p) {
 
-
+		// Branch if Black is the castling player.
 		if (p == Player.BLACK)
+			
+			// Cannot castle if either King or right Rook has moved.
 			if (chessPieces[4].hasMoved() || chessPieces[7].hasMoved())
 				return false;
+		
+			// No castle if there are pieces between the King and Rook.
 			else if (board[0][5] != null || board[0][6] != null)
 				return false;
 
+		// Branch if White is the castling player.
 		if (p == Player.WHITE)
-			if (chessPieces[28].hasMoved() || chessPieces[31].hasMoved())
+			if (chessPieces[28].hasMoved() || chessPieces[31].
+					hasMoved())
 				return false;
 			else if (board[7][5] != null || board[7][6] != null)
 				return false;
 
+		// This castle maneuver is valid. 
 		return true;
 	}
 
@@ -250,21 +271,28 @@ public class ChessModel implements IChessModel {
 	 * @return true of the player can castle, false if not.
 	 *****************************************************************/
 	public boolean castleLongSide(Player p) {
-
+		
+		// Branch is Black is the castling player.
 		if (p == Player.BLACK)
+			
+			// Cannot castle if either King or left Rook has moved.
 			if (chessPieces[4].hasMoved() || chessPieces[0].hasMoved())
 				return false;
+		
+			// No castle if there are pieces between the King and Rook.
 			else if (board[0][1] != null || board[0][2] != null
 					|| board[0][3] != null)
 				return false;
 
 		if (p == Player.WHITE)
-			if (chessPieces[28].hasMoved() || chessPieces[24].hasMoved())
+			if (chessPieces[28].hasMoved() || chessPieces[24].
+					hasMoved())
 				return false;
 			else if (board[7][1] != null || board[7][2] != null
 					|| board[7][3] != null)
 				return false;
 
+		// This castle maneuver is valid.
 		return true;
 	}
 
@@ -276,17 +304,23 @@ public class ChessModel implements IChessModel {
 	public void moveCastleShortSide(Player p) {
 
 		if (p == Player.BLACK) {
+			
+			// Set the King and Rook's old positions to null.
 			board[0][4] = null;
 			board[0][7] = null;
 
+			// Instantiate and place King and set hasMoved to true.
 			chessPieces[4] = new King(Player.BLACK, 10);
 			chessPieces[4].setHasMoved();
 			board[0][6] = chessPieces[4];
 
+			// Instantiate and place Rook and set hasMoved to true.
 			chessPieces[7] = new Rook(Player.BLACK, 5);
 			chessPieces[7].setHasMoved();
 			board[0][5] = chessPieces[7];
 		}
+		
+		
 		if (p == Player.WHITE) {
 			board[7][4] = null;
 			board[7][7] = null;
@@ -299,6 +333,7 @@ public class ChessModel implements IChessModel {
 			chessPieces[31].setHasMoved();
 			board[7][5] = chessPieces[31];
 		}
+		
 	}
 
 	/******************************************************************
@@ -320,6 +355,7 @@ public class ChessModel implements IChessModel {
 			chessPieces[0].setHasMoved();
 			board[0][3] = chessPieces[0];
 		}
+		
 		if (p == Player.WHITE) {
 			board[7][4] = null;
 			board[7][0] = null;
@@ -342,19 +378,20 @@ public class ChessModel implements IChessModel {
 	 *****************************************************************/
 	public boolean inCheck(Player p) {
 
+		// Initialize the king's position to off the board.
 		int kingRow = -2;
 		int kingCol = -2;
 
 		if (p == Player.WHITE) {
 
-			// get White king position
+			// Get White king position
 			kingRow = chessPieces[28].getRow(chessPieces[28], board);
 			kingCol = chessPieces[28].getCol(chessPieces[28], board);
 		}
 
 		if (p == Player.BLACK) {
 
-			// get Black king position
+			// Get Black king position
 			kingRow = chessPieces[4].getRow(chessPieces[4], board);
 			kingCol = chessPieces[4].getCol(chessPieces[4], board);
 		}
@@ -368,16 +405,15 @@ public class ChessModel implements IChessModel {
 				//make sure that board space isn't null
 				if(board[r][c] != null)
 
-					//piece player = player
+					// If the piece matches the opposite player and
+					// it can move to the King, you are in Check.
 					if(board[r][c].player() == player)
 						if(isValidMove(new Move(r, c, kingRow,
-								kingCol)))
-							//	if(board[r][c].isValidMove(new Move(r, c,
-							//kingRow, kingCol), board)) 
-						{
+								kingCol))) {
 							changePlayer();
 							return true;
 						}
+		
 		// Player is not in check
 		changePlayer();
 		return false;
@@ -424,27 +460,32 @@ public class ChessModel implements IChessModel {
 
 						// Continue if this is a valid move.
 						if (chessPieces[piece].isValidMove(new Move
-								(pieceRow, pieceCol, row, col), board)) {
+								(pieceRow, pieceCol, row, col), 
+								board)) {
 
 							if(board[row][col] != null)
 								temp = pieceAt(row, col);
 
-							move(new Move(pieceRow, pieceCol, row, col));
+							move(new Move(pieceRow, pieceCol, 
+									row, col));
 
 							// No longer checked, the move is over.
 							if (!inCheck(Player.BLACK)) {
-								move(new Move(row, col, pieceRow, pieceCol));
+								move(new Move(row, col, pieceRow, 
+										pieceCol));
 								board[row][col] = temp;
 								return false;
 							}
-							move(new Move(row, col, pieceRow, pieceCol));
+							
+							// Undo the previous move.
+							move(new Move(row, col, pieceRow, 
+									pieceCol));
 							board[row][col] = temp;
 						}
+				
 				//decrement the move to another piece
 				piece--;
 			}
-
-
 		}
 		return true;
 	}
@@ -456,6 +497,7 @@ public class ChessModel implements IChessModel {
 	 * @return true of the player is in check, false if not.
 	 *****************************************************************/
 	private boolean whiteCheckMate(int piece) {
+		
 		// Move all other pieces to get out of check.
 		while (piece < 32) {
 
@@ -471,26 +513,33 @@ public class ChessModel implements IChessModel {
 				// Move every piece to every possible location.
 				for (int row = 0; row <= 7; row++)
 					for (int col = 0; col <= 7; col++) {
-						if(isValidMove(new Move(pieceRow, pieceCol, row, col))) {
+						if(isValidMove(new Move(pieceRow, pieceCol,
+								row, col))) {
 							// Continue if this is a valid move.
 							if (chessPieces[piece].isValidMove(new Move
-									(pieceRow, pieceCol, row, col), board)) {
+									(pieceRow, pieceCol, row, col), 
+									board)) {
 
 								if(board[row][col] != null)
 									temp = pieceAt(row, col);
 
-								move(new Move(pieceRow, pieceCol, row, col));
+								move(new Move(pieceRow, pieceCol, 
+										row, col));
+								
 								// No longer checked, the move is over.
 								if (!inCheck(Player.WHITE)) {
-									move(new Move(row, col, pieceRow, pieceCol));
+									move(new Move(row, col, pieceRow, 
+											pieceCol));
 									board[row][col] = temp;
 									return false;
 								}
-								move(new Move(row, col, pieceRow, pieceCol));
+								move(new Move(row, col, pieceRow, 
+										pieceCol));
 								board[row][col] = temp;
 							}
 						}
 					}
+				// Increment the piece number.
 				piece++;
 			}	
 		}
@@ -552,7 +601,8 @@ public class ChessModel implements IChessModel {
 		for (int col = 0; col < 8; col++)
 			for (int pawnNumber = 16; pawnNumber < 24; pawnNumber++)
 				if (board[0][col] == chessPieces[pawnNumber]) {
-					chessPieces[pawnNumber] = new Queen(Player.WHITE, 9);
+					chessPieces[pawnNumber] = new Queen
+							(Player.WHITE, 9);
 					board[0][col] = chessPieces[pawnNumber];
 				}
 
@@ -560,14 +610,16 @@ public class ChessModel implements IChessModel {
 		for (int col = 0; col < 8; col++)
 			for (int pawnNumber = 8; pawnNumber < 16; pawnNumber++)
 				if (board[7][col] == chessPieces[pawnNumber]) {
-					chessPieces[pawnNumber] = new Queen(Player.BLACK, 9);
+					chessPieces[pawnNumber] = new Queen
+							(Player.BLACK, 9);
 					board[0][col] = chessPieces[pawnNumber];
 				}
 	}
 
-	/******
-	 * FIXME
-	 *****/
+	/******************************************************************
+	 * This method will switch to the next player. Can be called from
+	 * other classes.
+	 *****************************************************************/
 	public void changePlayer() {
 		player = player.next();
 	}
@@ -920,7 +972,8 @@ public class ChessModel implements IChessModel {
 				for (int row = 0; row <= 7; row++)
 					for (int col = 0; col <= 7; col++)
 						if (pieceAt(row, col) == compPiece) {
-							if (compPiece.getPoints() <= humanPiece.getPoints())
+							if (compPiece.getPoints() <= humanPiece.
+									getPoints())
 								return true;
 							else 
 								return false;

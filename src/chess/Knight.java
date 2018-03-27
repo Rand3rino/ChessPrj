@@ -4,7 +4,7 @@
  * This class handles movement for the Knight piece.
  * 
  * @author Randy Nguyen, Sam Ventocilla, Jay Brunsting
- * @version March 19, 2018.
+ * @version March 27th, 2018.
  *********************************************************************/
 
 package chess;

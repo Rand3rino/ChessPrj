@@ -8,7 +8,7 @@
  * are used by the Rook, Bishop, and Queen.
  * 
  * @author Randy Nguyen, Sam Ventocilla, Jay Brunsting
- * @version March 26, 2018.
+ * @version March 27th, 2018.
  *********************************************************************/
 
 package chess;
