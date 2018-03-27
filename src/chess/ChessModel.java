@@ -540,15 +540,10 @@ public class ChessModel implements IChessModel {
 	 * @return true if complete, false if not.
 	 *****************************************************************/
 	public boolean isComplete() {
-
-		// If the game is over, game is complete.
-		if (gameOver())
+		if (inCheckMate(Player.BLACK) || inCheckMate(Player.WHITE) ) {
 			return true;
-
-		// FIXME: Stalemate
-
-		// Game is not over.
-		return false;
+		}
+		else return false;
 	}
 
 	// Add other public or helper methods as needed.
