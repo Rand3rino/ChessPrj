@@ -382,11 +382,17 @@ public class ChessPanel extends JPanel {
 									//notify player if in check 
 									// FIXME: SOME SORT OF ERROR ON 315
 									if(model.inCheck(model.currentPlayer()))
-										if(model.inCheckMate(model.currentPlayer()))
+										if(model.inCheckMate(model.currentPlayer())) {
 											JOptionPane.showMessageDialog(null,"Checkmate:" + model.currentPlayer().toString() + " Loses");
+											if (model.isComplete()) {
+												JOptionPane.showMessageDialog(null,"Game is over. Application will now close.");
+												System.exit(1);
+											}
+										}
 										else
 											JOptionPane.showMessageDialog(null,"Check");
-								} else
+										}
+										else
 									JOptionPane.showMessageDialog(null, 
 											"Invalid Move.");
 							}
@@ -431,10 +437,10 @@ public class ChessPanel extends JPanel {
 									if(model.inCheck(model.currentPlayer()))
 										if(model.inCheckMate(model.currentPlayer())) {
 											JOptionPane.showMessageDialog(null,"Checkmate:" + model.currentPlayer().toString() + " Loses");
-//											if (model.isComplete()) {
-//												JOptionPane.showMessageDialog(null,"Game is over. Application will now close.");
-//												System.exit(1);
-//											}
+											if (model.isComplete()) {
+												JOptionPane.showMessageDialog(null,"Game is over. Application will now close.");
+												System.exit(1);
+											}
 										}
 										else
 											JOptionPane.showMessageDialog(null,"Check");

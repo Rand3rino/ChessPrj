@@ -434,9 +434,8 @@ public class ChessModel implements IChessModel {
 								board[row][col] = temp;
 								return false;
 							}
-
-							board[row][col] = temp;
 							move(new Move(row, col, pieceRow, pieceCol));
+							board[row][col] = temp;
 						}
 				//decrement the move to another piece
 				piece--;
@@ -444,7 +443,6 @@ public class ChessModel implements IChessModel {
 
 
 		}
-
 		return true;
 	}
 
@@ -470,10 +468,7 @@ public class ChessModel implements IChessModel {
 				// Move every piece to every possible location.
 				for (int row = 0; row <= 7; row++)
 					for (int col = 0; col <= 7; col++) {
-						System.out.println("high");
-						System.out.println(pieceRow + " " +pieceCol);
 						if(isValidMove(new Move(pieceRow, pieceCol, row, col))) {
-							System.out.println("get through");
 							// Continue if this is a valid move.
 							if (chessPieces[piece].isValidMove(new Move
 									(pieceRow, pieceCol, row, col), board)) {
@@ -482,7 +477,6 @@ public class ChessModel implements IChessModel {
 									temp = pieceAt(row, col);
 
 								move(new Move(pieceRow, pieceCol, row, col));
-								System.out.println(pieceRow + " " + pieceCol+ " ->" + row + " " + col);
 								// No longer checked, the move is over.
 								if (!inCheck(Player.WHITE)) {
 									move(new Move(row, col, pieceRow, pieceCol));
@@ -497,7 +491,6 @@ public class ChessModel implements IChessModel {
 				piece++;
 			}	
 		}
-
 		return true;
 	}
 
