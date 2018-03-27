@@ -334,12 +334,14 @@ public class ChessPanel extends JPanel {
 				iconCastleLong(model.currentPlayer());
 				model.moveCastleLongSide(model.currentPlayer());
 				longSide.setEnabled(false);
+				model.changePlayer();
 			}
 			
 			if(comp == shortSide) {
 				iconCastleShort(model.currentPlayer());
 				model.moveCastleShortSide(model.currentPlayer());
 				shortSide.setEnabled(false);
+				model.changePlayer();
 			}
 
 			// Complete this.
@@ -355,6 +357,7 @@ public class ChessPanel extends JPanel {
 							move = new Move(firstRow, firstCol, row, col);
 							if (model.isValidMove(move)) {
 								model.move(move);
+								model.changePlayer();
 								promotion(move);
 								board[row][col].setIcon(board[firstRow][firstCol].getIcon());
 								board[firstRow][firstCol].setIcon(null);
