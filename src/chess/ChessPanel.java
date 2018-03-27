@@ -338,7 +338,7 @@ public class ChessPanel extends JPanel {
 			JComponent comp = (JComponent) event.getSource();
 
 			if(comp == gameItem) {
-				//FIXME: choose btw 2v2 and ai
+				gameType();
 			}
 			if(comp == restartItem){
 				setUpBoard();		
