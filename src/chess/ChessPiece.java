@@ -1,10 +1,14 @@
 /**********************************************************************
  * Project 3: Chess Game ChessPiece
  * 
- * This class is the base class for all chess pieces.
+ * This class is the base class for all chess pieces. All chess pieces
+ * have an owner, a value, and a flag for if it has moved. This class
+ * has the fundamental valid moveset of all chess pieces, can return 
+ * the row and column of any chess piece and has linear searches that 
+ * are used by the Rook, Bishop, and Queen.
  * 
  * @author Randy Nguyen, Sam Ventocilla, Jay Brunsting
- * @version March 19, 2018.
+ * @version March 26, 2018.
  *********************************************************************/
 
 package chess;
@@ -73,14 +77,17 @@ public abstract class ChessPiece implements IChessPiece {
 	 * @return c the column the piece is in, -1 if piece isn't found
 	 *****************************************************************/
 	public int getCol(ChessPiece piece, IChessPiece board[][]) {
-		for (int r = 0; r < 8; r++) {
-			for (int c = 0; c < 8; c++) {
+		
+		// Scan through each square of the board.
+		// Return the column value if the specific piece matches.
+		for (int r = 0; r < 8; r++)
+			for (int c = 0; c < 8; c++)
 				if(board[r][c] != null)
 					if (board[r][c] == piece)
 						if (board[r][c].player() == piece.player())
 							return c;
-			}
-		}
+		
+		// This piece could not be found.
 		return -1;
 	}
 
@@ -90,14 +97,17 @@ public abstract class ChessPiece implements IChessPiece {
 	 * @return r the row the piece is in, -1 if piece isn't found
 	 *****************************************************************/
 	public int getRow(ChessPiece piece, IChessPiece board[][]) {
-		for (int r = 0; r < 8; r++) {
-			for (int c = 0; c < 8; c++) {
+		
+		// Scan through each square of the board.
+		// Return the column value if the specific piece matches.
+		for (int r = 0; r < 8; r++)
+			for (int c = 0; c < 8; c++)
 				if(board[r][c] != null)
 					if (board[r][c] == piece)
 						if (board[r][c].player() == piece.player())
 							return r;
-			}
-		}
+		
+		// This piece could not be found.
 		return -1;
 	}
 
@@ -112,10 +122,6 @@ public abstract class ChessPiece implements IChessPiece {
 	 * Returns whether the piece at location [move.fromRow, 
 	 * move.fromColumn] is allowed to move to location 
 	 * [move.fromRow, move.fromColumn].
-	 *
-	 * Note: Pieces don't store their own location (because doing so
-	 * would be redundant). Therefore, the [move.fromRow, move.
-	 * fromColumn] component of move is necessary. 
 	 *
 	 * @param move A chess.Move object describing the move to be made.
 	 * @param board the chess.IChessBoard in which this piece resides.
@@ -142,8 +148,7 @@ public abstract class ChessPiece implements IChessPiece {
 			if(board[move.toRow][move.toColumn].player() == owner)
 				return false;
 
-
-
+		// This is a fundamentally valid move.
 		return true;
 	}
 
@@ -156,18 +161,23 @@ public abstract class ChessPiece implements IChessPiece {
 	 * @param board the board in which this piece resides.
 	 *****************************************************************/
 	public boolean isOpenDiag(Move move, IChessPiece[][] board) {
+		
+		// Check if there are any pieces blocking a Lower Right move.
 		if(move.toRow > move.fromRow &&
 				move.toColumn > move.fromColumn)
 			return isOpenDiagLR(move, board);
 
+		// Check if there are any pieces blocking an Upper Right move.
 		if(move.toRow < move.fromRow &&
 				move.toColumn > move.fromColumn)
 			return isOpenDiagUR(move, board);
 
+		// Check if there are any pieces blocking an Upper Left move.
 		if(move.toRow < move.fromRow &&
 				move.toColumn < move.fromColumn)
 			return isOpenDiagUL(move, board);
 
+		// Check if there are any pieces blocking a Lower Left move.
 		return isOpenDiagLL(move, board);
 	}
 
@@ -184,13 +194,14 @@ public abstract class ChessPiece implements IChessPiece {
 	 *  false if there are pieces between it & its move 
 	 *****************************************************************/
 	private boolean isOpenDiagLR(Move move, IChessPiece[][] board) {
+		
+		// Check for pieces in between.
 		for(int c = move.fromColumn + 1, r = move.fromRow + 1; 
-				c < move.toColumn; c++, r++) {
+				c < move.toColumn; c++, r++)
 			if(board[r][c] != null)
 				return false;
-		}
 
-
+		// There are no pieces blocking this path.
 		return true;
 	}
 
@@ -207,13 +218,14 @@ public abstract class ChessPiece implements IChessPiece {
 	 *  false if there are pieces between it & its move 
 	 *****************************************************************/
 	private boolean isOpenDiagUR(Move move, IChessPiece[][] board) {
-		for(int c = move.fromColumn + 1, r = move.fromRow - 1;
-				c < move.toColumn; c++, r--) {
+		
+		// Check for pieces in between.
+		for (int c = move.fromColumn + 1, r = move.fromRow - 1;
+				c < move.toColumn; c++, r--)
 			if(board[r][c] != null)
 				return false;
-		}
 
-
+		// There are no pieces blocking this path.
 		return true;
 	}
 
@@ -231,13 +243,14 @@ public abstract class ChessPiece implements IChessPiece {
 	 *  false if there are pieces between it & its move 
 	 *****************************************************************/
 	private boolean isOpenDiagUL(Move move, IChessPiece[][] board) {
-		for(int c = move.fromColumn - 1, r = move.fromRow - 1; 
-				c > move.toColumn; r--, c--) {
+		
+		// Check for pieces in between.
+		for (int c = move.fromColumn - 1, r = move.fromRow - 1; 
+				c > move.toColumn; r--, c--)
 			if(board[r][c] != null)
 				return false;
-		}
 
-
+		// There are no pieces blocking this path.
 		return true;
 	}
 
@@ -255,13 +268,14 @@ public abstract class ChessPiece implements IChessPiece {
 	 *  false if there are pieces between it & its move 
 	 *****************************************************************/
 	private boolean isOpenDiagLL(Move move, IChessPiece[][] board) {
-		for(int c = move.fromColumn - 1, r = move.fromRow + 1; 
-				c > move.toColumn; c--, r++) {
-			if(board[r][c] != null)
+		
+		// Check for pieces in between.
+		for (int c = move.fromColumn - 1, r = move.fromRow + 1; 
+				c > move.toColumn; c--, r++)
+			if (board[r][c] != null)
 				return false;
-		}
 
-
+		// There are no pieces blocking this path.
 		return true;
 	}
 
@@ -278,9 +292,12 @@ public abstract class ChessPiece implements IChessPiece {
 	 *  false if there are pieces between it & its move 
 	 *****************************************************************/
 	public boolean isOpenHori(Move move, IChessPiece[][] board) {
+		
+		// Check if there are any pieces blocking a Rightward move.
 		if(move.toColumn > move.fromColumn)
 			return isOpenHoriRight(move, board);
 
+		// Check if there are any pieces blocking a Leftward move.
 		return isOpenHoriLeft(move, board);
 	}
 
@@ -298,11 +315,12 @@ public abstract class ChessPiece implements IChessPiece {
 	 *****************************************************************/
 	public boolean isOpenHoriRight(Move move, IChessPiece[][] board){
 
-		// check for pieces in between
-		for(int c = move.fromColumn + 1; c < move.toColumn; c++) {
+		// Check for pieces in between.
+		for(int c = move.fromColumn + 1; c < move.toColumn; c++)
 			if(board[move.toRow][c] != null) 
 				return false;
-		}
+		
+		// There are no pieces blocking this path.
 		return true;
 	}
 
@@ -320,11 +338,12 @@ public abstract class ChessPiece implements IChessPiece {
 	 *****************************************************************/
 	public boolean isOpenHoriLeft(Move move, IChessPiece[][] board){
 
-		// check for pieces in between
-		for(int c = move.fromColumn - 1; c > move.toColumn; c--) {
+		// Check for pieces in between.
+		for(int c = move.fromColumn - 1; c > move.toColumn; c--)
 			if(board[move.toRow][c] != null) 
 				return false;
-		}
+		
+		// There are no pieces blocking this path.
 		return true;
 	}
 
@@ -341,9 +360,12 @@ public abstract class ChessPiece implements IChessPiece {
 	 *  false if there are pieces between it & its move 
 	 *****************************************************************/
 	public boolean isOpenVert(Move move, IChessPiece[][] board) {
+		
+		// Check if there are any pieces blocking an Upward move.
 		if(move.toRow < move.fromRow)
 			return isOpenVertUp(move, board);
 
+		// Check if there are any pieces blocking a Downward move.
 		return isOpenVertDown(move,board);
 	}
 
@@ -361,14 +383,12 @@ public abstract class ChessPiece implements IChessPiece {
 	 *****************************************************************/
 	public boolean isOpenVertUp(Move move, IChessPiece[][] board){
 
-		// check for pieces in between
-		for(int r = move.fromRow - 1; r > move.toRow; r--) {
+		// Check for pieces in between.
+		for(int r = move.fromRow - 1; r > move.toRow; r--)
 			if(board[r][move.toColumn] != null)
 				return false;
-		}
 
-
-
+		// There are no pieces blocking this path.
 		return true;
 	}
 
@@ -385,12 +405,13 @@ public abstract class ChessPiece implements IChessPiece {
 	 *  false if there are pieces between it & its move 
 	 *****************************************************************/
 	public boolean isOpenVertDown(Move move, IChessPiece[][] board) {
-		// check for pieces in between
-		for(int r = move.fromRow + 1; r < move.toRow; r++) {
+		
+		// Check for pieces in between.
+		for(int r = move.fromRow + 1; r < move.toRow; r++)
 			if(board[r][move.toColumn] != null)
 				return false;
-		}
 
+		// There are no pieces blocking this path.
 		return true;
 	}
 
@@ -407,10 +428,13 @@ public abstract class ChessPiece implements IChessPiece {
 	 *  or else returns true
 	 *****************************************************************/
 	public boolean isHoriOrVert(Move move, IChessPiece[][] board) {
+		
+		// If the rows or columns are different, move is not straight.
 		if(move.toRow != move.fromRow &&
 				move.toColumn != move.fromColumn)
 			return false;
 
+		// This move is perfectly Horizontal or Vertical.
 		return true;
 	}
 
@@ -425,11 +449,14 @@ public abstract class ChessPiece implements IChessPiece {
 	 * else returns false
 	 *****************************************************************/
 	public boolean isPerfDiag(Move move, IChessPiece[][] board) {
-		if(Math.abs(move.toRow - move.fromRow) ==
-				Math.abs(move.toColumn-move.fromColumn))
+		
+		// If the difference of the rows and the columns are the same
+		// then this move is perfectly diagonal.
+		if (Math.abs(move.toRow - move.fromRow) ==
+				Math.abs(move.toColumn - move.fromColumn))
 			return true;
 
+		// This move is not perfectly diagonal.
 		return false;
 	}
-
 }
