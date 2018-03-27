@@ -21,11 +21,11 @@ public class ChessModel implements IChessModel {
 	/** The player variable */
 	private Player player;
 
-//	/** Static Variable for AI Player */
-//	private static Player HUMAN = Player.WHITE;
-//
-//	/** Static Variable for AI Player */
-//	private static Player AI = Player.BLACK;
+	//	/** Static Variable for AI Player */
+	//	private static Player HUMAN = Player.WHITE;
+	//
+	//	/** Static Variable for AI Player */
+	//	private static Player AI = Player.BLACK;
 
 	/** Array to hold all chessPieces */
 	private ChessPiece[] chessPieces = new ChessPiece[32];
@@ -160,6 +160,9 @@ public class ChessModel implements IChessModel {
 	 *****************************************************************/
 	public boolean isValidMove(Move move) {
 
+		if (move.fromRow < 0 || move.fromColumn < 0) 
+			return false;
+		
 		if (pieceAt(move.fromRow, move.fromColumn) != null) {
 			//make sure the selected piece is the current player's piece
 			if (player == pieceAt(move.fromRow, move.fromColumn).
@@ -175,7 +178,7 @@ public class ChessModel implements IChessModel {
 		temp = board[move.toRow][move.toColumn];
 		int row = move.toRow;
 		int col = move.toColumn;
-		
+
 		move(move);
 		boolean check = (inCheck(player));
 		move(new Move(move.toRow, move.toColumn, move.fromRow, move.fromColumn));
@@ -913,13 +916,6 @@ public class ChessModel implements IChessModel {
 
 			// Make sure this is an active piece.
 			if (chessPieces[piece] != null) {
-
-				// Save the starting location of the piece.
-//				int pieceRow = chessPieces[piece].getRow
-//						(chessPieces[piece], board);
-//				int pieceCol = chessPieces[piece].getCol
-//						(chessPieces[piece], board);
-
 				// Scan the board for an AI Piece.
 				for (int row = 0; row <= 7; row++)
 					for (int col = 0; col <= 7; col++)

@@ -27,16 +27,14 @@ public class ChessGUI {
 		fileMenu = new JMenu("File");
 		quitItem = new JMenuItem("Quit");
 		gameItem = new JMenuItem("New Game");
-		restartItem = new JMenuItem("Restart Game");
 		
 		fileMenu.add(gameItem);
 		fileMenu.add(quitItem);
-		fileMenu.add(restartItem);
 		menus = new JMenuBar();
 		frame.setJMenuBar(menus);
 		menus.add(fileMenu);
 		
-		ChessPanel panel = new ChessPanel(quitItem, gameItem, restartItem);
+		ChessPanel panel = new ChessPanel(quitItem, gameItem);
 		frame.getContentPane().add(panel);
 		
 		frame.pack();
