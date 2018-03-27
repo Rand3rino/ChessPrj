@@ -10,7 +10,7 @@
 package chess;
 
 public class Knight extends ChessPiece{
-	
+
 	/******************************************************************
 	 * Constructor that calls the constructor for the parent class of
 	 * Knight and passes the player.
@@ -31,7 +31,7 @@ public class Knight extends ChessPiece{
 	 *****************************************************************/
 	@Override
 	public boolean isValidMove(Move move, IChessPiece[][] board) {
-		
+
 		// First call ChessPiece to see if this is a valid move.
 		if(!(super.isValidMove(move, board)))
 			return false;
