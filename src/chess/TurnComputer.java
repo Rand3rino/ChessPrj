@@ -362,15 +362,53 @@ public class TurnComputer{
 			}
 		return false;
 	}
-	
+
 	/******************************************************************
 	 * This method is part of the AI feature. Determine if a capture
 	 * is a favorable move.
 	 * @return true if the exchange is favorable, false if not.
 	 *****************************************************************/
-	private boolean exchange(ChessPiece piece, Move move) {
+	private boolean exchange(ChessPiece compPiece, Move move) {
 		
-		return false;
+		ChessPiece humanPiece = (ChessPiece)model.
+				pieceAt(move.toRow, move.toColumn);
+		
+		int piece = 16;
+
+		// Move all pieces to check the player.
+		while (piece < 32) {
+
+			// Make sure this is an active piece.
+			if (chessPieces[piece] != null) {
+
+				// Save the starting location of the piece.
+//				int pieceRow = chessPieces[piece].getRow
+//						(chessPieces[piece], board);
+//				int pieceCol = chessPieces[piece].getCol
+//						(chessPieces[piece], board);
+
+				// Scan the board for an AI Piece.
+				for (int row = 0; row <= 7; row++)
+					for (int col = 0; col <= 7; col++)
+						if (model.pieceAt(row, col) == compPiece) {
+							if (compPiece.getPoints() <= humanPiece.getPoints())
+								return true;
+							else 
+								return false;
+						}
+
+								
+				// Skip the King piece.
+				if (piece == 27)
+					piece = 29;
+
+				// Increment to move another piece.
+				else
+					piece++;
+			}
+		}
+		
+		// No Human piece can capture the AI piece, continue the move.
+		return true;
 	}
-	
 }
