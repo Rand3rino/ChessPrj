@@ -300,10 +300,13 @@ public class TurnComputer{
 
 							// Continue if this is a valid move.
 							if (chessPieces[piece].isValidMove
-									(move, board)) {
-								model.move(move);
-								return true;
-							}
+									(move, board)) 
+								
+								if(exchange(chessPieces[piece], move)) {
+									model.move(move);
+									return true;
+								}
+									
 						}
 			}
 			// Skip the King piece.
@@ -359,4 +362,15 @@ public class TurnComputer{
 			}
 		return false;
 	}
+	
+	/******************************************************************
+	 * This method is part of the AI feature. Determine if a capture
+	 * is a favorable move.
+	 * @return true if the exchange is favorable, false if not.
+	 *****************************************************************/
+	private boolean exchange(ChessPiece piece, Move move) {
+		
+		return false;
+	}
+	
 }
