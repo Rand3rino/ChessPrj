@@ -20,13 +20,13 @@ public class ChessModel implements IChessModel {
 
 	/** Static Variable for AI Player */
 	private static Player HUMAN = Player.WHITE;
-	
+
 	/** Static Variable for AI Player */
 	private static Player AI = Player.BLACK;
-	
+
 	/** Array to hold all chessPieces */
 	private ChessPiece[] chessPieces = new ChessPiece[32];
-	
+
 	private Move move;
 
 	// Declare other instance variables as needed
@@ -68,7 +68,7 @@ public class ChessModel implements IChessModel {
 		chessPieces[14] = new Pawn(Player.BLACK, 1);
 		chessPieces[15] = new Pawn(Player.BLACK, 1);
 	}
-	
+
 	/**************************************************************
 	 * This method assigns the White player's pieces.
 	 *************************************************************/
@@ -156,11 +156,11 @@ public class ChessModel implements IChessModel {
 	 * represent valid locations on the board.
 	 *****************************************************************/
 	public boolean isValidMove(Move move) {
-		
+
 		if (pieceAt(move.fromRow, move.fromColumn) != null)
 			//make sure the selected piece is the current player's piece
 			if (player == pieceAt(move.fromRow, move.fromColumn).
-			  player())
+			player())
 				return pieceAt(move.fromRow, move.fromColumn).
 						isValidMove(move, board);
 		return false;
@@ -189,15 +189,14 @@ public class ChessModel implements IChessModel {
 
 		// Place the piece on the new square.
 		board[move.toRow][move.toColumn] = piece;
-		
+
 		// This piece has moved at least once.
 		for (int pieceNum = 0; pieceNum < 32; pieceNum++)
 			if (chessPieces[pieceNum] == piece)
 				chessPieces[pieceNum].setHasMoved();
-		
+
 		// Promote any pawns.
 		promotion();
-		player = player.next();
 	}
 
 	/******************************************************************
@@ -207,23 +206,23 @@ public class ChessModel implements IChessModel {
 	 * @return true of the player can castle, false if not.
 	 *****************************************************************/
 	public boolean castleShortSide(Player p) {
-		
-		
+
+
 		if (p == Player.BLACK)
 			if (chessPieces[4].hasMoved() || chessPieces[7].hasMoved())
 				return false;
 			else if (board[0][5] != null || board[0][6] != null)
 				return false;
-		
+
 		if (p == Player.WHITE)
 			if (chessPieces[28].hasMoved() || chessPieces[31].hasMoved())
 				return false;
 			else if (board[7][5] != null || board[7][6] != null)
 				return false;
-		
+
 		return true;
 	}
-	
+
 	/******************************************************************
 	 * This method determines if a player can castle long-side.
 	 * 
@@ -231,94 +230,90 @@ public class ChessModel implements IChessModel {
 	 * @return true of the player can castle, false if not.
 	 *****************************************************************/
 	public boolean castleLongSide(Player p) {
-		
+
 		if (p == Player.BLACK)
 			if (chessPieces[4].hasMoved() || chessPieces[0].hasMoved())
 				return false;
 			else if (board[0][1] != null || board[0][2] != null
 					|| board[0][3] != null)
 				return false;
-		
+
 		if (p == Player.WHITE)
 			if (chessPieces[28].hasMoved() || chessPieces[24].hasMoved())
 				return false;
 			else if (board[7][1] != null || board[7][2] != null
 					|| board[7][3] != null)
 				return false;
-		
+
 		return true;
 	}
-	
+
 	/******************************************************************
 	 * This method performs a short-side castle.
 	 * 
 	 * @param p The Player castling.
 	 *****************************************************************/
 	public void moveCastleShortSide(Player p) {
-		
+
 		if (p == Player.BLACK) {
 			board[0][4] = null;
 			board[0][7] = null;
-			
+
 			chessPieces[4] = new King(Player.BLACK, 10);
 			chessPieces[4].setHasMoved();
 			board[0][6] = chessPieces[4];
-			
+
 			chessPieces[7] = new Rook(Player.BLACK, 5);
 			chessPieces[7].setHasMoved();
 			board[0][5] = chessPieces[7];
-			player = player.next();
 		}
 		if (p == Player.WHITE) {
 			board[7][4] = null;
 			board[7][7] = null;
-			
+
 			chessPieces[28] = new King(Player.WHITE, 10);
 			chessPieces[28].setHasMoved();
 			board[7][6] = chessPieces[28];
-			
+
 			chessPieces[31] = new Rook(Player.WHITE, 5);
 			chessPieces[31].setHasMoved();
 			board[7][5] = chessPieces[31];
-			player = player.next();
 		}
 	}
-	
+
 	/******************************************************************
 	 * This method performs a long-side castle.
 	 * 
 	 * @param p The Player castling.
 	 *****************************************************************/
 	public void moveCastleLongSide(Player p) {
-		
+
 		if (p == Player.BLACK) {
 			board[0][4] = null;
 			board[0][0] = null;
-			
+
 			chessPieces[4] = new King(Player.BLACK, 10);
 			chessPieces[4].setHasMoved();
 			board[0][2] = chessPieces[4];
-			
+
 			chessPieces[0] = new Rook(Player.BLACK, 5);
 			chessPieces[0].setHasMoved();
 			board[0][3] = chessPieces[0];
-			player = player.next();
 		}
 		if (p == Player.WHITE) {
 			board[7][4] = null;
 			board[7][0] = null;
-			
+
 			chessPieces[28] = new King(Player.WHITE, 10);
 			chessPieces[28].setHasMoved();
 			board[7][2] = chessPieces[28];
-			
+
 			chessPieces[24] = new Rook(Player.WHITE, 5);
 			chessPieces[24].setHasMoved();
 			board[7][3] = chessPieces[24];
-			player = player.next();
 		}
 	}
-	
+
 	/******************************************************************
 	 * This method determines if a player's King is in check.
 	 * 
@@ -331,7 +326,7 @@ public class ChessModel implements IChessModel {
 		int kingCol = -1;
 
 		if (p == Player.WHITE) {
-			
+
 			// get White king position
 			kingRow = chessPieces[28].getRow(chessPieces[28], board);
 			kingCol = chessPieces[28].getCol(chessPieces[28], board);
@@ -339,14 +334,14 @@ public class ChessModel implements IChessModel {
 		}
 
 		if (p == Player.BLACK) {
-			
+
 			// get Black king position
 			kingRow = chessPieces[4].getRow(chessPieces[4], board);
 			kingCol = chessPieces[4].getCol(chessPieces[4], board);
 			System.out.println("Black" + kingRow + "1" + kingCol + "End Black");
 		}
-		
-		player = player.next();
+
+		changePlayer();
 
 		//go through entire board
 		for(int r = 0; r < 8; r++)
@@ -361,14 +356,14 @@ public class ChessModel implements IChessModel {
 								kingCol)))
 							if(board[r][c].isValidMove(new Move(r, c,
 									kingRow, kingCol), board)) {
-								player = player.next();
+								changePlayer();
 								return true;
 							}
 		// Player is not in check
-		player = player.next();
+		changePlayer();
 		return false;
 	}
-	
+
 	/******************************************************************
 	 * This method determines if a player's King is in checkmate.
 	 * 
@@ -391,7 +386,7 @@ public class ChessModel implements IChessModel {
 	 * @return true of the player is in check, false if not.
 	 *****************************************************************/
 	private boolean blackCheckMate(int piece) {
-		
+
 		// Move all other pieces to get out of check.
 		while (piece >= 0) {
 
@@ -410,16 +405,23 @@ public class ChessModel implements IChessModel {
 
 						// Continue if this is a valid move.
 						if (chessPieces[piece].isValidMove(new Move
-								(pieceRow, pieceCol, row, col), board))
+								(pieceRow, pieceCol, row, col), board)) {
 
+							move(new Move(pieceRow, pieceCol, row, col));
+							
 							// No longer checked, the move is over.
-							if (!inCheck(Player.BLACK))
+							if (!inCheck(Player.BLACK)) {
+								move(new Move(row, col, pieceRow, pieceCol));
 								return false;
+							}
+							
+							move(new Move(row, col, pieceRow, pieceCol));
+						}
 				//decrement the move to another piece
 				piece--;
 			}
 
-				
+
 		}
 
 		return true;
@@ -446,32 +448,32 @@ public class ChessModel implements IChessModel {
 
 				// Move every piece to every possible location.
 				for (int row = 0; row <= 7; row++)
-					for (int col = 0; col <= 7; col++)
-						
-						if(isValidMove(new Move(pieceRow, pieceCol, row, col)))
+					for (int col = 0; col <= 7; col++) {
+						System.out.println("high");
+						if(isValidMove(new Move(pieceRow, pieceCol, row, col))) {
+							System.out.println("get through");
+							// Continue if this is a valid move.
+							if (chessPieces[piece].isValidMove(new Move
+									(pieceRow, pieceCol, row, col), board)) {
 
-						// Continue if this is a valid move.
-						if (chessPieces[piece].isValidMove(new Move
-								(pieceRow, pieceCol, row, col), board)) {
-							
-							move(new Move(pieceRow, pieceCol, row, col));
-
-							// No longer checked, the move is over.
-							if (!inCheck(Player.WHITE)) {
+								move(new Move(pieceRow, pieceCol, row, col));
+								System.out.println(pieceRow + " " + pieceCol+ " ->" + row + " " + col);
+								// No longer checked, the move is over.
+								if (!inCheck(Player.WHITE)) {
+									move(new Move(row, col, pieceRow, pieceCol));
+									return false;
+								}
 								move(new Move(row, col, pieceRow, pieceCol));
-								return false;
 							}
 						}
+					}
 				piece++;
-			}
-
-
-				
+			}	
 		}
 
 		return true;
 	}
-	
+
 	/******************************************************************
 	 * Return the current player. 
 	 * @return Player The current player.
@@ -523,13 +525,13 @@ public class ChessModel implements IChessModel {
 	}
 
 	// Add other public or helper methods as needed.
-	
+
 	/******************************************************************
 	 * This method will check if a pawn is ready for promotion and 
 	 * promote it to a Queen.
 	 *****************************************************************/
 	private void promotion() {
-		
+
 		// Check if a White Pawn will be promoted.
 		for (int col = 0; col < 8; col++)
 			for (int pawnNumber = 16; pawnNumber < 24; pawnNumber++)
@@ -546,7 +548,7 @@ public class ChessModel implements IChessModel {
 					board[0][col] = chessPieces[pawnNumber];
 				}
 	}
-	
+
 	/******************************************************************
 	 * This method determines if the game is over by seeing
 	 * if there is a checkmate.
@@ -568,5 +570,9 @@ public class ChessModel implements IChessModel {
 		// return true;
 		// }
 		return false;
+	}
+	
+	public void changePlayer() {
+		player = player.next();
 	}
 }
