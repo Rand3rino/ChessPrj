@@ -322,8 +322,8 @@ public class ChessModel implements IChessModel {
 	 *****************************************************************/
 	public boolean inCheck(Player p) {
 
-		int kingRow = -1;
-		int kingCol = -1;
+		int kingRow = -2;
+		int kingCol = -2;
 
 		if (p == Player.WHITE) {
 

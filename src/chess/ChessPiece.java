@@ -77,10 +77,12 @@ public abstract class ChessPiece implements IChessPiece {
 			for (int c = 0; c < 8; c++) {
 				if(board[r][c] != null)
 					if (board[r][c] == piece)
-						if (board[r][c].player() == piece.player())
+						//if (board[r][c].player() == piece.player())
 							return c;
 			}
 		}
+		
+		System.out.println("getCol:" + piece);
 		return -1;
 	}
 
@@ -98,6 +100,7 @@ public abstract class ChessPiece implements IChessPiece {
 							return r;
 			}
 		}
+		System.out.println("getRow:" + piece);
 		return -1;
 	}
 
@@ -134,7 +137,7 @@ public abstract class ChessPiece implements IChessPiece {
 			return false;
 
 		// Prevents the player to move from an empty square.
-		else if(board[move.fromRow][move.fromColumn] == null)
+		if(board[move.fromRow][move.fromColumn] == null)
 			return false;
 
 		// Prevents the player from taking their own piece.
