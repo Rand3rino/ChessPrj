@@ -415,6 +415,7 @@ public class ChessPanel extends JPanel {
 			}
 			
 			if(gameType == 1) {
+				System.out.println("I");
 				// Complete this.
 				for (int row = 0; row < 8; row++) {
 					for (int col = 0; col < 8; col++) {
@@ -448,7 +449,7 @@ public class ChessPanel extends JPanel {
 									JOptionPane.showMessageDialog(null, 
 											"Invalid Move.");
 								
-								aI.turnComputer(model);
+								model.turnComputer();
 							}
 
 							// store the players first move
