@@ -91,7 +91,7 @@ public class ChessPanel extends JPanel {
 	private void gameType() {
 		JOptionPane.showMessageDialog(null, "Welcome to Chess");
 
-		String[] options = new String[] {"2v2", "A.I.", "Cancel"};
+		String[] options = new String[] {"1v1", "A.I.", "Cancel"};
 		gameType = JOptionPane.showOptionDialog(null,"Select One:",
 				"Chess", JOptionPane.DEFAULT_OPTION, 
 				JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
@@ -350,12 +350,14 @@ public class ChessPanel extends JPanel {
 				iconCastleLong(model.currentPlayer());
 				model.moveCastleLongSide(model.currentPlayer());
 				longSide.setEnabled(false);
+				model.changePlayer();
 			}
 
 			if(comp == shortSide) {
 				iconCastleShort(model.currentPlayer());
 				model.moveCastleShortSide(model.currentPlayer());
 				shortSide.setEnabled(false);
+				model.changePlayer();
 			}
 
 			if(gameType == 0) {
@@ -373,6 +375,7 @@ public class ChessPanel extends JPanel {
 								if (model.isValidMove(move)) {
 									model.move(move);
 									promotion(move);
+									model.changePlayer();
 									board[row][col].setIcon(board[firstRow][firstCol].getIcon());
 									board[firstRow][firstCol].setIcon(null);
 
@@ -434,7 +437,7 @@ public class ChessPanel extends JPanel {
 									JOptionPane.showMessageDialog(null, 
 											"Invalid Move.");
 								
-								aI.turnComputer();
+								aI.turnComputer(model);
 							}
 
 							// store the players first move

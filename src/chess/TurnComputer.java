@@ -7,19 +7,18 @@ package chess;
 import javax.swing.JOptionPane;
 import java.util.ArrayList;
 
-public class TurnComputer {
+public class TurnComputer{
 
 	/** The two dimensional board */
 	private IChessPiece[][] board = new IChessPiece[8][8];
 
 	/** Variable to hold a single piece */
 	private IChessPiece piece;
+	
+	ChessModel model;
 
 	/** Array to hold all chessPieces */
 	private ChessPiece[] chessPieces = new ChessPiece[32];
-	
-	/** The game engine */
-	private ChessModel model;
 
 	/** The player variable */
 	private Player player;
@@ -43,11 +42,16 @@ public class TurnComputer {
 	 * 		5. Move a piece (pawns first) forward towards the
 	 *  		   opponent's King.
 	 *****************************************************************/
-	public void turnComputer() {
+	public void turnComputer(ChessModel m) {
 
+		model = m;
+		
 		// AI will always be BLACK.
 		player = AI;
 
+		//instantiate model instance variable
+		//model = new ChessModel();
+		
 		// Variable to skip processes if the turn is complete.
 		boolean turnComplete = false;
 
@@ -149,7 +153,6 @@ public class TurnComputer {
 					piece = 3;
 
 				// Decrement to move another piece.
-				else
 					piece--;
 			}
 		}
