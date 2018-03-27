@@ -546,8 +546,6 @@ public class ChessModel implements IChessModel {
 		else return false;
 	}
 
-	// Add other public or helper methods as needed.
-
 	/******************************************************************
 	 * This method will check if a pawn is ready for promotion and 
 	 * promote it to a Queen.
@@ -569,29 +567,6 @@ public class ChessModel implements IChessModel {
 					chessPieces[pawnNumber] = new Queen(Player.BLACK, 9);
 					board[0][col] = chessPieces[pawnNumber];
 				}
-	}
-
-	/******************************************************************
-	 * This method determines if the game is over by seeing
-	 * if there is a checkmate.
-	 *****************************************************************/
-	public boolean gameOver() {
-
-		// FIXME: Uncomment at step 10
-
-		// // If there is a check, move pieces to avoid check.
-		// if (inCheck(currentPlayer() ) ) {
-		//
-		// // FIXME: MOVE PIECES TO AVOID CHECK
-		// }
-		//
-		// // Display message if Player cannot avoid check.
-		// if (inCheck(currentPlayer() ) ) {
-		// JOptionPane.showMessageDialog(null,
-		// "Checkmate. Game Over.");
-		// return true;
-		// }
-		return false;
 	}
 
 	public void changePlayer() {
