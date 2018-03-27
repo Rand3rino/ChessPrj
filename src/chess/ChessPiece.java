@@ -51,7 +51,7 @@ public abstract class ChessPiece implements IChessPiece {
 	 *
 	 * @return points How many points this piece is worth.
 	 *****************************************************************/
-	public int points() {
+	public int getPoints() {
 		return points;
 	}
 
