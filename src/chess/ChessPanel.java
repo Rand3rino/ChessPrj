@@ -282,9 +282,6 @@ public class ChessPanel extends JPanel {
 
 	private void promotion(Move move) {
 
-		if (((ImageIcon)board[move.fromRow][move.fromColumn].getIcon()) == null )
-			return;
-			
 		//get the name of the icon
 		String desc = ((ImageIcon)board[move.fromRow][move.fromColumn].getIcon()).getDescription();
 
@@ -432,7 +429,6 @@ public class ChessPanel extends JPanel {
 								if (model.isValidMove(move)) {
 									model.move(move);
 									promotion(move);
-									model.changePlayer();
 									board[row][col].setIcon(board[firstRow][firstCol].getIcon());
 									board[firstRow][firstCol].setIcon(null);
 
@@ -448,27 +444,11 @@ public class ChessPanel extends JPanel {
 										}
 										else
 											JOptionPane.showMessageDialog(null,"Check");
-									
-									move = model.turnComputer();
-									board[move.toRow][move.toColumn].setIcon(board[move.fromRow][move.fromColumn].getIcon());
-									board[move.fromRow][move.fromColumn].setIcon(null);
-									promotion(move);
-									
-									if(model.inCheck(model.currentPlayer()))
-										if(model.inCheckMate(model.currentPlayer())) {
-											JOptionPane.showMessageDialog(null,"Checkmate:" + model.currentPlayer().toString() + " Loses");
-											if (model.isComplete()) {
-												JOptionPane.showMessageDialog(null,"Game is over. Application will now close.");
-												System.exit(1);
-											}
-										}
-										else
-											JOptionPane.showMessageDialog(null,"Check");
-									
-									model.changePlayer();
 								} else
 									JOptionPane.showMessageDialog(null, 
 											"Invalid Move.");
+								
+								model.turnComputer();
 							}
 
 							// store the players first move
