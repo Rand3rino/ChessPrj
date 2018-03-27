@@ -27,7 +27,6 @@ public class ChessPanel extends JPanel {
 	private JButton blankBtn2 = new JButton();
 	private JButton blankBtn3 = new JButton();
 
-	private TurnComputer aI = new TurnComputer();
 	
 	/** FIXME */
 	private ChessModel model;
@@ -64,7 +63,6 @@ public class ChessPanel extends JPanel {
 
 	private JMenuItem gameItem;
 	private JMenuItem quitItem;
-	private JMenuItem restartItem;
 
 	private JLabel showPlayer;
 
@@ -73,18 +71,15 @@ public class ChessPanel extends JPanel {
 	/** ButtonListener for Chess game */
 	private ButtonListener listener = new ButtonListener();
 
-	public ChessPanel(JMenuItem pquitItem, JMenuItem pgameItem,
-			JMenuItem prestartItem) {
+	public ChessPanel(JMenuItem pquitItem, JMenuItem pgameItem) {
 
 		quitItem = pquitItem;
 		gameItem = pgameItem;
-		restartItem = prestartItem;
 
 		gameType();
 
 		quitItem.addActionListener(listener);
-		gameItem.addActionListener(listener); 
-		restartItem.addActionListener(listener);
+		gameItem.addActionListener(listener);
 	}
 
 	private void gameType() {
@@ -339,9 +334,6 @@ public class ChessPanel extends JPanel {
 
 			if(comp == gameItem) {
 				gameType();
-			}
-			if(comp == restartItem){
-				setUpBoard();		
 			}
 			if(comp == quitItem)
 				System.exit(1);
