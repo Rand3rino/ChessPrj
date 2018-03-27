@@ -81,7 +81,6 @@ public class ChessPanel extends JPanel {
 		restartItem = prestartItem;
 
 		gameType();
-		setUpBoard();
 
 		quitItem.addActionListener(listener);
 		gameItem.addActionListener(listener); 
@@ -99,6 +98,7 @@ public class ChessPanel extends JPanel {
 		if(gameType == 2)
 			System.exit(1);
 
+		setUpBoard();
 	}
 
 	private void setUpBoard() {
@@ -338,7 +338,7 @@ public class ChessPanel extends JPanel {
 			JComponent comp = (JComponent) event.getSource();
 
 			if(comp == gameItem) {
-				//FIXME: choose btw 2v2 and ai
+				gameType();
 			}
 			if(comp == restartItem){
 				setUpBoard();		
