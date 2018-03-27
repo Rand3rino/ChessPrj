@@ -164,27 +164,23 @@ public class ChessModel implements IChessModel {
 			//make sure the selected piece is the current player's piece
 			if (player == pieceAt(move.fromRow, move.fromColumn).
 					player()) {				
-				if(pieceAt(move.fromRow, move.fromColumn).
-						isValidMove(move, board)) {
-
-					//if(board[move.toRow][move.toColumn]!= null) {
-						temp = board[move.toRow][move.toColumn];
-						int row = move.toRow;
-						int col = move.toColumn;
-						
-						move(move);
-						boolean check = (inCheck(player));
-						System.out.println(check);
-						move(new Move(move.toRow, move.toColumn, move.fromRow, move.fromColumn));
-						board[row][col] = temp;
-						return !check;
-				//	}
-					
-					//return true;
-				}
+				return (pieceAt(move.fromRow, move.fromColumn).
+						isValidMove(move, board)); 
 			}
 		}
 		return false;
+	}
+
+	public boolean stillInCheck(Move move) {
+		temp = board[move.toRow][move.toColumn];
+		int row = move.toRow;
+		int col = move.toColumn;
+		
+		move(move);
+		boolean check = (inCheck(player));
+		move(new Move(move.toRow, move.toColumn, move.fromRow, move.fromColumn));
+		board[row][col] = temp;
+		return !check;
 	}
 
 	/******************************************************************
@@ -207,7 +203,6 @@ public class ChessModel implements IChessModel {
 
 		// pieceAt(move.toRow, move.toColumn) == really dead.
 		board[move.toRow][move.toColumn] = null;
-		board[move.toRow][move.toColumn] = piece;
 
 		// Place the piece on the new square.
 		board[move.toRow][move.toColumn] = piece;
@@ -352,7 +347,6 @@ public class ChessModel implements IChessModel {
 			// get White king position
 			kingRow = chessPieces[28].getRow(chessPieces[28], board);
 			kingCol = chessPieces[28].getCol(chessPieces[28], board);
-			System.out.println("White" + kingRow + "" + kingCol + "End White");
 		}
 
 		if (p == Player.BLACK) {
@@ -360,7 +354,6 @@ public class ChessModel implements IChessModel {
 			// get Black king position
 			kingRow = chessPieces[4].getRow(chessPieces[4], board);
 			kingCol = chessPieces[4].getCol(chessPieces[4], board);
-			System.out.println("Black" + kingRow + "1" + kingCol + "End Black");
 		}
 
 		changePlayer();

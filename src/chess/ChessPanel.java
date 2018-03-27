@@ -372,7 +372,7 @@ public class ChessPanel extends JPanel {
 							if (count % 2 == 0) {
 
 								move = new Move(firstRow, firstCol, row, col);
-								if (model.isValidMove(move)) {
+								if (model.isValidMove(move) && model.stillInCheck(move)) {
 									model.move(move);
 									promotion(move);
 									model.changePlayer();
