@@ -450,6 +450,8 @@ public class ChessPanel extends JPanel {
 											JOptionPane.showMessageDialog(null,"Check");
 									
 									move = model.turnComputer();
+									if(board[move.toRow][move.toColumn] == null)
+										return;
 									board[move.toRow][move.toColumn].setIcon(board[move.fromRow][move.fromColumn].getIcon());
 									board[move.fromRow][move.fromColumn].setIcon(null);
 									promotion(move);

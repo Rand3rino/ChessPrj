@@ -21,11 +21,11 @@ public class ChessModel implements IChessModel {
 	/** The player variable */
 	private Player player;
 
-//	/** Static Variable for AI Player */
-//	private static Player HUMAN = Player.WHITE;
-//
-//	/** Static Variable for AI Player */
-//	private static Player AI = Player.BLACK;
+	//	/** Static Variable for AI Player */
+	//	private static Player HUMAN = Player.WHITE;
+	//
+	//	/** Static Variable for AI Player */
+	//	private static Player AI = Player.BLACK;
 
 	/** Array to hold all chessPieces */
 	private ChessPiece[] chessPieces = new ChessPiece[32];
@@ -175,7 +175,7 @@ public class ChessModel implements IChessModel {
 		temp = board[move.toRow][move.toColumn];
 		int row = move.toRow;
 		int col = move.toColumn;
-		
+
 		move(move);
 		boolean check = (inCheck(player));
 		move(new Move(move.toRow, move.toColumn, move.fromRow, move.fromColumn));
@@ -580,10 +580,10 @@ public class ChessModel implements IChessModel {
 	 *  		   opponent's King.
 	 *****************************************************************/
 	public Move turnComputer() {
-		
+
 		// AI will always be BLACK.
 		player = Player.BLACK;
-		
+
 		Move moveAI;
 
 		// 1. Check if the AI is in check.
@@ -604,7 +604,7 @@ public class ChessModel implements IChessModel {
 		// 5. Move towards the opponent King.
 		if (moveAI == null)
 			moveAI =  moveForward();
-		
+
 		return moveAI;
 
 	}
@@ -631,19 +631,10 @@ public class ChessModel implements IChessModel {
 					move = new Move(kingRow, kingCol, row, col);
 
 					// Continue if this is a valid move.
-					if (chessPieces[4].isValidMove(move, board)) {
-						move(move);
-
-						// No longer in check, the move is over.
-						if (!inCheck(Player.BLACK))
-							return move;
-
-						// Still in check, cancel the last move.
-						else
-							move(new Move (row, col, 
-								kingRow, kingCol));
-						
-					}
+					if (isValidMove(move))
+						if(!(stillInCheck(move))){
+							move(move);
+						}
 				}
 
 			// Move all other pieces to get out of check.
@@ -664,20 +655,10 @@ public class ChessModel implements IChessModel {
 							move = new Move(pieceRow, pieceCol,
 									row, col);
 
-							// Continue if this is a valid move.
-							if (chessPieces[piece].isValidMove
-									(move, board)) {
-								move(move);
-
-								// No longer checked, the move is over.
-								if (!inCheck(Player.BLACK))
-									return move;
-
-								// Still checked, cancel the last move.
-								else
-									move(new Move(row, col, 
-											pieceRow, pieceCol));
-							}
+							if (isValidMove(move))
+								if(!(stillInCheck(move))){
+									move(move);
+								}
 						}
 				}
 
@@ -686,7 +667,7 @@ public class ChessModel implements IChessModel {
 					piece = 3;
 
 				// Decrement to move another piece.
-					piece--;
+				piece--;
 			}
 		}
 		return null;
@@ -698,9 +679,9 @@ public class ChessModel implements IChessModel {
 	 * @return true if the move is complete, false if not.
 	 *****************************************************************/
 	private Move putInCheck() {
-		
+
 		//FIXME: Does not check that the piece can be lost.
-		
+
 		int piece = 15;
 
 		// Move all pieces to check the player.
@@ -721,21 +702,10 @@ public class ChessModel implements IChessModel {
 						move = new Move(pieceRow, pieceCol, 
 								row, col);
 
-						// Continue if this is a valid move.
-						if (chessPieces[piece].isValidMove
-								(move, board)) {
-
-							move(move);
-
-							// No longer checked, the move is over.
-							if (!inCheck(Player.WHITE))
-								return move;
-
-							// Still checked, cancel the last move.
-							else 
-								move(new Move(row, col,
-									pieceRow, pieceCol));
-						}
+						if (isValidMove(move))
+							if(!(stillInCheck(move))){
+								move(move);
+							}
 					}
 			}
 
@@ -783,12 +753,10 @@ public class ChessModel implements IChessModel {
 									move = new Move(pieceRow, pieceCol,
 											row, col);
 
-									// Continue if move is valid.
-									if (chessPieces[piece].isValidMove
-											(move, board)) {
-										move(move);
-										return move;
-									}
+									if (isValidMove(move))
+										if(!(stillInCheck(move))){
+											move(move);
+										}
 								}
 				// Skip the King piece.
 				if (piece == 27)
@@ -825,22 +793,23 @@ public class ChessModel implements IChessModel {
 				// Scan the board for a Human piece.
 				for (int row = 0; row <= 7; row++)
 					for (int col = 0; col <= 7; col++)
-						if (pieceAt(row, col).player() == Player.WHITE) {
-							
-							// Construct a move to capture this piece.
-							move = new Move(pieceRow, pieceCol,
-									row, col);
+						if(pieceAt(row,col) != null)
+							if (pieceAt(row, col).player() == Player.WHITE) {
 
-							// Continue if this is a valid move.
-							if (chessPieces[piece].isValidMove
-									(move, board)) 
-								
-								if(exchange(chessPieces[piece], move)) {
-									move(move);
-									return move;
-								}
-									
-						}
+								// Construct a move to capture this piece.
+								move = new Move(pieceRow, pieceCol,
+										row, col);
+
+								// Continue if this is a valid move.
+								if (chessPieces[piece].isValidMove
+										(move, board)) 
+
+									if (isValidMove(move))
+										if(!(stillInCheck(move))){
+											move(move);
+										}
+
+							}
 			}
 			// Skip the King piece.
 			if (piece == 5)
@@ -861,12 +830,12 @@ public class ChessModel implements IChessModel {
 	 * @return true if the move is complete, false if not.
 	 *****************************************************************/
 	private Move moveForward() {
-		
+
 		//FIXME Right now is moves all pawns beyond the first two rows.
-		
+
 		// Move all pawns first.
 		for (int pawnNum = 15; pawnNum > 7; pawnNum--)
-			
+
 			// Make sure this is an active piece.
 			if (chessPieces[pawnNum] != null) {
 
@@ -880,18 +849,16 @@ public class ChessModel implements IChessModel {
 				if (pawnRow == 1)
 					move = new Move(pawnRow, pawnCol,
 							pawnRow + 2, pawnCol);
-				
+
 				// If the pawn is in the second row, advance one space.
 				else if (pawnRow == 2)
 					move = new Move(pawnRow, pawnCol,
 							pawnRow + 1, pawnCol);
-				
-				// Continue if this is a valid move.
-				if (chessPieces[pawnNum].isValidMove
-						(move, board)) {
-					move(move);
-					return move;
-				}
+
+				if (isValidMove(move))
+					if(!(stillInCheck(move))){
+						move(move);
+					}
 			}
 		return null;
 	}
@@ -902,10 +869,10 @@ public class ChessModel implements IChessModel {
 	 * @return true if the exchange is favorable, false if not.
 	 *****************************************************************/
 	private boolean exchange(ChessPiece compPiece, Move move) {
-		
+
 		ChessPiece humanPiece = (ChessPiece)pieceAt(move.toRow, 
 				move.toColumn);
-		
+
 		int piece = 16;
 
 		// Move all pieces to check the player.
@@ -915,10 +882,10 @@ public class ChessModel implements IChessModel {
 			if (chessPieces[piece] != null) {
 
 				// Save the starting location of the piece.
-//				int pieceRow = chessPieces[piece].getRow
-//						(chessPieces[piece], board);
-//				int pieceCol = chessPieces[piece].getCol
-//						(chessPieces[piece], board);
+				//				int pieceRow = chessPieces[piece].getRow
+				//						(chessPieces[piece], board);
+				//				int pieceCol = chessPieces[piece].getCol
+				//						(chessPieces[piece], board);
 
 				// Scan the board for an AI Piece.
 				for (int row = 0; row <= 7; row++)
@@ -930,7 +897,7 @@ public class ChessModel implements IChessModel {
 								return false;
 						}
 
-								
+
 				// Skip the King piece.
 				if (piece == 27)
 					piece = 29;
@@ -940,7 +907,7 @@ public class ChessModel implements IChessModel {
 					piece++;
 			}
 		}
-		
+
 		// No Human piece can capture the AI piece, continue the move.
 		return true;
 	}
