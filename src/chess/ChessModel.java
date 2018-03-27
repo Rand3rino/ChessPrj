@@ -160,12 +160,24 @@ public class ChessModel implements IChessModel {
 	 *****************************************************************/
 	public boolean isValidMove(Move move) {
 
-		if (pieceAt(move.fromRow, move.fromColumn) != null)
+		if (pieceAt(move.fromRow, move.fromColumn) != null) {
 			//make sure the selected piece is the current player's piece
 			if (player == pieceAt(move.fromRow, move.fromColumn).
-			player())
-				return pieceAt(move.fromRow, move.fromColumn).
-						isValidMove(move, board);
+			player()) {				
+				if(pieceAt(move.fromRow, move.fromColumn).
+						isValidMove(move, board)) {
+					temp = board[move.toRow][move.toColumn];
+					
+					move(move);
+					//changePlayer();
+					boolean check = (inCheck(player));
+					move(new Move(move.toRow, move.toColumn, move.fromRow, move.fromColumn));
+					board[move.toRow][move.toColumn] = temp;
+					//changePlayer();
+					return !check;
+				}
+			}
+		}
 		return false;
 	}
 
