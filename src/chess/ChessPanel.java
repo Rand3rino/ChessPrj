@@ -262,6 +262,10 @@ public class ChessPanel extends JPanel {
 
 	private void promotion(Move move) {
 
+		if ((ImageIcon)board[move.fromRow][move.fromColumn]
+				.getIcon() == null)
+			return;
+			
 		//get the name of the icon
 		String desc = ((ImageIcon)board[move.fromRow][move.fromColumn]
 				.getIcon()).getDescription();
@@ -427,6 +431,7 @@ public class ChessPanel extends JPanel {
 								if (model.isValidMove(move)) {
 									model.move(move);
 									promotion(move);
+									model.changePlayer();
 									board[row][col].setIcon(
 											board[firstRow][firstCol]
 													.getIcon());
@@ -461,7 +466,14 @@ public class ChessPanel extends JPanel {
 									JOptionPane.showMessageDialog(null, 
 											"Invalid Move.");
 
-								model.turnComputer();
+								move = model.turnComputer();
+								promotion(move);
+								model.changePlayer();
+								board[move.toRow][move.toColumn].
+									setIcon(board[move.fromRow]
+									[move.fromColumn].getIcon());
+								board[move.fromRow][move.fromColumn]
+										.setIcon(null);
 							}
 
 							// store the players first move

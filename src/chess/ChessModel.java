@@ -661,7 +661,6 @@ public class ChessModel implements IChessModel {
 			moveAI =  moveForward();
 		
 		return moveAI;
-
 	}
 
 	/******************************************************************
@@ -880,7 +879,8 @@ public class ChessModel implements IChessModel {
 				// Scan the board for a Human piece.
 				for (int row = 0; row <= 7; row++)
 					for (int col = 0; col <= 7; col++)
-						if (pieceAt(row, col).player() == Player.WHITE) {
+						if (pieceAt(row, col).player() == 
+							Player.WHITE) {
 							
 							// Construct a move to capture this piece.
 							move = new Move(pieceRow, pieceCol,
@@ -890,7 +890,8 @@ public class ChessModel implements IChessModel {
 							if (chessPieces[piece].isValidMove
 									(move, board)) 
 								
-								if(exchange(chessPieces[piece], move)) {
+								if(exchange(chessPieces[piece], 
+										move)) {
 									move(move);
 									return move;
 								}
