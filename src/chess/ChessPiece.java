@@ -139,10 +139,22 @@ public abstract class ChessPiece implements IChessPiece {
 				move.fromColumn == move.toColumn)
 			return false;
 
-		// Prevents the player to move from an empty square.
-		else if(board[move.fromRow][move.fromColumn] == null)
+		// If the move contains a negative, return false.
+		if (move.fromRow < 0 || move.fromColumn < 0) {
 			return false;
+		}
+		
+		// Prevents the player to move from an empty square.
+		if (board[move.fromRow][move.fromColumn] == null) {
+			
+			return false;
+		}
 
+		// If the move contains a negative, return false.
+		if (move.toRow < 0 || move.toColumn < 0) {
+			return false;
+		}
+				
 		// Prevents the player from taking their own piece.
 		if(board[move.toRow][move.toColumn] != null) 
 			if(board[move.toRow][move.toColumn].player() == owner)
