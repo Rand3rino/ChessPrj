@@ -22,7 +22,11 @@ public class ChessPanel extends JPanel {
 	
 	private JButton longSide  = new JButton("Long");
 	private JButton shortSide = new JButton("Short");
-
+	private JButton blankBtn = new JButton();
+	private JButton blankBtn1 = new JButton();
+	private JButton blankBtn2 = new JButton();
+	private JButton blankBtn3 = new JButton();
+	
 	/** FIXME */
 	private ChessModel model;
 
@@ -161,14 +165,18 @@ public class ChessPanel extends JPanel {
 				// Add the square to the GUI display.
 				add(board[row][col]);
 
-				// Increment alternate to change color.
+				// Increment alternate 0to change color.
 				alternate++;
 			}
 		}
 		
+		blankBtn.setEnabled(false);
+		add(blankBtn);
 		
+		blankBtn1.setEnabled(false);
+		add(blankBtn1);
 		
-		showPlayer = new JLabel("WHITE");
+		showPlayer = new JLabel("White", 0);
 		add(showPlayer);
 
 		// Add listeners to both castling buttons and start disabled.
@@ -179,6 +187,12 @@ public class ChessPanel extends JPanel {
 		shortSide.addActionListener(listener);
 		shortSide.setEnabled(false);
 		add(shortSide);
+		
+		blankBtn2.setEnabled(false);
+		add(blankBtn2);
+		
+		blankBtn3.setEnabled(false);
+		add(blankBtn3);
 		
 		repaint();
 		revalidate();
