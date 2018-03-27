@@ -402,7 +402,7 @@ public abstract class ChessPiece implements IChessPiece {
 	 * @param board the board in which this 
 	 *  piece resides.
 	 * @return true if there are no pieces between it & its move
-	 *  false if there are pieces between it & its move 
+	 *  false if there are pieces between it & its move. 
 	 *****************************************************************/
 	public boolean isOpenVertDown(Move move, IChessPiece[][] board) {
 		
@@ -424,8 +424,8 @@ public abstract class ChessPiece implements IChessPiece {
 	 *  to be made.
 	 * @param board the board in which this 
 	 *  piece resides.
-	 * @return false if the move isn't perfectly horizontal or vertical 
-	 *  or else returns true
+	 * @return false if the move isn't perfectly horizontal or 
+	 *  vertical or else returns true.
 	 *****************************************************************/
 	public boolean isHoriOrVert(Move move, IChessPiece[][] board) {
 		
