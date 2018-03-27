@@ -21,11 +21,11 @@ public class ChessModel implements IChessModel {
 	/** The player variable */
 	private Player player;
 
-//	/** Static Variable for AI Player */
-//	private static Player HUMAN = Player.WHITE;
-//
-//	/** Static Variable for AI Player */
-//	private static Player AI = Player.BLACK;
+	/** Static Variable for AI Player */
+	private static Player HUMAN = Player.WHITE;
+
+	/** Static Variable for AI Player */
+	private static Player AI = Player.BLACK;
 
 	/** Array to hold all chessPieces */
 	private ChessPiece[] chessPieces = new ChessPiece[32];
@@ -562,9 +562,6 @@ public class ChessModel implements IChessModel {
 				}
 	}
 
-	/******
-	 * FIXME
-	 *****/
 	public void changePlayer() {
 		player = player.next();
 	}
@@ -579,33 +576,35 @@ public class ChessModel implements IChessModel {
 	 * 		5. Move a piece (pawns first) forward towards the
 	 *  		   opponent's King.
 	 *****************************************************************/
-	public Move turnComputer() {
+	public void turnComputer() {
 		
 		// AI will always be BLACK.
-		player = Player.BLACK;
+		player = AI;
+
+		//instantiate model instance variable
+		//model = new ChessModel();
 		
-		Move moveAI;
+		// Variable to skip processes if the turn is complete.
+		boolean turnComplete = false;
 
 		// 1. Check if the AI is in check.
-		moveAI = getOutOfCheck();
+		turnComplete = getOutOfCheck();
 
 		// 2. Put the opponent is in check.
-		if (moveAI == null)
-			moveAI = putInCheck();
+		if (!turnComplete) 
+			turnComplete = putInCheck();
 
 		// 3. Move a piece if it is in danger.
-		if (moveAI == null)
-			moveAI = avoidDanger();
+		if (!turnComplete) 
+			turnComplete = avoidDanger();
 
 		// 4. Capture and opponent piece.
-		if (moveAI == null)
-			moveAI = capture();
+		if (!turnComplete) 
+			turnComplete = capture();
 
 		// 5. Move towards the opponent King.
-		if (moveAI == null)
-			moveAI =  moveForward();
-		
-		return moveAI;
+		if (!turnComplete) 
+			turnComplete = moveForward();
 
 	}
 
@@ -615,11 +614,11 @@ public class ChessModel implements IChessModel {
 	 * a piece to block the check.
 	 * @return true if the move is complete, false if not.
 	 *****************************************************************/
-	private Move getOutOfCheck() {
+	private boolean getOutOfCheck() {
 
 		int piece = 15;
 
-		if (inCheck(Player.BLACK)) {
+		if (inCheck(AI)) {
 
 			// Save the starting location of the Black King.
 			int kingRow = chessPieces[4].getRow(chessPieces[4], board);
@@ -635,8 +634,8 @@ public class ChessModel implements IChessModel {
 						move(move);
 
 						// No longer in check, the move is over.
-						if (!inCheck(Player.BLACK))
-							return move;
+						if (!inCheck(AI))
+							return true;
 
 						// Still in check, cancel the last move.
 						else
@@ -670,8 +669,8 @@ public class ChessModel implements IChessModel {
 								move(move);
 
 								// No longer checked, the move is over.
-								if (!inCheck(Player.BLACK))
-									return move;
+								if (!inCheck(AI))
+									return true;
 
 								// Still checked, cancel the last move.
 								else
@@ -689,7 +688,7 @@ public class ChessModel implements IChessModel {
 					piece--;
 			}
 		}
-		return null;
+		return false;
 	}
 
 	/******************************************************************
@@ -697,7 +696,7 @@ public class ChessModel implements IChessModel {
 	 * opponent into check (or checkmate) without losing its piece. 
 	 * @return true if the move is complete, false if not.
 	 *****************************************************************/
-	private Move putInCheck() {
+	private boolean putInCheck() {
 		
 		//FIXME: Does not check that the piece can be lost.
 		
@@ -728,8 +727,8 @@ public class ChessModel implements IChessModel {
 							move(move);
 
 							// No longer checked, the move is over.
-							if (!inCheck(Player.WHITE))
-								return move;
+							if (!inCheck(HUMAN))
+								return true;
 
 							// Still checked, cancel the last move.
 							else 
@@ -748,7 +747,7 @@ public class ChessModel implements IChessModel {
 				piece--;
 		}
 
-		return null;
+		return false;
 	}
 
 	/******************************************************************
@@ -756,7 +755,7 @@ public class ChessModel implements IChessModel {
 	 * pieces are in danger. If so, move it to safety.
 	 * @return true if the move is complete, false if not.
 	 *****************************************************************/
-	private Move avoidDanger() {
+	private boolean avoidDanger() {
 
 		int piece = 16;
 
@@ -775,7 +774,7 @@ public class ChessModel implements IChessModel {
 				// Scan the board for an AI Piece.
 				for (int row = 0; row <= 7; row++)
 					for (int col = 0; col <= 7; col++)
-						if (pieceAt(row, col).player() == Player.BLACK)
+						if (pieceAt(row, col).player() == AI)
 
 							// Move the AI piece out of danger.
 							for (row = 0; row <= 7; row++)
@@ -787,7 +786,7 @@ public class ChessModel implements IChessModel {
 									if (chessPieces[piece].isValidMove
 											(move, board)) {
 										move(move);
-										return move;
+										return true;
 									}
 								}
 				// Skip the King piece.
@@ -799,14 +798,14 @@ public class ChessModel implements IChessModel {
 					piece++;
 			}
 		}
-		return null;
+		return false;
 	}
 
 	/******************************************************************
 	 * This method is part of the AI feature. Take an opponent piece.
 	 * @return true if the move is complete, false if not.
 	 *****************************************************************/
-	private Move capture() {
+	private boolean capture() {
 
 		int piece = 15;
 
@@ -825,7 +824,7 @@ public class ChessModel implements IChessModel {
 				// Scan the board for a Human piece.
 				for (int row = 0; row <= 7; row++)
 					for (int col = 0; col <= 7; col++)
-						if (pieceAt(row, col).player() == Player.WHITE) {
+						if (pieceAt(row, col).player() == HUMAN) {
 							
 							// Construct a move to capture this piece.
 							move = new Move(pieceRow, pieceCol,
@@ -837,7 +836,7 @@ public class ChessModel implements IChessModel {
 								
 								if(exchange(chessPieces[piece], move)) {
 									move(move);
-									return move;
+									return true;
 								}
 									
 						}
@@ -850,7 +849,7 @@ public class ChessModel implements IChessModel {
 			else
 				piece--;
 		}
-		return null;
+		return false;
 	}
 
 	/******************************************************************
@@ -860,7 +859,7 @@ public class ChessModel implements IChessModel {
 	 * different piece.
 	 * @return true if the move is complete, false if not.
 	 *****************************************************************/
-	private Move moveForward() {
+	private boolean moveForward() {
 		
 		//FIXME Right now is moves all pawns beyond the first two rows.
 		
@@ -890,10 +889,10 @@ public class ChessModel implements IChessModel {
 				if (chessPieces[pawnNum].isValidMove
 						(move, board)) {
 					move(move);
-					return move;
+					return true;
 				}
 			}
-		return null;
+		return false;
 	}
 
 	/******************************************************************
