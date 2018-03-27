@@ -15,6 +15,9 @@ public class ChessModel implements IChessModel {
 	/** Variable to hold a single piece */
 	private IChessPiece piece;
 
+	/**Variable to hold a temporary piece*/
+	private IChessPiece temp;
+	
 	/** The player variable */
 	private Player player;
 
@@ -179,6 +182,7 @@ public class ChessModel implements IChessModel {
 
 		// Save the piece that is moving.
 		piece = pieceAt(move.fromRow, move.fromColumn);
+		
 
 		// Empty the space that the piece is leaving.
 		board[move.fromRow][move.fromColumn] = null;
@@ -322,8 +326,8 @@ public class ChessModel implements IChessModel {
 	 *****************************************************************/
 	public boolean inCheck(Player p) {
 
-		int kingRow = -1;
-		int kingCol = -1;
+		int kingRow = -2;
+		int kingCol = -2;
 
 		if (p == Player.WHITE) {
 
@@ -354,8 +358,9 @@ public class ChessModel implements IChessModel {
 					if(board[r][c].player() == player)
 						if(isValidMove(new Move(r, c, kingRow,
 								kingCol)))
-							if(board[r][c].isValidMove(new Move(r, c,
-									kingRow, kingCol), board)) {
+						//	if(board[r][c].isValidMove(new Move(r, c,
+									//kingRow, kingCol), board)) 
+							{
 								changePlayer();
 								return true;
 							}
@@ -406,15 +411,20 @@ public class ChessModel implements IChessModel {
 						// Continue if this is a valid move.
 						if (chessPieces[piece].isValidMove(new Move
 								(pieceRow, pieceCol, row, col), board)) {
+							
+							if(board[row][col] != null)
+								temp = pieceAt(row, col);
 
 							move(new Move(pieceRow, pieceCol, row, col));
 							
 							// No longer checked, the move is over.
 							if (!inCheck(Player.BLACK)) {
 								move(new Move(row, col, pieceRow, pieceCol));
+								board[row][col] = temp;
 								return false;
 							}
 							
+							board[row][col] = temp;
 							move(new Move(row, col, pieceRow, pieceCol));
 						}
 				//decrement the move to another piece
@@ -450,20 +460,26 @@ public class ChessModel implements IChessModel {
 				for (int row = 0; row <= 7; row++)
 					for (int col = 0; col <= 7; col++) {
 						System.out.println("high");
+						System.out.println(pieceRow + " " +pieceCol);
 						if(isValidMove(new Move(pieceRow, pieceCol, row, col))) {
 							System.out.println("get through");
 							// Continue if this is a valid move.
 							if (chessPieces[piece].isValidMove(new Move
 									(pieceRow, pieceCol, row, col), board)) {
+								
+								if(board[row][col] != null)
+									temp = pieceAt(row, col);
 
 								move(new Move(pieceRow, pieceCol, row, col));
 								System.out.println(pieceRow + " " + pieceCol+ " ->" + row + " " + col);
 								// No longer checked, the move is over.
 								if (!inCheck(Player.WHITE)) {
 									move(new Move(row, col, pieceRow, pieceCol));
+									board[row][col] = temp;
 									return false;
 								}
 								move(new Move(row, col, pieceRow, pieceCol));
+								board[row][col] = temp;
 							}
 						}
 					}
