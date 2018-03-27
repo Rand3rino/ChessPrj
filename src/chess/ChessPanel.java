@@ -19,13 +19,15 @@ public class ChessPanel extends JPanel {
 
 	/** An array of JButtons for the Chess board */
 	private JButton[][] board = new JButton[8][8];
-	
+
 	private JButton longSide  = new JButton("Long");
 	private JButton shortSide = new JButton("Short");
 	private JButton blankBtn = new JButton();
 	private JButton blankBtn1 = new JButton();
 	private JButton blankBtn2 = new JButton();
 	private JButton blankBtn3 = new JButton();
+
+	private TurnComputer aI = new TurnComputer();
 	
 	/** FIXME */
 	private ChessModel model;
@@ -41,6 +43,8 @@ public class ChessPanel extends JPanel {
 
 	/** Increment to allow player to select two buttons */
 	private int count;
+
+	private int gameType;
 
 	/** FIXME */
 	private ImageIcon bRookIcon;
@@ -61,7 +65,7 @@ public class ChessPanel extends JPanel {
 	private JMenuItem gameItem;
 	private JMenuItem quitItem;
 	private JMenuItem restartItem;
-	
+
 	private JLabel showPlayer;
 
 	// Declare other instance variables as needed
@@ -76,8 +80,7 @@ public class ChessPanel extends JPanel {
 		gameItem = pgameItem;
 		restartItem = prestartItem;
 
-//		model = new ChessModel();
-//		move = new Move();
+		gameType();
 		setUpBoard();
 
 		quitItem.addActionListener(listener);
@@ -85,10 +88,23 @@ public class ChessPanel extends JPanel {
 		restartItem.addActionListener(listener);
 	}
 
+	private void gameType() {
+		JOptionPane.showMessageDialog(null, "Welcome to Chess");
+
+		String[] options = new String[] {"2v2", "A.I.", "Cancel"};
+		gameType = JOptionPane.showOptionDialog(null,"Select One:",
+				"Chess", JOptionPane.DEFAULT_OPTION, 
+				JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+
+		if(gameType == 2)
+			System.exit(1);
+
+	}
+
 	private void setUpBoard() {
 		model = new ChessModel();
 		move = new Move();
-		
+
 		firstRow = 0;
 		firstCol = 0;
 		count = 0;
@@ -130,11 +146,11 @@ public class ChessPanel extends JPanel {
 	private void displayBoard() {
 
 		removeAll();
-		
+
 		// Create a (9 x 8) dimension grid.
 		// The bottom row will be used for control buttons.		
 		setLayout(new GridLayout(9, 8));
-		
+
 		// Loop for every square on a Chess board.
 		for (int row = 0; row < 8; row++) {
 
@@ -169,13 +185,13 @@ public class ChessPanel extends JPanel {
 				alternate++;
 			}
 		}
-		
+
 		blankBtn.setEnabled(false);
 		add(blankBtn);
-		
+
 		blankBtn1.setEnabled(false);
 		add(blankBtn1);
-		
+
 		showPlayer = new JLabel("White", 0);
 		add(showPlayer);
 
@@ -183,17 +199,17 @@ public class ChessPanel extends JPanel {
 		longSide.addActionListener(listener);
 		longSide.setEnabled(false);
 		add(longSide);
-		
+
 		shortSide.addActionListener(listener);
 		shortSide.setEnabled(false);
 		add(shortSide);
-		
+
 		blankBtn2.setEnabled(false);
 		add(blankBtn2);
-		
+
 		blankBtn3.setEnabled(false);
 		add(blankBtn3);
-		
+
 		repaint();
 		revalidate();
 	}
@@ -263,29 +279,29 @@ public class ChessPanel extends JPanel {
 	}
 
 	// Add other helper methods as needed
-	
+
 	private void promotion(Move move) {
-		
+
 		//get the name of the icon
 		String desc = ((ImageIcon)board[move.fromRow][move.fromColumn].getIcon()).getDescription();
-		
+
 		//check if its a black pawn
 		if (desc.charAt(0) == 'b' && desc.charAt(1) == 'P') {
-			
+
 			//if its a black pawn at row 7 promote to queen
 			if(move.toRow == 7)
 				board[move.fromRow][move.fromColumn].setIcon(bQueenIcon);
 		}
-		
+
 		//check if its a white pawn
 		else if (desc.charAt(0) == 'w' && desc.charAt(1) == 'P') {
-			
+
 			//if its a white pawn at row 7 promote to queen
 			if(move.toRow == 0)
 				board[move.fromRow][move.fromColumn].setIcon(wQueenIcon);
 		}
 	}
-	
+
 	private void iconCastleLong(Player p) {
 		if (p == Player.BLACK) {
 			board[0][0].setIcon(null);
@@ -300,7 +316,7 @@ public class ChessPanel extends JPanel {
 			board[7][3].setIcon(wRookIcon);
 		}
 	}
-	
+
 	private void iconCastleShort(Player p) {
 		if (p == Player.BLACK) {
 			board[0][7].setIcon(null);
@@ -329,58 +345,109 @@ public class ChessPanel extends JPanel {
 			}
 			if(comp == quitItem)
 				System.exit(1);
-			
+
 			if(comp == longSide) {
 				iconCastleLong(model.currentPlayer());
 				model.moveCastleLongSide(model.currentPlayer());
 				longSide.setEnabled(false);
 			}
-			
+
 			if(comp == shortSide) {
 				iconCastleShort(model.currentPlayer());
 				model.moveCastleShortSide(model.currentPlayer());
 				shortSide.setEnabled(false);
 			}
 
-			// Complete this.
-			for (int row = 0; row < 8; row++) {
-				for (int col = 0; col < 8; col++) {
-					if (board[row][col] == comp) {
-						count++;
+			if(gameType == 0) {
+				// Complete this.
+				for (int row = 0; row < 8; row++) {
+					for (int col = 0; col < 8; col++) {
+						if (board[row][col] == comp) {
+							count++;
 
-						// if the player has selected a piece to move
-						// and a location to move to
-						if (count % 2 == 0) {
-							
-							move = new Move(firstRow, firstCol, row, col);
-							if (model.isValidMove(move)) {
-								model.move(move);
-								promotion(move);
-								board[row][col].setIcon(board[firstRow][firstCol].getIcon());
-								board[firstRow][firstCol].setIcon(null);
-								
-								//notify player if in check 
-								// FIXME: SOME SORT OF ERROR ON 315
-								if(model.inCheck(model.currentPlayer()))
-									if(model.inCheckMate(model.currentPlayer()))
-										JOptionPane.showMessageDialog(null,"Checkmate:" + model.currentPlayer().toString() + " Loses");
-									else
-										JOptionPane.showMessageDialog(null,"Check");
-							} else
-								JOptionPane.showMessageDialog(null, 
-										"Invalid Move.");
-						}
+							// if the player has selected a piece to move
+							// and a location to move to
+							if (count % 2 == 0) {
 
-						// store the players first move
-						else {
-							if(board[row][col].getIcon() == null) {
-								JOptionPane.showMessageDialog(null, 
-										"Invalid Move.");
-								count--;
+								move = new Move(firstRow, firstCol, row, col);
+								if (model.isValidMove(move)) {
+									model.move(move);
+									promotion(move);
+									board[row][col].setIcon(board[firstRow][firstCol].getIcon());
+									board[firstRow][firstCol].setIcon(null);
+
+									//notify player if in check 
+									// FIXME: SOME SORT OF ERROR ON 315
+									if(model.inCheck(model.currentPlayer()))
+										if(model.inCheckMate(model.currentPlayer()))
+											JOptionPane.showMessageDialog(null,"Checkmate:" + model.currentPlayer().toString() + " Loses");
+										else
+											JOptionPane.showMessageDialog(null,"Check");
+								} else
+									JOptionPane.showMessageDialog(null, 
+											"Invalid Move.");
 							}
+
+							// store the players first move
 							else {
-								firstRow = row;
-								firstCol = col;
+								if(board[row][col].getIcon() == null) {
+									JOptionPane.showMessageDialog(null, 
+											"Invalid Move.");
+									count--;
+								}
+								else {
+									firstRow = row;
+									firstCol = col;
+								}
+							}
+						}
+					}
+				}
+			}
+			
+			if(gameType == 1) {
+				// Complete this.
+				for (int row = 0; row < 8; row++) {
+					for (int col = 0; col < 8; col++) {
+						if (board[row][col] == comp) {
+							count++;
+
+							// if the player has selected a piece to move
+							// and a location to move to
+							if (count % 2 == 0) {
+
+								move = new Move(firstRow, firstCol, row, col);
+								if (model.isValidMove(move)) {
+									model.move(move);
+									promotion(move);
+									board[row][col].setIcon(board[firstRow][firstCol].getIcon());
+									board[firstRow][firstCol].setIcon(null);
+
+									//notify player if in check 
+									// FIXME: SOME SORT OF ERROR ON 315
+									if(model.inCheck(model.currentPlayer()))
+										if(model.inCheckMate(model.currentPlayer()))
+											JOptionPane.showMessageDialog(null,"Checkmate:" + model.currentPlayer().toString() + " Loses");
+										else
+											JOptionPane.showMessageDialog(null,"Check");
+								} else
+									JOptionPane.showMessageDialog(null, 
+											"Invalid Move.");
+								
+								aI.turnComputer();
+							}
+
+							// store the players first move
+							else {
+								if(board[row][col].getIcon() == null) {
+									JOptionPane.showMessageDialog(null, 
+											"Invalid Move.");
+									count--;
+								}
+								else {
+									firstRow = row;
+									firstCol = col;
+								}
 							}
 						}
 					}
@@ -391,12 +458,12 @@ public class ChessPanel extends JPanel {
 				longSide.setEnabled(true);
 			else 
 				longSide.setEnabled(false);
-			
+
 			if (model.castleShortSide(model.currentPlayer()))
 				shortSide.setEnabled(true);
 			else 
 				shortSide.setEnabled(false);
-			
+
 			showPlayer.setText(model.currentPlayer().toString());
 		}
 	}
