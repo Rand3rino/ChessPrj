@@ -17,7 +17,7 @@ public class ChessModel implements IChessModel {
 
 	/**Variable to hold a temporary piece*/
 	private IChessPiece temp;
-	
+
 	/** The player variable */
 	private Player player;
 
@@ -163,18 +163,24 @@ public class ChessModel implements IChessModel {
 		if (pieceAt(move.fromRow, move.fromColumn) != null) {
 			//make sure the selected piece is the current player's piece
 			if (player == pieceAt(move.fromRow, move.fromColumn).
-			player()) {				
+					player()) {				
 				if(pieceAt(move.fromRow, move.fromColumn).
 						isValidMove(move, board)) {
-					temp = board[move.toRow][move.toColumn];
+
+					//if(board[move.toRow][move.toColumn]!= null) {
+						temp = board[move.toRow][move.toColumn];
+						int row = move.toRow;
+						int col = move.toColumn;
+						
+						move(move);
+						boolean check = (inCheck(player));
+						System.out.println(check);
+						move(new Move(move.toRow, move.toColumn, move.fromRow, move.fromColumn));
+						board[row][col] = temp;
+						return !check;
+				//	}
 					
-					move(move);
-					//changePlayer();
-					boolean check = (inCheck(player));
-					move(new Move(move.toRow, move.toColumn, move.fromRow, move.fromColumn));
-					board[move.toRow][move.toColumn] = temp;
-					//changePlayer();
-					return !check;
+					//return true;
 				}
 			}
 		}
@@ -194,7 +200,7 @@ public class ChessModel implements IChessModel {
 
 		// Save the piece that is moving.
 		piece = pieceAt(move.fromRow, move.fromColumn);
-		
+
 
 		// Empty the space that the piece is leaving.
 		board[move.fromRow][move.fromColumn] = null;
@@ -370,12 +376,12 @@ public class ChessModel implements IChessModel {
 					if(board[r][c].player() == player)
 						if(isValidMove(new Move(r, c, kingRow,
 								kingCol)))
-						//	if(board[r][c].isValidMove(new Move(r, c,
-									//kingRow, kingCol), board)) 
-							{
-								changePlayer();
-								return true;
-							}
+							//	if(board[r][c].isValidMove(new Move(r, c,
+							//kingRow, kingCol), board)) 
+						{
+							changePlayer();
+							return true;
+						}
 		// Player is not in check
 		changePlayer();
 		return false;
@@ -423,19 +429,19 @@ public class ChessModel implements IChessModel {
 						// Continue if this is a valid move.
 						if (chessPieces[piece].isValidMove(new Move
 								(pieceRow, pieceCol, row, col), board)) {
-							
+
 							if(board[row][col] != null)
 								temp = pieceAt(row, col);
 
 							move(new Move(pieceRow, pieceCol, row, col));
-							
+
 							// No longer checked, the move is over.
 							if (!inCheck(Player.BLACK)) {
 								move(new Move(row, col, pieceRow, pieceCol));
 								board[row][col] = temp;
 								return false;
 							}
-							
+
 							board[row][col] = temp;
 							move(new Move(row, col, pieceRow, pieceCol));
 						}
@@ -478,7 +484,7 @@ public class ChessModel implements IChessModel {
 							// Continue if this is a valid move.
 							if (chessPieces[piece].isValidMove(new Move
 									(pieceRow, pieceCol, row, col), board)) {
-								
+
 								if(board[row][col] != null)
 									temp = pieceAt(row, col);
 
@@ -599,7 +605,7 @@ public class ChessModel implements IChessModel {
 		// }
 		return false;
 	}
-	
+
 	public void changePlayer() {
 		player = player.next();
 	}
