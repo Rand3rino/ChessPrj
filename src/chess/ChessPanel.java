@@ -6,7 +6,7 @@
  * This game is a standard for of chess, where white moves first.
  * 
  * @author Randy Nguyen, Sam Ventocilla, Jay Brunsting
- * @version March 20, 2018.
+ * @version March 27, 2018.
  *********************************************************************/
 
 package chess;
@@ -27,25 +27,13 @@ public class ChessPanel extends JPanel {
 	private JButton blankBtn2 = new JButton();
 	private JButton blankBtn3 = new JButton();
 
-	
-	/** FIXME */
 	private ChessModel model;
-
-	/** FIXME */
 	private Move move;
-
-	/** FIXME */
 	private int firstRow;
-
-	/** FIXME */
 	private int firstCol;
-
-	/** Increment to allow player to select two buttons */
 	private int count;
-
 	private int gameType;
 
-	/** FIXME */
 	private ImageIcon bRookIcon;
 	private ImageIcon bKnightIcon;
 	private ImageIcon bBishopIcon;
@@ -53,7 +41,6 @@ public class ChessPanel extends JPanel {
 	private ImageIcon bKingIcon;
 	private ImageIcon bPawnIcon;
 
-	/** FIXME */
 	private ImageIcon wRookIcon;
 	private ImageIcon wKnightIcon;
 	private ImageIcon wBishopIcon;
@@ -66,9 +53,6 @@ public class ChessPanel extends JPanel {
 
 	private JLabel showPlayer;
 
-	// Declare other instance variables as needed
-
-	/** ButtonListener for Chess game */
 	private ButtonListener listener = new ButtonListener();
 
 	public ChessPanel(JMenuItem pquitItem, JMenuItem pgameItem) {
@@ -181,6 +165,7 @@ public class ChessPanel extends JPanel {
 			}
 		}
 
+		//blank buttons to center the castle buttons
 		blankBtn.setEnabled(false);
 		add(blankBtn);
 
@@ -277,18 +262,17 @@ public class ChessPanel extends JPanel {
 
 	private void promotion(Move move) {
 
-		if (((ImageIcon)board[move.fromRow][move.fromColumn].getIcon()) == null )
-			return;
-			
 		//get the name of the icon
-		String desc = ((ImageIcon)board[move.fromRow][move.fromColumn].getIcon()).getDescription();
+		String desc = ((ImageIcon)board[move.fromRow][move.fromColumn]
+				.getIcon()).getDescription();
 
 		//check if its a black pawn
 		if (desc.charAt(0) == 'b' && desc.charAt(1) == 'P') {
 
 			//if its a black pawn at row 7 promote to queen
 			if(move.toRow == 7)
-				board[move.fromRow][move.fromColumn].setIcon(bQueenIcon);
+				board[move.fromRow][move.fromColumn]
+						.setIcon(bQueenIcon);
 		}
 
 		//check if its a white pawn
@@ -296,7 +280,8 @@ public class ChessPanel extends JPanel {
 
 			//if its a white pawn at row 7 promote to queen
 			if(move.toRow == 0)
-				board[move.fromRow][move.fromColumn].setIcon(wQueenIcon);
+				board[move.fromRow][move.fromColumn]
+						.setIcon(wQueenIcon);
 		}
 	}
 
@@ -356,38 +341,54 @@ public class ChessPanel extends JPanel {
 			}
 
 			if(gameType == 0) {
-				// Complete this.
+				
+				//loop to check if each button is clicked
 				for (int row = 0; row < 8; row++) {
 					for (int col = 0; col < 8; col++) {
 						if (board[row][col] == comp) {
 							count++;
 
-							// if the player has selected a piece to move
-							// and a location to move to
+							// if the player has selected a piece to
+							// move and a location to move to
 							if (count % 2 == 0) {
 
-								move = new Move(firstRow, firstCol, row, col);
-								if (model.isValidMove(move) && model.stillInCheck(move)) {
+								move = new Move(firstRow, firstCol, 
+										row, col);
+								if (model.isValidMove(move) && model
+										.stillInCheck(move)) {
 									model.move(move);
 									promotion(move);
 									model.changePlayer();
-									board[row][col].setIcon(board[firstRow][firstCol].getIcon());
-									board[firstRow][firstCol].setIcon(null);
+									board[row][col].setIcon(
+											board[firstRow][firstCol]
+													.getIcon());
+									board[firstRow][firstCol]
+											.setIcon(null);
 
-									//notify player if in check 
-									// FIXME: SOME SORT OF ERROR ON 315
-									if(model.inCheck(model.currentPlayer()))
-										if(model.inCheckMate(model.currentPlayer())) {
-											JOptionPane.showMessageDialog(null,"Checkmate:" + model.currentPlayer().toString() + " Loses");
+									if(model.inCheck(model
+											.currentPlayer()))
+										if(model.inCheckMate(model
+												.currentPlayer())) {
+											JOptionPane
+											.showMessageDialog(null,
+													"Checkmate:" 
+											+ model.currentPlayer()
+											.toString() + " Loses");
 											if (model.isComplete()) {
-												JOptionPane.showMessageDialog(null,"Game is over. Application will now close.");
+												JOptionPane
+												.showMessageDialog(null
+													,"Game is over. "
+													+"Application will"
+													+ " now close.");
 												System.exit(1);
 											}
 										}
 										else
-											JOptionPane.showMessageDialog(null,"Check");
-										}
-										else
+											JOptionPane
+											.showMessageDialog(null,
+													"Check");
+								}
+								else
 									JOptionPane.showMessageDialog(null, 
 											"Invalid Move.");
 							}
@@ -408,59 +409,59 @@ public class ChessPanel extends JPanel {
 					}
 				}
 			}
-			
+
 			if(gameType == 1) {
-				// Complete this.
+
+				//loop to check if each button has been clicked
 				for (int row = 0; row < 8; row++) {
 					for (int col = 0; col < 8; col++) {
 						if (board[row][col] == comp) {
 							count++;
 
-							// if the player has selected a piece to move
-							// and a location to move to
+							// if the player has selected a piece to
+							// move and a location to move to
 							if (count % 2 == 0) {
 
-								move = new Move(firstRow, firstCol, row, col);
+								move = new Move(firstRow, firstCol, 
+										row, col);
 								if (model.isValidMove(move)) {
 									model.move(move);
 									promotion(move);
-									model.changePlayer();
-									board[row][col].setIcon(board[firstRow][firstCol].getIcon());
-									board[firstRow][firstCol].setIcon(null);
+									board[row][col].setIcon(
+											board[firstRow][firstCol]
+													.getIcon());
+									board[firstRow][firstCol]
+											.setIcon(null);
 
-									//notify player if in check 
-									// FIXME: SOME SORT OF ERROR ON 315
-									if(model.inCheck(model.currentPlayer()))
-										if(model.inCheckMate(model.currentPlayer())) {
-											JOptionPane.showMessageDialog(null,"Checkmate:" + model.currentPlayer().toString() + " Loses");
+									if(model.inCheck(model
+											.currentPlayer()))
+										if(model.inCheckMate(model
+												.currentPlayer())) {
+											JOptionPane
+											.showMessageDialog(null,
+													"Checkmate:" +model
+													.currentPlayer()
+													.toString() 
+													+ " Loses");
 											if (model.isComplete()) {
-												JOptionPane.showMessageDialog(null,"Game is over. Application will now close.");
+												JOptionPane
+												.showMessageDialog
+												(null,"Game is over. "
+														+ "Application"
+														+ " will now "
+														+ "close.");
 												System.exit(1);
 											}
 										}
 										else
-											JOptionPane.showMessageDialog(null,"Check");
-									
-									move = model.turnComputer();
-									board[move.toRow][move.toColumn].setIcon(board[move.fromRow][move.fromColumn].getIcon());
-									board[move.fromRow][move.fromColumn].setIcon(null);
-									promotion(move);
-									
-									if(model.inCheck(model.currentPlayer()))
-										if(model.inCheckMate(model.currentPlayer())) {
-											JOptionPane.showMessageDialog(null,"Checkmate:" + model.currentPlayer().toString() + " Loses");
-											if (model.isComplete()) {
-												JOptionPane.showMessageDialog(null,"Game is over. Application will now close.");
-												System.exit(1);
-											}
-										}
-										else
-											JOptionPane.showMessageDialog(null,"Check");
-									
-									model.changePlayer();
+											JOptionPane
+											.showMessageDialog
+											(null,"Check");
 								} else
 									JOptionPane.showMessageDialog(null, 
 											"Invalid Move.");
+
+								model.turnComputer();
 							}
 
 							// store the players first move
